@@ -2,6 +2,7 @@
   "name": "Sistema GELM",
   "short_name": "GELM",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#020b12",
   "theme_color": "#00ffc8",

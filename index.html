@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SISTEMA - GELM</title>
 
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#00ffc8">
+
 <style>
 :root{
   --neon:#00ffc8;
@@ -30,12 +33,8 @@ body{
   margin:16px auto;
   padding:14px 32px;
   border-radius:999px;
-  border:none;
-  cursor:default;
   background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
-  box-shadow:
-    0 0 16px rgba(0,255,255,.95),
-    0 0 40px rgba(0,0,0,1);
+  box-shadow:0 0 16px rgba(0,255,255,.95);
   text-align:center;
   width:fit-content;
 }
@@ -44,7 +43,6 @@ body{
   font-size:18px;
   color:#000;
   font-weight:bold;
-  text-shadow:0 0 4px #00ffff;
 }
 
 .header-btn span{
@@ -81,9 +79,7 @@ nav a{
   font-size:11px;
   border:1px solid rgba(0,255,200,.45);
   background:linear-gradient(145deg,#020616,#05001a);
-  box-shadow:
-    0 0 12px rgba(0,255,255,.45),
-    inset 0 0 10px rgba(0,255,255,.15);
+  box-shadow:0 0 12px rgba(0,255,255,.45);
   position:relative;
   overflow:hidden;
 }
@@ -92,11 +88,7 @@ nav a::before{
   content:"";
   position:absolute;
   inset:-2px;
-  background:linear-gradient(120deg,
-    transparent,
-    rgba(0,255,200,.6),
-    transparent
-  );
+  background:linear-gradient(120deg,transparent,rgba(0,255,200,.6),transparent);
   transform:translateX(-120%);
   animation:scan 3s linear infinite;
 }
@@ -105,13 +97,11 @@ nav a::before{
   to{ transform:translateX(120%); }
 }
 
-/* ===== CONTENT ===== */
 section{
   flex:1;
   padding:30px;
 }
 
-/* ===== FOOTER ===== */
 footer{
   text-align:center;
   padding:10px;
@@ -124,36 +114,46 @@ footer{
 
 <body>
 
-<!-- BOTÓN HEADER -->
 <div class="header-btn">
   <h1>SISTEMA - GELM</h1>
-  <span>todos los derechso de Genrin Lorenzo Ch.078 — BY GELM</span>
+  <span>todos los derechos de Genrin Lorenzo Ch.078 — BY GELM</span>
 </div>
 
 <div class="main">
 
-  <!-- SIDEBAR -->
-  <nav>
-    <a href="https://gelm2mil.github.io/2026/agen2026.html">Agenda</a>
-    <a href="https://gelm2mil.github.io/2026/respaldo.html">Hechos</a>
-    <a href="https://gelm2mil.github.io/control/consignacion_pwa.html">Consigna</a>
-    <a href="https://gelm2mil.github.io/gelm/">transportes</a>
-     <a href="https://gelm2mil.github.io/buscador/">multas</a>
-    <a href="#">Leyes</a>
-    <a href="#">Biblia</a>
-  </nav>
+<nav>
+  <a href="https://gelm2mil.github.io/2026/agen2026.html">Agenda</a>
+  <a href="https://gelm2mil.github.io/2026/respaldo.html">Hechos</a>
+  <a href="https://gelm2mil.github.io/control/consignacion_pwa.html">Consigna</a>
+  <a href="https://gelm2mil.github.io/gelm/">Transportes</a>
+  <a href="https://gelm2mil.github.io/buscador/">Multas</a>
 
-  <!-- CONTENIDO -->
-  <section>
-    <!-- aquí irán los módulos -->
-  </section>
+  <!-- BACKUP POWERSHELL -->
+  <a 
+    href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit"
+    target="_blank"
+  >
+    Backup
+  </a>
+
+  <a href="#">Leyes</a>
+  <a href="#">Biblia</a>
+</nav>
+
+<section></section>
 
 </div>
 
 <footer>
-  © 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango
+© 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango  
 att: ---[GELM]---
 </footer>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+</script>
 
 </body>
 </html>

@@ -1,18 +1,23 @@
-const CACHE_NAME = "gelm-sistema-v1";
-const FILES = [
-  "./",
-  "./index.html",
-  "./manifest.json"
-];
+const CACHE = "gelm-core-v1";
 
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES))
+    caches.open(CACHE).then(c =>
+      c.addAll([
+        "./",
+        "./index.html"
+      ])
+    )
   );
 });
 
 self.addEventListener("fetch", e => {
+  const url = new URL(e.request.url);
+
+  // NO tocar Google
+  if (url.origin.includes("google.com")) return;
+
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
+    caches.match(e.request).then(res => res || fetch(e.request))
   );
 });

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SISTEMA GELM — Centro Operativo</title>
+
+<style>
+:root{
+  --neon: #00ffc8;
+  --bg: #05010a;
+  --panel: rgba(0,0,0,0.85);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
+    radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
+    var(--bg);
+  color:#eee;
+}
+
+/* ===== LAYOUT ===== */
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ===== MENU ===== */
+.menu{
+  width:90px;
+  background:var(--panel);
+  border-right:1px solid rgba(0,255,200,.3);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:10px 0;
+  gap:12px;
+}
+
+.menu button{
+  width:70px;
+  height:70px;
+  background:#070717;
+  border:1px solid var(--neon);
+  border-radius:16px;
+  color:var(--neon);
+  font-size:11px;
+  cursor:pointer;
+  box-shadow:0 0 10px rgba(0,255,200,.6);
+  transition:.2s;
+}
+
+.menu button:hover{
+  box-shadow:0 0 20px rgba(0,255,200,1);
+}
+
+/* ===== CONTENIDO ===== */
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.header{
+  text-align:center;
+  padding:14px;
+  background:var(--panel);
+  border-bottom:1px solid rgba(0,255,200,.3);
+}
+
+.header h1{
+  margin:0;
+  font-size:18px;
+  color:var(--neon);
+  text-shadow:0 0 12px #00ffff;
+}
+
+.header p{
+  margin:4px 0 0;
+  font-size:12px;
+  color:#aaa;
+}
+
+/* ===== IFRAME ===== */
+.viewer{
+  flex:1;
+  border:none;
+  width:100%;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  font-size:11px;
+  padding:8px;
+  background:var(--panel);
+  color:#66ffe6;
+}
+
+@media(max-width:600px){
+  .menu{
+    width:70px;
+  }
+  .menu button{
+    width:58px;
+    height:58px;
+    font-size:10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- MENU -->
+  <aside class="menu">
+    <button onclick="abrir('modulos/agenda2026.html')">Agenda</button>
+    <button onclick="abrir('modulos/hechos_transito.html')">Hechos</button>
+    <button onclick="abrir('modulos/consignaciones.html')">Consigna</button>
+    <button onclick="abrir('modulos/control.html')">Control</button>
+    <button onclick="abrir('modulos/leyes.html')">Leyes</button>
+    <button onclick="abrir('modulos/biblia.html')">Biblia</button>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <section class="main">
+    <div class="header">
+      <h1>SISTEMA OPERATIVO GELM</h1>
+      <p>Creado por Genrin Lorenzo Ch.078 — BY GELM</p>
+    </div>
+
+    <iframe
+      id="visor"
+      class="viewer"
+      src="modulos/agenda2026.html">
+    </iframe>
+
+    <div class="footer">
+      © 2026 — GELM | Sistema personal de trabajo y criterio
+    </div>
+  </section>
+
+</div>
+
+<script>
+function abrir(ruta){
+  document.getElementById("visor").src = ruta;
+}
+</script>
+
+</body>
+</html>

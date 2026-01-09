@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SISTEMA - GELM</title>
 
-<link rel="manifest" href="manifest.webmanifest">
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00ffc8">
 
 <style>
@@ -14,21 +15,14 @@
   --bg1:#020b12;
   --bg2:#2b0033;
 }
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
 body{
   min-height:100vh;
-  background: linear-gradient(135deg,var(--bg1),var(--bg2));
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
   color:#eaffff;
 }
 
-/* ===== HEADER BOTÓN ===== */
+/* HEADER */
 .header-btn{
   margin:16px auto;
   padding:14px 32px;
@@ -38,28 +32,13 @@ body{
   text-align:center;
   width:fit-content;
 }
+.header-btn h1{font-size:18px;color:#000;font-weight:bold;}
+.header-btn span{display:block;font-size:12px;color:#001010;font-weight:bold;}
 
-.header-btn h1{
-  font-size:18px;
-  color:#000;
-  font-weight:bold;
-}
+/* LAYOUT */
+.main{display:flex;min-height:calc(100vh - 120px);}
 
-.header-btn span{
-  display:block;
-  margin-top:4px;
-  font-size:12px;
-  color:#001010;
-  font-weight:bold;
-}
-
-/* ===== LAYOUT ===== */
-.main{
-  display:flex;
-  min-height:calc(100vh - 120px);
-}
-
-/* ===== SIDEBAR ===== */
+/* SIDEBAR */
 nav{
   width:72px;
   padding:10px 6px;
@@ -69,7 +48,6 @@ nav{
   flex-direction:column;
   gap:12px;
 }
-
 nav a{
   text-decoration:none;
   text-align:center;
@@ -80,28 +58,12 @@ nav a{
   border:1px solid rgba(0,255,200,.45);
   background:linear-gradient(145deg,#020616,#05001a);
   box-shadow:0 0 12px rgba(0,255,255,.45);
-  position:relative;
-  overflow:hidden;
 }
 
-nav a::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background:linear-gradient(120deg,transparent,rgba(0,255,200,.6),transparent);
-  transform:translateX(-120%);
-  animation:scan 3s linear infinite;
-}
+/* CONTENT */
+section{flex:1;padding:30px;}
 
-@keyframes scan{
-  to{ transform:translateX(120%); }
-}
-
-section{
-  flex:1;
-  padding:30px;
-}
-
+/* FOOTER */
 footer{
   text-align:center;
   padding:10px;
@@ -122,22 +84,18 @@ footer{
 <div class="main">
 
 <nav>
-  <a href="https://gelm2mil.github.io/2026/agen2026.html">Agenda</a>
-  <a href="https://gelm2mil.github.io/2026/respaldo.html">Hechos</a>
-  <a href="https://gelm2mil.github.io/control/consignacion_pwa.html">Consigna</a>
-  <a href="https://gelm2mil.github.io/gelm/">Transportes</a>
-  <a href="https://gelm2mil.github.io/buscador/">Multas</a>
+  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">Agenda</a>
+  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">Hechos</a>
+  <a href="https://gelm2mil.github.io/control/consignacion_pwa.html" target="_blank">Consigna</a>
+  <a href="https://gelm2mil.github.io/gelm/" target="_blank">Transportes</a>
+  <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
 
-  <!-- BACKUP POWERSHELL -->
-  <a 
-    href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit"
-    target="_blank"
-  >
-    Backup
-  </a>
+  <!-- NUEVO BOTÓN BACKUP -->
+  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0"
+     target="_blank">Backup</a>
 
-  <a href="#">Leyes</a>
-  <a href="#">Biblia</a>
+  <a href="#" onclick="alert('Módulo Leyes en construcción')">Leyes</a>
+  <a href="#" onclick="alert('Biblia en construcción')">Biblia</a>
 </nav>
 
 <section></section>
@@ -145,13 +103,12 @@ footer{
 </div>
 
 <footer>
-© 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango  
-att: ---[GELM]---
+© 2014 - 2025 | BY GELM | PMT Chimaltenango — [GELM]
 </footer>
 
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
+  navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 

@@ -2,11 +2,9 @@
   "name": "Sistema GELM",
   "short_name": "GELM",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "background_color": "#050109",
+  "background_color": "#020b12",
   "theme_color": "#00ffc8",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -17,12 +15,6 @@
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
-    },
-    {
-      "src": "icons/icon-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }

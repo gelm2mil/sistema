@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leyes - GELM</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top,#020b12,#2b0033);
+  color:#eaffff;
+}
+
+.header{
+  text-align:center;
+  padding:16px;
+  background:rgba(0,0,0,.6);
+  border-bottom:1px solid rgba(0,255,200,.3);
+}
+
+.header h1{
+  margin:0;
+  font-size:18px;
+  color:#00ffc8;
+}
+
+.header span{
+  font-size:12px;
+  color:#9fffe6;
+}
+
+.buscador{
+  display:flex;
+  gap:10px;
+  padding:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.buscador input{
+  flex:1;
+  max-width:420px;
+  padding:12px;
+  border-radius:999px;
+  border:1px solid #00ffc8;
+  background:#020616;
+  color:#00ffc8;
+  font-size:15px;
+}
+
+.buscador button{
+  padding:12px 22px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  background:linear-gradient(135deg,#00ffff,#5f00ff);
+  color:#000;
+  font-weight:bold;
+  box-shadow:0 0 12px rgba(0,255,255,.8);
+}
+
+.resultados{
+  padding:16px;
+}
+
+.resultado{
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(0,255,200,.3);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.resultado h3{
+  margin:0 0 6px 0;
+  color:#7bffb2;
+  font-size:14px;
+}
+
+.resultado small{
+  color:#9fffe6;
+  font-size:12px;
+}
+
+.marcado{
+  background:yellow;
+  color:#000;
+  padding:2px 4px;
+  border-radius:4px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>MÓDULO DE LEYES</h1>
+  <span>Buscador legal offline — BY GELM</span>
+</div>
+
+<div class="buscador">
+  <input id="q" placeholder="Ej: tráfico de influencias, no licencia, artículo 123">
+  <button onclick="buscar()">Buscar</button>
+</div>
+
+<div id="resultados" class="resultados"></div>
+
+<script src="leyes.data.js"></script>
+<script src="leyes.js"></script>
+</body>
+</html>

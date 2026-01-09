@@ -1,23 +1,33 @@
-const CACHE = "gelm-core-v1";
+const CACHE_NAME = "gelm-sistema-v1";
+
+const URLS = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
+];
 
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open(CACHE).then(c =>
-      c.addAll([
-        "./",
-        "./index.html"
-      ])
+    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(k => k !== CACHE_NAME && caches.delete(k))
+      )
     )
   );
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", e => {
-  const url = new URL(e.request.url);
-
-  // NO tocar Google
-  if (url.origin.includes("google.com")) return;
-
   e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
+    caches.match(e.request).then(r => r || fetch(e.request))
   );
 });

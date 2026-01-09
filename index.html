@@ -3,51 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>SISTEMA OPERATIVO GELM</title>
 
 <style>
 :root{
   --neon:#00ffc8;
-  --bg-dark:#05010a;
+  --bg1:#020b12;
+  --bg2:#2b0033;
 }
 
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body{
-  background:
-    radial-gradient(circle at 20% 0%, rgba(0,255,255,0.15), transparent 50%),
-    radial-gradient(circle at 80% 0%, rgba(255,0,255,0.15), transparent 55%),
-    var(--bg-dark);
-  color:#eaeaea;
   min-height:100vh;
+  background: linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:#eaffff;
 }
 
-/* ===== HEADER ===== */
-header{
+/* ===== HEADER BOTÓN ===== */
+.header-btn{
+  margin:16px auto;
+  padding:14px 32px;
+  border-radius:999px;
+  border:none;
+  cursor:default;
+  background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+  box-shadow:
+    0 0 16px rgba(0,255,255,.95),
+    0 0 40px rgba(0,0,0,1);
   text-align:center;
-  padding:14px 10px;
-  border-bottom:1px solid rgba(0,255,200,.4);
-  background:rgba(0,0,0,.55);
-  box-shadow:0 0 20px rgba(0,255,255,.3);
+  width:fit-content;
 }
 
-header h1{
-  color:var(--neon);
+.header-btn h1{
   font-size:18px;
-  text-shadow:0 0 12px #00ffff;
+  color:#000;
+  font-weight:bold;
+  text-shadow:0 0 4px #00ffff;
 }
 
-header small{
+.header-btn span{
   display:block;
   margin-top:4px;
   font-size:12px;
-  color:#9fffe6;
+  color:#001010;
+  font-weight:bold;
 }
 
 /* ===== LAYOUT ===== */
@@ -59,7 +64,7 @@ header small{
 /* ===== SIDEBAR ===== */
 nav{
   width:72px;
-  padding:12px 6px;
+  padding:10px 6px;
   background:rgba(0,0,0,.65);
   border-right:1px solid rgba(0,255,200,.35);
   display:flex;
@@ -72,16 +77,13 @@ nav a{
   text-align:center;
   padding:12px 4px;
   border-radius:14px;
-  font-size:11px;
   color:var(--neon);
-
+  font-size:11px;
   border:1px solid rgba(0,255,200,.45);
   background:linear-gradient(145deg,#020616,#05001a);
-
   box-shadow:
-    0 0 12px rgba(0,255,255,.4),
+    0 0 12px rgba(0,255,255,.45),
     inset 0 0 10px rgba(0,255,255,.15);
-
   position:relative;
   overflow:hidden;
 }
@@ -92,8 +94,9 @@ nav a::before{
   inset:-2px;
   background:linear-gradient(120deg,
     transparent,
-    rgba(0,255,200,.8),
-    transparent);
+    rgba(0,255,200,.6),
+    transparent
+  );
   transform:translateX(-120%);
   animation:scan 3s linear infinite;
 }
@@ -106,75 +109,42 @@ nav a::before{
 section{
   flex:1;
   padding:30px;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-}
-
-/* ===== BOTÓN TIPO BUSCAR ===== */
-.btn-neon{
-  padding:12px 28px;
-  border-radius:999px;
-  border:none;
-  cursor:pointer;
-
-  font-size:15px;
-  font-weight:bold;
-  color:#000;
-
-  background:radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
-
-  box-shadow:
-    0 0 12px rgba(0,255,255,.9),
-    0 0 30px rgba(0,0,0,1);
-
-  transition:.2s ease;
-}
-
-.btn-neon:hover{
-  filter:brightness(1.15);
-  transform:scale(1.03);
 }
 
 /* ===== FOOTER ===== */
 footer{
   text-align:center;
   padding:10px;
-  font-size:12px;
-  color:#6dffe6;
+  font-size:11px;
+  color:#7dffee;
   border-top:1px solid rgba(0,255,200,.3);
-}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:768px){
-  section{ padding:20px 10px; }
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<!-- BOTÓN HEADER -->
+<div class="header-btn">
   <h1>SISTEMA OPERATIVO GELM</h1>
-  <small>Creado por Genrin Lorenzo Ch.078 — BY GELM</small>
-</header>
+  <span>Creado por Genrin Lorenzo Ch.078 — BY GELM</span>
+</div>
 
 <div class="main">
 
+  <!-- SIDEBAR -->
   <nav>
-    <a href="agend2026.html">Agenda</a>
-    <a href="hechos.html">Hechos</a>
-    <a href="consignacion.html">Consigna</a>
-    <a href="control.html">Control</a>
-    <a href="leyes.html">Leyes</a>
-    <a href="biblia.html">Biblia</a>
+    <a href="#">Agenda</a>
+    <a href="#">Hechos</a>
+    <a href="#">Consigna</a>
+    <a href="#">Control</a>
+    <a href="#">Leyes</a>
+    <a href="#">Biblia</a>
   </nav>
 
+  <!-- CONTENIDO -->
   <section>
-    <!-- BOTÓN CON ESTILO BUSCAR -->
-    <button class="btn-neon">
-      Genrin Lorenzo Ch.078
-    </button>
+    <!-- aquí irán los módulos -->
   </section>
 
 </div>

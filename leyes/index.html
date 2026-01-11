@@ -114,6 +114,21 @@ body{
 <script src="ley_transito_2025.js"></script>
 <script src="reglamento_273.js"></script>
 
+<!-- PUENTE ENTRE FORMATOS -->
+<script>
+  window.LEYES = window.LEYES || [];
+
+  if (window.LEYES_DATA) {
+    window.LEYES_DATA.forEach(item => {
+      LEYES.push({
+        ley: item.fuente || "Constitución",
+        articulo: item.articulo,
+        texto: item.texto
+      });
+    });
+  }
+</script>
+
 <!-- MOTOR DE BÚSQUEDA -->
 <script src="leyes.js"></script>
 

@@ -1,4 +1,4 @@
-const LEYES_DATA = LEYES_DATA || [];
+window.LEYES_DATA = window.LEYES_DATA || [];
 LEYES_DATA.push({ ley: "Reglamento de Tránsito (Acuerdo 273)", articulo: "artículo 183", texto: "de la Constitución Política de la República de Guatemala, ACUERDA: Emitir el siguiente: REGLAMENTO DE TRÁNSITO TITULO I Disposiciones Generales CAPITULO I Autoridad De Transito" });
 LEYES_DATA.push({ ley: "Reglamento de Tránsito (Acuerdo 273)", articulo: "Artículo 1.", texto: "- Organizacion del Departamento de Tránsito. Para la realización de sus funciones y atribuciones, el Departamento de Tránsito de la Dirección General de la Policía Nacional Civil, se integrará con las dependencias administrativas siguientes: Jefatura, Subjefatura, Secretaría General, Secciones, Divisiones, Unidades Ejecutivas y Delegaciones Departamentales de Tránsito." });
 LEYES_DATA.push({ ley: "Reglamento de Tránsito (Acuerdo 273)", articulo: "Artículo 2.", texto: "- Creación y Supresión de Dependencias. Cuando lo requieran las necesidades del servicio, mediante acuerdo del Ministerio de Gobernación, podrán crearse o suprimirse las dependencias del Departamento de Tránsito." });

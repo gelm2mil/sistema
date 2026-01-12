@@ -12,32 +12,28 @@ body{
   background: radial-gradient(circle at top,#020b12,#2b0033);
   color:#eaffff;
 }
-
 .header{
   text-align:center;
   padding:16px;
   background:rgba(0,0,0,.6);
   border-bottom:1px solid rgba(0,255,200,.3);
 }
-
 .header h1{
   margin:0;
   font-size:18px;
   color:#00ffc8;
 }
-
 .header span{
   font-size:12px;
   color:#9fffe6;
 }
-
 .buscador{
   display:flex;
   gap:10px;
   padding:12px 16px;
   justify-content:center;
+  flex-wrap:wrap;
 }
-
 .buscador input{
   flex:1;
   max-width:420px;
@@ -48,7 +44,6 @@ body{
   color:#00ffc8;
   font-size:15px;
 }
-
 .buscador button{
   padding:12px 22px;
   border-radius:999px;
@@ -59,11 +54,9 @@ body{
   font-weight:bold;
   box-shadow:0 0 12px rgba(0,255,255,.8);
 }
-
 .resultados{
   padding:16px;
 }
-
 .resultado{
   background:rgba(0,0,0,.6);
   border:1px solid rgba(0,255,200,.3);
@@ -71,17 +64,37 @@ body{
   padding:14px;
   margin-bottom:12px;
 }
-
 .resultado h3{
   margin:0 0 6px 0;
   color:#7bffb2;
   font-size:14px;
 }
-
 .resultado small{
   color:#9fffe6;
   font-size:12px;
 }
+.similares{
+  margin:10px 0 16px 0;
+  text-align:center;
+}
+.similares select{
+  background:#020b40;
+  color:#fff;
+  border-radius:999px;
+  border:1px solid #00ffc8;
+  padding:6px 12px;
+  min-width:260px;
+}
+#footer{
+  margin-top:30px;
+  text-align:center;
+  font-size:12px;
+  color:#4ee8ff;
+  text-shadow:0 0 8px #00fff2;
+  padding:12px;
+  border-top:1px solid rgba(0,255,200,.3);
+}
+#footer strong{color:#7bffb2;}
 </style>
 </head>
 
@@ -92,18 +105,19 @@ body{
   <span>Buscador legal offline — BY GELM</span>
 </div>
 
+<!-- BARRAS DE BÚSQUEDA -->
 <div class="buscador">
-  <input id="q_penal" placeholder="Código Penal">
+  <input id="q_penal" placeholder="Código Penal (ej: licencia vencida, 184-6)">
   <button onclick="buscarEn('penal')">Buscar</button>
 </div>
 
 <div class="buscador">
-  <input id="q_reg273" placeholder="Reglamento 273">
+  <input id="q_reg273" placeholder="Reglamento 273 (ej: prohibición, estacionarse)">
   <button onclick="buscarEn('reg273')">Buscar</button>
 </div>
 
 <div class="buscador">
-  <input id="q_const" placeholder="Constitución Política">
+  <input id="q_const" placeholder="Constitución (ej: derecho vida, artículo 3)">
   <button onclick="buscarEn('const')">Buscar</button>
 </div>
 
@@ -150,61 +164,118 @@ window.LEYES_DATA.forEach(item=>{
 });
 </script>
 
-<!-- MOTOR -->
 <script>
+/* ========= UTILIDADES ========= */
+function normalizar(t){
+  return (t||"")
+    .toString()
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^\w\s\-]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function resaltar(texto, palabras){
+  let out = texto;
+  palabras.forEach(p=>{
+    if(!p) return;
+    const re = new RegExp(`(${p})`,"ig");
+    out = out.replace(re,'<span style="background:yellow;color:#000;border-radius:4px;padding:1px 3px">$1</span>');
+  });
+  return out;
+}
+
+/* ========= MOTOR ========= */
+let ultimos = [];
+let ultimoPrincipal = null;
+
 function buscarEn(tipo){
   const map = {
     penal:   { q: "q_penal",    filtro: "penal" },
     reg273:  { q: "q_reg273",   filtro: "273" },
-    const:   { q: "q_const",    filtro: "constitución" },
-    transito:{ q: "q_transito", filtro: "tránsito" },
+    const:   { q: "q_const",    filtro: "constitucion" },
+    transito:{ q: "q_transito", filtro: "transito" },
     trabajo: { q: "q_trabajo",  filtro: "trabajo" },
     biblia:  { q: "q_biblia",   filtro: "biblia" }
   };
 
   const cfg = map[tipo];
-  const texto = document.getElementById(cfg.q).value.trim().toLowerCase();
+  const raw = document.getElementById(cfg.q).value || "";
   const cont = document.getElementById("resultados");
   cont.innerHTML = "";
 
-  if(!texto){
-    cont.innerHTML = "<p>Escribe una palabra o frase.</p>";
+  if(!raw.trim()){
+    cont.innerHTML = "<p>Escribe una palabra, frase o número.</p>";
     return;
   }
 
-  const data = LEYES.filter(x =>
-    (x.ley || "").toLowerCase().includes(cfg.filtro) &&
-    (x.texto || "").toLowerCase().includes(texto)
-  );
+  const buscado = normalizar(raw);
+  const palabras = buscado.split(" ").filter(Boolean);
+
+  // Filtrar por módulo + coincidencias por TODAS las palabras
+  const data = LEYES.filter(x=>{
+    const ley = normalizar(x.ley);
+    if(!ley.includes(cfg.filtro)) return false;
+
+    const cuerpo = normalizar((x.articulo||"") + " " + (x.texto||""));
+    return palabras.every(p=> cuerpo.includes(p));
+  });
 
   if(!data.length){
     cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
     return;
   }
 
-  data.forEach(r=>{
+  // Principal = el primero; resto = similares
+  ultimoPrincipal = data[0];
+  ultimos = data.slice(1);
+
+  pintarResultado(ultimoPrincipal, palabras);
+
+  if(ultimos.length){
     const div = document.createElement("div");
-    div.className = "resultado";
+    div.className = "similares";
+    let opts = `<option value="">— SIMILARES (${ultimos.length}) —</option>`;
+    ultimos.forEach((r,i)=>{
+      const label = `${r.ley} — ${r.articulo}`;
+      opts += `<option value="${i}">${label}</option>`;
+    });
     div.innerHTML = `
-      <h3>${r.ley} — ${r.articulo}</h3>
-      <small>${r.texto}</small>
+      <select onchange="mostrarSimilar(this.value)">
+        ${opts}
+      </select>
     `;
     cont.appendChild(div);
-  });
+  }
+}
+
+function pintarResultado(r, palabras){
+  const cont = document.getElementById("resultados");
+  cont.innerHTML = "";
+
+  const div = document.createElement("div");
+  div.className = "resultado";
+  const texto = resaltar(r.texto||"", palabras);
+  div.innerHTML = `
+    <h3>${r.ley} — ${r.articulo}</h3>
+    <small>${texto}</small>
+  `;
+  cont.appendChild(div);
+}
+
+function mostrarSimilar(idx){
+  const i = parseInt(idx,10);
+  if(isNaN(i) || !ultimos[i]) return;
+  const raw = document.querySelector(".buscador input:focus")?.value || "";
+  const palabras = normalizar(raw).split(" ").filter(Boolean);
+  pintarResultado(ultimos[i], palabras);
 }
 </script>
 
-<div id="footer" style="
-  margin-top:30px;
-  text-align:center;
-  font-size:12px;
-  color:#4ee8ff;
-  text-shadow:0 0 8px #00fff2;
-  padding:12px;
-">
+<div id="footer">
   <div>
-    2014 - 2025 | <strong style="color:#7bffb2">BY GELM</strong> |
-    Delegación de Transportes PMT - Chimaltenango<br>
+    2014 - 2025 | <strong>BY GELM</strong> | Delegación de Transportes PMT - Chimaltenango<br>
     att: ---[GELM]---
   </div>
   <div id="fechaHora"></div>
@@ -214,20 +285,14 @@ function buscarEn(tipo){
 function actualizarFechaHora(){
   const ahora = new Date();
   const opciones = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
+    weekday:"long", year:"numeric", month:"long", day:"numeric"
   };
   const fecha = ahora.toLocaleDateString("es-ES", opciones);
   const hora = ahora.toLocaleTimeString("es-ES");
   const el = document.getElementById("fechaHora");
-  if(el){
-    el.textContent = fecha + " — " + hora;
-  }
+  if(el) el.textContent = fecha + " — " + hora;
 }
-
-setInterval(actualizarFechaHora, 1000);
+setInterval(actualizarFechaHora,1000);
 actualizarFechaHora();
 </script>
 

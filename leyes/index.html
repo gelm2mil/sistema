@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -82,13 +82,6 @@ body{
   color:#9fffe6;
   font-size:12px;
 }
-
-.marcado{
-  background:yellow;
-  color:#000;
-  padding:2px 4px;
-  border-radius:4px;
-}
 </style>
 </head>
 
@@ -131,10 +124,12 @@ body{
 
 <div id="resultados" class="resultados"></div>
 
+<!-- PREPARAR CONTENEDOR GLOBAL -->
 <script>
-  window.LEYES_DATA = window.LEYES_DATA || [];
+window.LEYES_DATA = window.LEYES_DATA || [];
 </script>
 
+<!-- BASES LEGALES -->
 <script src="constitucion_leyes_data.js"></script>
 <script src="codigo_penal.js"></script>
 <script src="codigo_trabajo.js"></script>
@@ -143,42 +138,44 @@ body{
 <script src="reglamento_273.js"></script>
 <script src="biblia_data.js"></script>
 
+<!-- UNIFICAR -->
 <script>
-  window.LEYES = [];
-  window.LEYES_DATA.forEach(item=>{
-    LEYES.push({
-      ley: item.fuente || item.ley || "Desconocido",
-      articulo: item.articulo || "",
-      texto: item.texto || ""
-    });
+window.LEYES = [];
+window.LEYES_DATA.forEach(item=>{
+  LEYES.push({
+    ley: item.fuente || item.ley || "Desconocido",
+    articulo: item.articulo || "",
+    texto: item.texto || ""
   });
+});
 </script>
 
+<!-- MOTOR -->
 <script>
 function buscarEn(tipo){
   const map = {
-    penal:   { q: "q_penal",   filtro: "penal" },
-    reg273:  { q: "q_reg273",  filtro: "273" },
-    const:   { q: "q_const",   filtro: "constitución" },
-    transito:{ q: "q_transito",filtro: "tránsito" },
-    trabajo: { q: "q_trabajo", filtro: "trabajo" },
-    biblia:  { q: "q_biblia",  filtro: "biblia" }
+    penal:   { q: "q_penal",    filtro: "penal" },
+    reg273:  { q: "q_reg273",   filtro: "273" },
+    const:   { q: "q_const",    filtro: "constitución" },
+    transito:{ q: "q_transito", filtro: "tránsito" },
+    trabajo: { q: "q_trabajo",  filtro: "trabajo" },
+    biblia:  { q: "q_biblia",   filtro: "biblia" }
   };
 
   const cfg = map[tipo];
-  const raw = document.getElementById(cfg.q).value.trim().toLowerCase();
+  const texto = document.getElementById(cfg.q).value.trim().toLowerCase();
   const cont = document.getElementById("resultados");
   cont.innerHTML = "";
 
-  if(!raw) return;
+  if(!texto){
+    cont.innerHTML = "<p>Escribe una palabra o frase.</p>";
+    return;
+  }
 
-  const palabras = raw.split(/\s+/).filter(p=>p.length>1);
-
-  const data = LEYES.filter(x=>{
-    if(!(x.ley||"").toLowerCase().includes(cfg.filtro)) return false;
-    const base = ((x.texto||"")+" "+(x.articulo||"")).toLowerCase();
-    return palabras.every(p=>base.includes(p));
-  });
+  const data = LEYES.filter(x =>
+    (x.ley || "").toLowerCase().includes(cfg.filtro) &&
+    (x.texto || "").toLowerCase().includes(texto)
+  );
 
   if(!data.length){
     cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
@@ -186,48 +183,53 @@ function buscarEn(tipo){
   }
 
   data.forEach(r=>{
-    let texto = r.texto;
-    palabras.forEach(p=>{
-      texto = texto.replace(new RegExp(p,"gi"), m=>`<span class="marcado">${m}</span>`);
-    });
-
     const div = document.createElement("div");
     div.className = "resultado";
     div.innerHTML = `
       <h3>${r.ley} — ${r.articulo}</h3>
-      <small>${texto}</small>
+      <small>${r.texto}</small>
     `;
     cont.appendChild(div);
   });
 }
 </script>
-<footer>
-  // ========== RELOJ EN FOOTER ==========
-function actualizarFechaHora() {
-    const ahora = new Date();
-    const opciones = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    };
-    const fecha = ahora.toLocaleDateString("es-ES", opciones);
-    const hora = ahora.toLocaleTimeString("es-ES");
-    const el = document.getElementById("fechaHora");
-    if (el) {
-        el.textContent = fecha + " ? " + hora;
-    }
+
+<div id="footer" style="
+  margin-top:30px;
+  text-align:center;
+  font-size:12px;
+  color:#4ee8ff;
+  text-shadow:0 0 8px #00fff2;
+  padding:12px;
+">
+  <div>
+    2014 - 2025 | <strong style="color:#7bffb2">BY GELM</strong> |
+    Delegación de Transportes PMT - Chimaltenango<br>
+    att: ---[GELM]---
+  </div>
+  <div id="fechaHora"></div>
+</div>
+
+<script>
+function actualizarFechaHora(){
+  const ahora = new Date();
+  const opciones = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+  const fecha = ahora.toLocaleDateString("es-ES", opciones);
+  const hora = ahora.toLocaleTimeString("es-ES");
+  const el = document.getElementById("fechaHora");
+  if(el){
+    el.textContent = fecha + " — " + hora;
+  }
 }
+
 setInterval(actualizarFechaHora, 1000);
 actualizarFechaHora();
-
-// Iniciar carga de Excel al entrar
-cargarExcel();
 </script>
-© 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango
-att: ---[GELM]---
-</footer>
+
 </body>
 </html>
-
-

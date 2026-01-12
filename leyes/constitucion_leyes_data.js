@@ -1,4 +1,6 @@
 window.LEYES_DATA = window.LEYES_DATA || [];
+
+window.LEYES_DATA.push(
   { fuente: "Constitución Política de la República de Guatemala", articulo: "Artículo 1", texto: `.- Protección a la Persona. El Estado de Guatemala se organiza para proteger a la persona y a la familia; su fin supremo es la realización del bien común.` },
   { fuente: "Constitución Política de la República de Guatemala", articulo: "Artículo 2", texto: `.- Deberes del Estado. Es deber del Estado garantizarle a los habitantes de la República la vida, la libertad, la justicia, la seguridad, la paz y el desarrollo integral de la persona. TITULO II DERECHOS HUMANOS CAPÍTULO I DERECHOS INDIVIDUALES` },
   { fuente: "Constitución Política de la República de Guatemala", articulo: "Artículo 3", texto: `.- Derecho a la vida. El estado garantiza y protege la vida humana desde su concepción, así como la integridad y la seguridad de la persona.` },
@@ -325,3 +327,4 @@ window.LEYES_DATA = window.LEYES_DATA || [];
   { fuente: "Constitución Política de la República de Guatemala", articulo: "Artículo 26", texto: `.- A más tardar, dentro del plazo de dieciocho meses a partir de la fecha de la vigencia de las presentes reformas, el Organismo Ejecutivo, a fin de modernizar y hacer más eficiente la administración pública, en ejercicio de su iniciativa de ley, deberá enviar al Congreso de la República una iniciativa de ley que contenga la Ley del Organismo Ejecutivo.` },
   { fuente: "Constitución Política de la República de Guatemala", articulo: "Artículo 27", texto: `. Con el objeto de que las elecciones de los gobiernos municipales sean realizadas en una misma fecha, conjuntamente con las elecciones presidenciales y de diputados, en aquellos municipios cuyos gobiernos municipales tomaron posesión en junio de 1993 para un período de cinco años, las próximas elecciones lo serán para un período que concluirá el 15 de enero del año 2,000. Para tal efecto el Tribunal Supremo Electoral deberá tomar las medidas pertinentes. Dado en el Salón de Sesiones de la Asamblea Nacional Constituyente, en la Ciudad de Guatemala, a los treinta y un días del mes de mayo de mil novecientos ochenta y cinco.` },
 ];
+);

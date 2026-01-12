@@ -34,9 +34,10 @@ body{
 .buscador{
   display:flex;
   gap:10px;
-  padding:16px;
+  padding:12px 16px;
   justify-content:center;
   flex-wrap:wrap;
+  border-bottom:1px solid rgba(0,255,200,.15);
 }
 
 .buscador input{
@@ -101,8 +102,33 @@ body{
 </div>
 
 <div class="buscador">
-  <input id="q" placeholder="Ej: tráfico de influencias, no licencia, artículo 123">
-  <button onclick="buscar()">Buscar</button>
+  <input id="q_penal" placeholder="Código Penal">
+  <button onclick="buscarEn('penal')">Buscar</button>
+</div>
+
+<div class="buscador">
+  <input id="q_reg273" placeholder="Reglamento 273">
+  <button onclick="buscarEn('reg273')">Buscar</button>
+</div>
+
+<div class="buscador">
+  <input id="q_const" placeholder="Constitución Política">
+  <button onclick="buscarEn('const')">Buscar</button>
+</div>
+
+<div class="buscador">
+  <input id="q_transito" placeholder="Ley y Reglamento de Tránsito">
+  <button onclick="buscarEn('transito')">Buscar</button>
+</div>
+
+<div class="buscador">
+  <input id="q_trabajo" placeholder="Código de Trabajo">
+  <button onclick="buscarEn('trabajo')">Buscar</button>
+</div>
+
+<div class="buscador">
+  <input id="q_biblia" placeholder="Biblia">
+  <button onclick="buscarEn('biblia')">Buscar</button>
 </div>
 
 <div id="resultados" class="resultados"></div>
@@ -111,26 +137,67 @@ body{
 <script src="constitucion_leyes_data.js"></script>
 <script src="codigo_trabajo.js"></script>
 <script src="codigo_municipal.js"></script>
+<script src="codigo_penal.js"></script>
 <script src="ley_transito_2025.js"></script>
 <script src="reglamento_273.js"></script>
+<!-- cuando esté listo -->
+<!-- <script src="biblia_data.js"></script> -->
 
 <!-- PUENTE ENTRE FORMATOS -->
 <script>
-  window.LEYES = window.LEYES || [];
+window.LEYES = [];
 
-  if (window.LEYES_DATA) {
-    window.LEYES_DATA.forEach(item => {
-      LEYES.push({
-        ley: item.fuente || "Constitución",
-        articulo: item.articulo,
-        texto: item.texto
-      });
+if (window.LEYES_DATA) {
+  window.LEYES_DATA.forEach(item => {
+    LEYES.push({
+      ley: item.fuente || "Constitución",
+      articulo: item.articulo || "",
+      texto: item.texto || ""
     });
-  }
+  });
+}
 </script>
 
-<!-- MOTOR DE BÚSQUEDA -->
-<script src="leyes.js"></script>
+<!-- MOTOR POR MÓDULO -->
+<script>
+function buscarEn(tipo){
+  const map = {
+    penal:    { q: "q_penal",    filtro: "penal" },
+    reg273:   { q: "q_reg273",   filtro: "273" },
+    const:    { q: "q_const",    filtro: "constitución" },
+    transito: { q: "q_transito", filtro: "tránsito" },
+    trabajo:  { q: "q_trabajo",  filtro: "trabajo" },
+    biblia:   { q: "q_biblia",   filtro: "biblia" }
+  };
+
+  const cfg = map[tipo];
+  const texto = document.getElementById(cfg.q).value.trim().toLowerCase();
+  const cont = document.getElementById("resultados");
+  cont.innerHTML = "";
+
+  if(!texto) return;
+
+  const data = LEYES.filter(x =>
+    (x.ley || "").toLowerCase().includes(cfg.filtro) &&
+    (x.texto || "").toLowerCase().includes(texto)
+  );
+
+  if(!data.length){
+    cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
+    return;
+  }
+
+  data.forEach(r=>{
+    const div = document.createElement("div");
+    div.className = "resultado";
+    div.innerHTML = `
+      <h3>${r.ley} — ${r.articulo}</h3>
+      <small>${r.texto}</small>
+    `;
+    cont.appendChild(div);
+  });
+}
+</script>
 
 </body>
 </html>

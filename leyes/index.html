@@ -202,9 +202,32 @@ function buscarEn(tipo){
 }
 </script>
 <footer>
+  // ========== RELOJ EN FOOTER ==========
+function actualizarFechaHora() {
+    const ahora = new Date();
+    const opciones = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    };
+    const fecha = ahora.toLocaleDateString("es-ES", opciones);
+    const hora = ahora.toLocaleTimeString("es-ES");
+    const el = document.getElementById("fechaHora");
+    if (el) {
+        el.textContent = fecha + " ? " + hora;
+    }
+}
+setInterval(actualizarFechaHora, 1000);
+actualizarFechaHora();
+
+// Iniciar carga de Excel al entrar
+cargarExcel();
+</script>
 © 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango
 att: ---[GELM]---
 </footer>
 </body>
 </html>
+
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -82,6 +82,13 @@ body{
   color:#9fffe6;
   font-size:12px;
 }
+
+.marcado{
+  background:yellow;
+  color:#000;
+  padding:2px 4px;
+  border-radius:4px;
+}
 </style>
 </head>
 
@@ -124,12 +131,10 @@ body{
 
 <div id="resultados" class="resultados"></div>
 
-<!-- PREPARAR CONTENEDOR GLOBAL -->
 <script>
   window.LEYES_DATA = window.LEYES_DATA || [];
 </script>
 
-<!-- BASES LEGALES -->
 <script src="constitucion_leyes_data.js"></script>
 <script src="codigo_penal.js"></script>
 <script src="codigo_trabajo.js"></script>
@@ -138,7 +143,6 @@ body{
 <script src="reglamento_273.js"></script>
 <script src="biblia_data.js"></script>
 
-<!-- UNIFICAR -->
 <script>
   window.LEYES = [];
   window.LEYES_DATA.forEach(item=>{
@@ -150,29 +154,31 @@ body{
   });
 </script>
 
-<!-- MOTOR -->
 <script>
 function buscarEn(tipo){
   const map = {
-    penal:   { q: "q_penal",   filtro: "Penal" },
+    penal:   { q: "q_penal",   filtro: "penal" },
     reg273:  { q: "q_reg273",  filtro: "273" },
-    const:   { q: "q_const",   filtro: "Constitución" },
-    transito:{ q: "q_transito",filtro: "Tránsito" },
-    trabajo: { q: "q_trabajo", filtro: "Trabajo" },
-    biblia:  { q: "q_biblia",  filtro: "Biblia" }
+    const:   { q: "q_const",   filtro: "constitución" },
+    transito:{ q: "q_transito",filtro: "tránsito" },
+    trabajo: { q: "q_trabajo", filtro: "trabajo" },
+    biblia:  { q: "q_biblia",  filtro: "biblia" }
   };
 
   const cfg = map[tipo];
-  const texto = document.getElementById(cfg.q).value.trim().toLowerCase();
+  const raw = document.getElementById(cfg.q).value.trim().toLowerCase();
   const cont = document.getElementById("resultados");
   cont.innerHTML = "";
 
-  if(!texto) return;
+  if(!raw) return;
 
-  const data = LEYES.filter(x =>
-    (x.ley || "").toLowerCase().includes(cfg.filtro.toLowerCase()) &&
-    (x.texto || "").toLowerCase().includes(texto)
-  );
+  const palabras = raw.split(/\s+/).filter(p=>p.length>1);
+
+  const data = LEYES.filter(x=>{
+    if(!(x.ley||"").toLowerCase().includes(cfg.filtro)) return false;
+    const base = ((x.texto||"")+" "+(x.articulo||"")).toLowerCase();
+    return palabras.every(p=>base.includes(p));
+  });
 
   if(!data.length){
     cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
@@ -180,11 +186,16 @@ function buscarEn(tipo){
   }
 
   data.forEach(r=>{
+    let texto = r.texto;
+    palabras.forEach(p=>{
+      texto = texto.replace(new RegExp(p,"gi"), m=>`<span class="marcado">${m}</span>`);
+    });
+
     const div = document.createElement("div");
     div.className = "resultado";
     div.innerHTML = `
       <h3>${r.ley} — ${r.articulo}</h3>
-      <small>${r.texto}</small>
+      <small>${texto}</small>
     `;
     cont.appendChild(div);
   });

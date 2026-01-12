@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -34,9 +34,16 @@ body{
 }
 .header-btn h1{font-size:18px;color:#000;font-weight:bold;}
 .header-btn span{display:block;font-size:12px;color:#001010;font-weight:bold;}
+.header-btn .hora-header{
+  margin-top:6px;
+  font-size:11px;
+  color:#00ff9c;
+  text-shadow:0 0 6px #00ffcc;
+  font-weight:bold;
+}
 
 /* LAYOUT */
-.main{display:flex;min-height:calc(100vh - 120px);}
+.main{display:flex;min-height:calc(100vh - 140px);}
 
 /* SIDEBAR */
 nav{
@@ -66,10 +73,12 @@ section{flex:1;padding:30px;}
 /* FOOTER */
 footer{
   text-align:center;
-  padding:10px;
+  padding:12px;
   font-size:11px;
-  color:#7dffee;
+  color:#00ff9c;
+  text-shadow:0 0 8px #00ffcc;
   border-top:1px solid rgba(0,255,200,.3);
+  font-weight:bold;
 }
 </style>
 </head>
@@ -79,6 +88,7 @@ footer{
 <div class="header-btn">
   <h1>SISTEMA - GELM</h1>
   <span>todos los derechos de Genrin Lorenzo Ch.078 — BY GELM</span>
+  <div id="horaHeader" class="hora-header"></div>
 </div>
 
 <div class="main">
@@ -89,12 +99,8 @@ footer{
   <a href="https://gelm2mil.github.io/control/consignacion_pwa.html" target="_blank">Consigna</a>
   <a href="https://gelm2mil.github.io/gelm/" target="_blank">Transportes</a>
   <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
-
-  <!-- NUEVO BOTÓN BACKUP -->
-  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0"
-     target="_blank">Backup</a>
-
-  <a href="https://gelm2mil.github.io/sistema/leyes/" target="_blank">leyes</a>
+  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">Backup</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/" target="_blank">Leyes</a>
   <a href="#" onclick="alert('Biblia en construcción')">Biblia</a>
 </nav>
 
@@ -102,30 +108,33 @@ footer{
 
 </div>
 
-// ========== RELOJ EN FOOTER ==========
-function actualizarFechaHora() {
-    const ahora = new Date();
-    const opciones = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    };
-    const fecha = ahora.toLocaleDateString("es-ES", opciones);
-    const hora = ahora.toLocaleTimeString("es-ES");
-    const el = document.getElementById("fechaHora");
-    if (el) {
-        el.textContent = fecha + " ? " + hora;
-    }
+<footer>
+  <div id="fechaHora"></div>
+</footer>
+
+<script>
+function actualizarFechaHora(){
+  const ahora = new Date();
+  const opciones = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+  const fecha = ahora.toLocaleDateString("es-ES", opciones);
+  const hora = ahora.toLocaleTimeString("es-ES");
+  const texto = fecha + " — " + hora;
+
+  const f = document.getElementById("fechaHora");
+  const h = document.getElementById("horaHeader");
+
+  if(f) f.textContent = texto;
+  if(h) h.textContent = texto;
 }
+
 setInterval(actualizarFechaHora, 1000);
 actualizarFechaHora();
 
-// Iniciar carga de Excel al entrar
-cargarExcel();
-</script>
-
-<script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js');
 }
@@ -133,6 +142,3 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
-
-
-

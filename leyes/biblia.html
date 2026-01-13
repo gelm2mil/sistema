@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblia — GELM</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #eee;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
+    radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
+    #05010a;
+  background-attachment: fixed;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.82);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow:
+    0 0 18px rgba(0,255,255,0.5),
+    0 0 50px rgba(0,0,0,1);
+  border: 1px solid rgba(0,255,255,0.35);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.logo-box {
+  flex: 0 0 auto;
+  padding: 6px;
+  border-radius: 14px;
+  background: radial-gradient(circle at 30% 0, rgba(0,255,120,0.3), rgba(0,255,255,0.05));
+  box-shadow:
+    0 0 10px rgba(0,255,120,0.9),
+    0 0 25px rgba(0,0,0,0.9);
+  border: 1px solid rgba(0,255,180,0.9);
+}
+
+.logo-box img {
+  display: block;
+  max-width: 110px;
+  height: auto;
+}
+
+.titulos {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.titulos-linea1 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #00ffc8;
+  text-shadow: 0 0 10px #00ffff, 0 0 25px #0044ff;
+  letter-spacing: 1px;
+}
+
+.titulos-linea2 {
+  font-size: 14px;
+  margin-top: 6px;
+  color: #ffdf5e;
+  text-shadow: 0 0 6px #000;
+}
+
+.verso-dinamico {
+  margin: 12px auto 18px auto;
+  max-width: 900px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(0,255,200,0.08);
+  border: 1px solid rgba(0,255,200,0.35);
+  color: #a8ffe8;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0,255,200,0.35);
+}
+
+.buscador {
+  max-width: 700px;
+  margin: 0 auto 18px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.buscador input {
+  padding: 10px 12px;
+  font-size: 16px;
+  border-radius: 999px;
+  border: 1px solid #00ffc8;
+  min-width: 230px;
+  outline: none;
+  background: #050513;
+  color: #00ffc8;
+  box-shadow: 0 0 10px rgba(0,255,255,0.5);
+}
+
+.buscador button {
+  padding: 10px 22px;
+  font-size: 16px;
+  border-radius: 999px;
+  border: none;
+  background: radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 0 0 4px #00ffea;
+  box-shadow:
+    0 0 10px rgba(0,255,255,0.8),
+    0 0 26px rgba(0,0,0,0.9);
+}
+
+.resultados {
+  margin-top: 10px;
+}
+
+.resultado {
+  background: #b8ffe6;
+  color: #001010;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #00ffc8;
+}
+
+.resultado h3 {
+  margin: 0 0 6px 0;
+  color: #003030;
+  font-size: 14px;
+}
+
+.similares-box {
+  margin-top: 10px;
+  text-align: left;
+  font-size: 12px;
+  color: #a8ffe8;
+}
+
+.similares-box select {
+  background: #020b40;
+  color: #ffffff;
+  border-radius: 999px;
+  border: 1px solid #00ffc8;
+  padding: 5px 10px;
+  min-width: 250px;
+}
+
+.footer-info {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 12px;
+  color: #4ee8ff;
+  text-shadow: 0 0 8px #00fff2;
+}
+
+.footer-info strong {
+  color: #7bffb2;
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <div class="header-top">
+    <div class="logo-box">
+      <img src="https://gelmhistoria.webcindario.com/pmt.jpg" alt="Logo">
+    </div>
+
+    <div class="titulos">
+      <div class="titulos-linea1">BIBLIA — PALABRA DE VIDA</div>
+      <div class="titulos-linea2">“Lámpara es a mis pies tu palabra, y lumbrera a mi camino.” — Salmos 119:105</div>
+    </div>
+
+    <div class="logo-box">
+      <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="GELM">
+    </div>
+  </div>
+
+  <div id="versoDinamico" class="verso-dinamico"></div>
+
+  <div class="buscador">
+    <input id="q" placeholder="Ej: Génesis 1, Juan 3, amor, fe, Apocalipsis">
+    <button onclick="buscar()">Buscar</button>
+  </div>
+
+  <div id="resultados" class="resultados"></div>
+
+  <div class="footer-info">
+    <div>BY GELM — Uso personal | <strong>Palabra Viva</strong></div>
+    <div id="fechaHora"></div>
+  </div>
+
+</div>
+
+<script src="biblia_data.js"></script>
+
+<script>
+/* === Versos dinámicos al entrar === */
+const versosInicio = [
+  "El Señor es mi pastor; nada me faltará. — Salmos 23:1",
+  "Todo lo puedo en Cristo que me fortalece. — Filipenses 4:13",
+  "Porque yo sé los planes que tengo para vosotros. — Jeremías 29:11",
+  "En el principio creó Dios los cielos y la tierra. — Génesis 1:1",
+  "El que habita al abrigo del Altísimo morará bajo la sombra del Omnipotente. — Salmos 91:1"
+];
+
+function versoAleatorio(){
+  const v = versosInicio[Math.floor(Math.random()*versosInicio.length)];
+  document.getElementById("versoDinamico").textContent = v;
+}
+versoAleatorio();
+
+/* Reloj footer */
+function actualizarFechaHora() {
+  const ahora = new Date();
+  const opciones = { weekday:"long", year:"numeric", month:"long", day:"numeric" };
+  const fecha = ahora.toLocaleDateString("es-ES", opciones);
+  const hora = ahora.toLocaleTimeString("es-ES");
+  const el = document.getElementById("fechaHora");
+  if (el) el.textContent = fecha + " — " + hora;
+}
+setInterval(actualizarFechaHora, 1000);
+actualizarFechaHora();
+</script>
+<script>
+/* === UTILIDADES === */
+function esc(str){
+  return str.toString()
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+function resaltar(texto, q){
+  if(!q) return texto;
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")", "gi");
+  return texto.replace(re, "<mark>$1</mark>");
+}
+
+/* === PREPARAR DATA === */
+let BIBLIA = [];
+if(window.BIBLIA_DATA){
+  window.BIBLIA_DATA.forEach(x=>{
+    BIBLIA.push({
+      libro: (x.libro || x.fuente || "").trim(),
+      capitulo: (x.capitulo || "").toString().trim(),
+      versiculo: (x.versiculo || "").toString().trim(),
+      texto: (x.texto || "").trim()
+    });
+  });
+}
+
+/* === BUSCADOR === */
+function buscar(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const cont = document.getElementById("resultados");
+  cont.innerHTML = "";
+  if(!q) return;
+
+  let libro = "";
+  let cap = "";
+
+  const partes = q.split(/\s+/);
+  if(partes.length >= 2 && !isNaN(partes[1])){
+    libro = partes[0];
+    cap = partes[1];
+  }
+
+  let resultados = BIBLIA.filter(r=>{
+    if(libro && cap){
+      return r.libro.toLowerCase().includes(libro) &&
+             r.capitulo === cap;
+    }
+    return r.texto.toLowerCase().includes(q) ||
+           r.libro.toLowerCase().includes(q);
+  });
+
+  if(!resultados.length){
+    cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
+    return;
+  }
+
+  // Resultado principal
+  const p = resultados[0];
+  const div = document.createElement("div");
+  div.className = "resultado";
+  div.innerHTML = `
+    <h3>${esc(p.libro)} ${esc(p.capitulo)}:${esc(p.versiculo)}</h3>
+    <div>${resaltar(esc(p.texto), q)}</div>
+  `;
+  cont.appendChild(div);
+
+  // Similares (mismo libro/capítulo)
+  const similares = resultados.slice(1).filter(x =>
+    x.libro === p.libro && x.capitulo === p.capitulo
+  );
+
+  if(similares.length){
+    let sel = `<div class="similares-box">
+      <label>SIMILARES:</label>
+      <select onchange="mostrarSimilar(this.value)">
+        <option value="">-- seleccionar --</option>`;
+    similares.forEach((s,i)=>{
+      sel += `<option value="${i}">
+        ${esc(s.libro)} ${esc(s.capitulo)}:${esc(s.versiculo)}
+      </option>`;
+    });
+    sel += `</select></div>`;
+    cont.insertAdjacentHTML("beforeend", sel);
+    window._similares = similares;
+  }
+}
+
+function mostrarSimilar(i){
+  if(!_similares || !_similares[i]) return;
+  const s = _similares[i];
+  const cont = document.getElementById("resultados");
+  cont.innerHTML = `
+    <div class="resultado">
+      <h3>${esc(s.libro)} ${esc(s.capitulo)}:${esc(s.versiculo)}</h3>
+      <div>${esc(s.texto)}</div>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>

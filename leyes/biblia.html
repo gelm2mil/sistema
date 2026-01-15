@@ -39,6 +39,7 @@ body {
 }
 
 .logo-box {
+  flex: 0 0 auto;
   padding: 6px;
   border-radius: 14px;
   background: radial-gradient(circle at 30% 0, rgba(0,255,120,0.3), rgba(0,255,255,0.05));
@@ -51,9 +52,11 @@ body {
 .logo-box img {
   display: block;
   max-width: 110px;
+  height: auto;
 }
 
 .titulos {
+  flex: 1 1 auto;
   text-align: center;
 }
 
@@ -62,12 +65,14 @@ body {
   font-weight: bold;
   color: #00ffc8;
   text-shadow: 0 0 10px #00ffff, 0 0 25px #0044ff;
+  letter-spacing: 1px;
 }
 
 .titulos-linea2 {
   font-size: 14px;
   margin-top: 6px;
   color: #ffdf5e;
+  text-shadow: 0 0 6px #000;
 }
 
 .verso-dinamico {
@@ -87,28 +92,40 @@ body {
   max-width: 700px;
   margin: 0 auto 18px auto;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
 }
 
 .buscador input {
-  flex: 1;
   padding: 10px 12px;
   font-size: 16px;
   border-radius: 999px;
   border: 1px solid #00ffc8;
+  min-width: 230px;
+  outline: none;
   background: #050513;
   color: #00ffc8;
+  box-shadow: 0 0 10px rgba(0,255,255,0.5);
 }
 
 .buscador button {
   padding: 10px 22px;
+  font-size: 16px;
   border-radius: 999px;
   border: none;
   background: radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
   color: #000;
   font-weight: bold;
   cursor: pointer;
+  text-shadow: 0 0 4px #00ffea;
+  box-shadow:
+    0 0 10px rgba(0,255,255,0.8),
+    0 0 26px rgba(0,0,0,0.9);
+}
+
+.resultados {
+  margin-top: 10px;
 }
 
 .resultado {
@@ -120,57 +137,47 @@ body {
   border: 1px solid #00ffc8;
 }
 
-.similares-box {
-  margin-top: 10px;
-  font-size: 12px;
-  color: #a8ffe8;
-}
-
-.similares-box select {
-  background: #020b40;
-  color: #ffffff;
-  border-radius: 999px;
-  border: 1px solid #00ffc8;
-  padding: 5px 10px;
-  min-width: 250px;
-}
-
 .footer-info {
   margin-top: 18px;
   text-align: center;
   font-size: 12px;
   color: #4ee8ff;
+  text-shadow: 0 0 8px #00fff2;
 }
-.footer-info strong { color: #7bffb2; }
+
+.footer-info strong {
+  color: #7bffb2;
+}
 </style>
 </head>
 
 <body>
+
 <div class="contenedor">
 
   <div class="header-top">
     <div class="logo-box">
-      <img src="https://gelmhistoria.webcindario.com/pmt.jpg">
+      <img src="https://gelmhistoria.webcindario.com/pmt.jpg" alt="Logo">
     </div>
 
     <div class="titulos">
       <div class="titulos-linea1">BIBLIA — PALABRA DE VIDA</div>
-      <div class="titulos-linea2">“Lámpara es a mis pies tu palabra.” — Salmos 119:105</div>
+      <div class="titulos-linea2">“Lámpara es a mis pies tu palabra, y lumbrera a mi camino.” — Salmos 119:105</div>
     </div>
 
     <div class="logo-box">
-      <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
+      <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="GELM">
     </div>
   </div>
 
   <div id="versoDinamico" class="verso-dinamico"></div>
 
   <div class="buscador">
-    <input id="q" placeholder="Ej: Génesis, Génesis 3, Juan 3:16, amor">
+    <input id="q" placeholder="Ej: génesis, levítico, juan, amor, luz">
     <button onclick="buscar()">Buscar</button>
   </div>
 
-  <div id="resultados"></div>
+  <div id="resultados" class="resultados"></div>
 
   <div class="footer-info">
     <div>BY GELM — Uso personal | <strong>Palabra Viva</strong></div>
@@ -185,24 +192,27 @@ body {
 const versosInicio = [
   "El Señor es mi pastor; nada me faltará. — Salmos 23:1",
   "Todo lo puedo en Cristo que me fortalece. — Filipenses 4:13",
+  "Porque yo sé los planes que tengo para vosotros. — Jeremías 29:11",
   "En el principio creó Dios los cielos y la tierra. — Génesis 1:1",
-  "Lámpara es a mis pies tu palabra. — Salmos 119:105"
+  "El que habita al abrigo del Altísimo morará bajo la sombra del Omnipotente. — Salmos 91:1"
 ];
-document.getElementById("versoDinamico").textContent =
-  versosInicio[Math.floor(Math.random()*versosInicio.length)];
 
-function actualizarFechaHora(){
-  const a = new Date();
-  document.getElementById("fechaHora").textContent =
-    a.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
-    " — "+a.toLocaleTimeString("es-ES");
+function versoAleatorio(){
+  const v = versosInicio[Math.floor(Math.random()*versosInicio.length)];
+  document.getElementById("versoDinamico").textContent = v;
 }
-setInterval(actualizarFechaHora,1000); actualizarFechaHora();
+versoAleatorio();
 
-/* === Motor preparado para el nuevo biblia_data.js estructurado === */
-let DATA = window.BIBLIA || [];
-
-function esc(s){return s.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+function actualizarFechaHora() {
+  const ahora = new Date();
+  const opciones = { weekday:"long", year:"numeric", month:"long", day:"numeric" };
+  const fecha = ahora.toLocaleDateString("es-ES", opciones);
+  const hora = ahora.toLocaleTimeString("es-ES");
+  const el = document.getElementById("fechaHora");
+  if (el) el.textContent = fecha + " — " + hora;
+}
+setInterval(actualizarFechaHora, 1000);
+actualizarFechaHora();
 
 function buscar(){
   const q = document.getElementById("q").value.trim().toLowerCase();
@@ -210,48 +220,33 @@ function buscar(){
   cont.innerHTML = "";
   if(!q) return;
 
-  let libro="", cap="", ver="";
-  const m = q.match(/^(.+?)\s+(\d+)(?::(\d+))?$/);
-  if(m){ libro=m[1]; cap=m[2]; ver=m[3]||""; }
-
-  let res = DATA.filter(r=>{
-    if(libro){
-      if(!r.libro.toLowerCase().includes(libro.toLowerCase())) return false;
-      if(cap && r.capitulo!=cap) return false;
-      if(ver && r.versiculo!=ver) return false;
-      return true;
-    }
-    return r.texto.toLowerCase().includes(q);
-  });
-
-  if(!res.length){ cont.innerHTML="<p>No se encontraron coincidencias.</p>"; return; }
-
-  const p = res[0];
-  cont.innerHTML = `
-    <div class="resultado">
-      <h3>${esc(p.libro)} ${p.capitulo}:${p.versiculo}</h3>
-      <div>${esc(p.texto)}</div>
-    </div>
-  `;
-
-  const sim = res.slice(1).filter(x=>x.libro==p.libro && x.capitulo==p.capitulo);
-  if(sim.length){
-    let s = `<div class="similares-box"><select onchange="mostrar(this.value)">
-      <option value="">-- similares --</option>`;
-    sim.forEach((x,i)=>s+=`<option value="${i}">${x.libro} ${x.capitulo}:${x.versiculo}</option>`);
-    s+=`</select></div>`;
-    cont.insertAdjacentHTML("beforeend",s);
-    window._sim=sim;
+  if(!window.BIBLIA_DATA || !BIBLIA_DATA.length){
+    cont.innerHTML = "<p>No hay datos cargados.</p>";
+    return;
   }
-}
-function mostrar(i){
-  const x=_sim[i]; if(!x) return;
-  document.getElementById("resultados").innerHTML=`
-    <div class="resultado">
-      <h3>${esc(x.libro)} ${x.capitulo}:${x.versiculo}</h3>
-      <div>${esc(x.texto)}</div>
-    </div>`;
+
+  const textoOriginal = BIBLIA_DATA[0].texto;
+  const texto = textoOriginal.toLowerCase();
+  const pos = texto.indexOf(q);
+
+  if(pos === -1){
+    cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
+    return;
+  }
+
+  const inicio = Math.max(0, pos - 300);
+  const fin = Math.min(textoOriginal.length, pos + 300);
+  let fragmento = textoOriginal.substring(inicio, fin);
+
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")", "gi");
+  fragmento = fragmento.replace(re, "<mark>$1</mark>");
+
+  const div = document.createElement("div");
+  div.className = "resultado";
+  div.innerHTML = `<div>${fragmento}</div>`;
+  cont.appendChild(div);
 }
 </script>
+
 </body>
 </html>

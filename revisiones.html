@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVISIONES 2026 - GELM</title>
+
+<link rel="icon" href="../icons/icon-192.png">
+
+<style>
+body{
+    margin:0;
+    padding:20px;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#eee;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+        radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+        #05010a;
+    background-attachment:fixed;
+}
+.contenedor{
+    max-width:1200px;
+    margin:auto;
+    background:rgba(0,0,0,.82);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 18px rgba(0,255,255,.5),0 0 50px #000;
+    border:1px solid rgba(0,255,255,.35);
+}
+.header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:15px;
+}
+.logo-box{
+    padding:6px;
+    border-radius:14px;
+    background:radial-gradient(circle at 30% 0, rgba(0,255,120,.3), rgba(0,255,255,.05));
+    box-shadow:0 0 10px rgba(0,255,120,.9),0 0 25px rgba(0,0,0,.9);
+    border:1px solid rgba(0,255,180,.9);
+}
+.logo-box img{max-width:90px}
+.titulos{text-align:center;flex:1}
+.t1{font-size:20px;font-weight:bold;color:#00ffc8;text-shadow:0 0 10px #00ffff}
+.t2{font-size:14px;color:#ffdf5e}
+#estado{text-align:center;margin:10px 0;color:#aaa}
+
+.buscador{
+    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px
+}
+.buscador select,
+.buscador input{
+    padding:10px 12px;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513;
+    color:#00ffc8;
+    font-size:15px;
+}
+.buscador button{
+    padding:10px 22px;
+    border-radius:999px;
+    border:none;
+    background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+    font-weight:bold;
+    cursor:pointer;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    background:#141414;
+}
+th,td{
+    border:1px solid #333;
+    padding:6px 8px;
+    font-size:13px;
+}
+th{background:#00ffc8;color:#000}
+tr:nth-child(even) td{background:#101010}
+.footer{
+    margin-top:15px;
+    text-align:center;
+    font-size:12px;
+    color:#4ee8ff;
+}
+</style>
+</head>
+
+<body>
+<div class="contenedor">
+
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="../icons/icon-192.png">
+        </div>
+        <div class="titulos">
+            <div class="t1">POLICÍA MUNICIPAL DE TRÁNSITO</div>
+            <div class="t2">Módulo Vivo - Revisiones 2026 (BY GELM)</div>
+        </div>
+        <div class="logo-box">
+            <img src="../icons/icon-512.png">
+        </div>
+    </div>
+
+    <div id="estado">Cargando hoja RENOVACIÓN...</div>
+
+    <div class="buscador">
+        <select id="hojaSelect"></select>
+        <input id="placaInput" placeholder="Escribe la PLACA...">
+        <button onclick="buscar()">Buscar</button>
+    </div>
+
+    <div id="resultado"></div>
+
+    <div class="footer">
+        Base viva conectada a jefatura | GELM
+    </div>
+</div>
+
+<script>
+const hojas = {
+    "C.PERMANENTE": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=877468283&single=true&output=csv",
+    "RENOVACIÓN": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=164141285&single=true&output=csv",
+    "TRASPASO": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=1819752615&single=true&output=csv",
+    "D.D.PASO": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=1994455640&single=true&output=csv",
+    "L.NUEVA": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=180066267&single=true&output=csv",
+    "C.TEMPORAL": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=1464244878&single=true&output=csv"
+};
+
+let datos = [];
+let encabezados = [];
+
+const select = document.getElementById("hojaSelect");
+Object.keys(hojas).forEach(h=>{
+    const o=document.createElement("option");
+    o.value=h;o.textContent=h;
+    select.appendChild(o);
+});
+select.value="RENOVACIÓN";
+
+async function cargarHoja(nombre){
+    document.getElementById("estado").textContent="Cargando hoja "+nombre+"...";
+    const r = await fetch(hojas[nombre]);
+    const t = await r.text();
+    const filas = t.trim().split("\n").map(x=>x.split(","));
+    encabezados = filas.shift();
+    datos = filas.map(f=>{
+        let o={};
+        encabezados.forEach((h,i)=>o[h.trim().toUpperCase()] = (f[i]||"").trim());
+        return o;
+    });
+    document.getElementById("estado").textContent =
+        "Hoja "+nombre+" cargada. Registros: "+datos.length;
+}
+
+select.addEventListener("change", e=>cargarHoja(e.target.value));
+
+function buscar(){
+    const q = document.getElementById("placaInput").value.trim().toUpperCase();
+    const res = document.getElementById("resultado");
+    if(!q){ res.innerHTML=""; return; }
+
+    const hallados = datos.filter(r => (r["PLACA"]||"").toUpperCase().includes(q));
+
+    if(hallados.length===0){
+        res.innerHTML = "<p>No existe en esta hoja.</p>";
+        return;
+    }
+
+    let html="<table><tr>";
+    encabezados.forEach(h=>html+="<th>"+h+"</th>");
+    html+="</tr>";
+
+    hallados.forEach(r=>{
+        html+="<tr>";
+        encabezados.forEach(h=>{
+            html+="<td>"+(r[h.trim().toUpperCase()]||"")+"</td>";
+        });
+        html+="</tr>";
+    });
+    html+="</table>";
+    res.innerHTML = html;
+}
+
+cargarHoja("RENOVACIÓN");
+</script>
+</body>
+</html>

@@ -123,9 +123,13 @@
             color: #000;
         }
 
+        /* ===== SIMILARES (AJUSTADO PARA MÓVIL) ===== */
         .similares-box {
             margin-top: 10px;
             color: #a8ffe8;
+            max-width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
         .similares-box select {
@@ -133,8 +137,10 @@
             color: #fff;
             border-radius: 999px;
             border: 1px solid #00ffc8;
-            padding: 5px 10px;
-            min-width: 250px;
+            padding: 6px 12px;
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .footer-info {

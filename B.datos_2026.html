@@ -1,0 +1,285 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLICIA MUNICIPAL DE TRANSITO - DATOS 2026 - BY GELM</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #eee;
+            background: radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
+                        radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
+                        #05010a;
+            background-attachment: fixed;
+            animation: fondoGlow 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes fondoGlow {
+            0%   { box-shadow: inset 0 0 20px #ff00ff; }
+            50%  { box-shadow: inset 0 0 80px #00ffff; }
+            100% { box-shadow: inset 0 0 120px #ff00ff; }
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.82);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow:
+                0 0 18px rgba(0,255,255,0.5),
+                0 0 50px rgba(0,0,0,1);
+            border: 1px solid rgba(0,255,255,0.35);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-box {
+            padding: 6px;
+            border-radius: 14px;
+            background: radial-gradient(circle at 30% 0, rgba(0,255,120,0.3), rgba(0,255,255,0.05));
+            box-shadow:
+                0 0 10px rgba(0,255,120,0.9),
+                0 0 25px rgba(0,0,0,0.9);
+            border: 1px solid rgba(0,255,180,0.9);
+        }
+
+        .logo-box img {
+            max-width: 110px;
+        }
+
+        .titulos {
+            text-align: center;
+        }
+
+        .titulos-linea1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ffc8;
+            text-shadow: 0 0 10px #00ffff, 0 0 25px #0044ff;
+        }
+
+        .titulos-linea2 { color: #ffdf5e; }
+        .titulos-linea3 { color: #a5ffe5; }
+        .titulos-linea4 { color: #ccc; }
+
+        #estado {
+            text-align: center;
+            margin: 12px 0;
+            color: #aaa;
+        }
+
+        .buscador {
+            max-width: 700px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .buscador input {
+            padding: 10px;
+            border-radius: 999px;
+            border: 1px solid #00ffc8;
+            background: #050513;
+            color: #00ffc8;
+            min-width: 260px;
+        }
+
+        .buscador button {
+            padding: 10px 22px;
+            border-radius: 999px;
+            border: none;
+            background: radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+            background: #141414;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 6px 8px;
+            font-size: 13px;
+        }
+
+        th {
+            background: #00ffc8;
+            color: #000;
+        }
+
+        .similares-box {
+            margin-top: 10px;
+            color: #a8ffe8;
+        }
+
+        .similares-box select {
+            background: #020b40;
+            color: #fff;
+            border-radius: 999px;
+            border: 1px solid #00ffc8;
+            padding: 5px 10px;
+            min-width: 250px;
+        }
+
+        .footer-info {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 12px;
+            color: #4ee8ff;
+        }
+    </style>
+</head>
+
+<body>
+<div class="contenedor">
+
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/pmt.jpg">
+        </div>
+
+        <div class="titulos">
+            <div class="titulos-linea1">POLICÍA MUNICIPAL DE TRÁNSITO - CHIMALTENANGO</div>
+            <div class="titulos-linea2">DELEGACIÓN DE TRANSPORTES</div>
+            <div class="titulos-linea3">Base Viva 2026 - BY GELM</div>
+            <div class="titulos-linea4">Buscador maestro desde Google Sheets</div>
+        </div>
+
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
+        </div>
+    </div>
+
+    <div id="estado">Conectando con la base viva...</div>
+
+    <div class="buscador">
+        <input id="busquedaInput" placeholder="Placa, DPI, licencia, documento, cualquier dato...">
+        <button onclick="buscar()">Buscar</button>
+    </div>
+
+    <div id="resultado">
+        <div id="resultado-principal"></div>
+        <div id="similares-contenedor"></div>
+    </div>
+
+    <div class="footer-info">
+        <div>2014 - 2026 | BY GELM | PMT - Chimaltenango</div>
+        <div id="fechaHora"></div>
+    </div>
+</div>
+
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+
+let encabezados = [];
+let registros = [];
+let similares = [];
+
+async function cargarExcel() {
+    try {
+        const resp = await fetch(CSV_URL);
+        const texto = await resp.text();
+        const filas = texto.split(/\r?\n/).map(l => l.split(","));
+
+        encabezados = filas[0];
+        registros = filas.slice(1).filter(f => f.join("").trim() !== "");
+
+        document.getElementById("estado").textContent =
+            "Base viva conectada. Registros: " + registros.length;
+    } catch (e) {
+        document.getElementById("estado").textContent = "Error: " + e.message;
+    }
+}
+
+function normalizar(t){
+    return t.toString().replace(/\s+/g,"").replace(/-/g,"").toUpperCase();
+}
+
+function esc(t){
+    return t.toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function construirTabla(f){
+    let th = encabezados.map(h=>`<th>${esc(h)}</th>`).join("");
+    let td = f.map(c=>`<td>${esc(c)}</td>`).join("");
+    return `<table><tr>${th}</tr><tr>${td}</tr></table>`;
+}
+
+function buscar(){
+    const q = document.getElementById("busquedaInput").value.trim();
+    const limpio = normalizar(q);
+
+    const p = document.getElementById("resultado-principal");
+    const s = document.getElementById("similares-contenedor");
+    s.innerHTML = "";
+    similares = [];
+
+    if(!q){
+        p.innerHTML = "<p>Escribe algo para buscar.</p>";
+        return;
+    }
+
+    const matches = [];
+    registros.forEach(f=>{
+        let score = 0;
+        f.forEach(c=>{
+            if(normalizar(c).includes(limpio)) score++;
+        });
+        if(score>0) matches.push({f,score});
+    });
+
+    if(matches.length===0){
+        p.innerHTML = `<p>No se encontró <b>${esc(q)}</b></p>`;
+        return;
+    }
+
+    matches.sort((a,b)=>b.score-a.score);
+    p.innerHTML = construirTabla(matches[0].f);
+
+    if(matches.length>1){
+        similares = matches.slice(1).map(m=>m.f);
+        let opt = '<option value="">-- seleccionar --</option>';
+        similares.forEach((f,i)=>{
+            opt += `<option value="${i}">${esc(f.join(" | "))}</option>`;
+        });
+        s.innerHTML = `<div class="similares-box">
+            <label>SIMILARES:</label>
+            <select onchange="mostrarSimilar(this.value)">${opt}</select>
+        </div>`;
+    }
+}
+
+function mostrarSimilar(i){
+    i = parseInt(i);
+    if(isNaN(i)) return;
+    document.getElementById("resultado-principal").innerHTML = construirTabla(similares[i]);
+}
+
+function actualizarFechaHora(){
+    const a = new Date();
+    document.getElementById("fechaHora").textContent =
+        a.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"})
+        +" - "+a.toLocaleTimeString("es-ES");
+}
+setInterval(actualizarFechaHora,1000);
+actualizarFechaHora();
+cargarExcel();
+</script>
+</body>
+</html>

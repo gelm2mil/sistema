@@ -3,53 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biblia Interactiva — GELM</title>
+<title>Biblia — GELM</title>
 <style>
-    /* Mantenemos tu estilo original con ligeras mejoras de legibilidad */
     body{
-        margin:0; padding:20px; font-family:'Segoe UI', Arial, sans-serif;
+        margin:0; padding:20px; font-family:Arial, sans-serif;
         color:#eee; background: radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%), radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%), #05010a;
         background-attachment:fixed;
     }
     .contenedor{
-        max-width:900px; margin:0 auto; background:rgba(0,0,0,.85);
-        border-radius:18px; padding:25px; box-shadow:0 0 20px rgba(0,255,255,0.3);
-        border:1px solid rgba(0,255,255,.2);
+        max-width:1100px; margin:0 auto; background:rgba(0,0,0,.85);
+        border-radius:18px; padding:25px; box-shadow:0 0 20px rgba(0,255,255,0.4);
+        border:1px solid rgba(0,255,255,.25);
     }
-    .header-top{ display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom: 20px;}
-    .logo-box img{ max-width:90px; border-radius: 10px; border: 1px solid #00ffc8; }
-    .titulo h1{ margin:0; color:#00ffc8; text-shadow:0 0 10px #00ffff; font-size: 24px; text-align: center; }
-    .titulo h2{ margin:5px 0; color:#ffdf5e; font-size:14px; text-align: center; font-style: italic; }
+    .header-top{ display:flex; align-items:center; justify-content:space-between; gap:15px; }
+    .logo-box img{ max-width:100px; border-radius:12px; border:1px solid #00ffc8; }
+    .titulo{ flex:1; text-align:center; }
+    .titulo h1{ margin:0; color:#00ffc8; text-shadow:0 0 10px #00ffff; font-size: 28px; }
+    .titulo h2{ margin:6px 0; color:#ffdf5e; font-size:14px; }
 
-    .buscador-caja {
-        background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 20px;
+    .verso-random-box {
+        margin: 20px 0; padding: 15px; border-radius: 15px;
+        background: rgba(0, 255, 200, 0.1); border: 1px dashed #00ffc8;
+        text-align: center; color: #a8ffe8; font-style: italic;
     }
-    .buscador{ display:flex; gap:10px; justify-content:center; }
+
+    .buscador{ display:flex; gap:10px; justify-content:center; margin-bottom:20px; }
     .buscador input{
         padding:12px 20px; border-radius:999px; border:1px solid #00ffc8;
-        background:#050513; color:#fff; flex: 1; outline: none;
+        background:#050513; color:#00ffc8; flex: 1; font-size: 16px;
     }
     .buscador button{
         padding:10px 25px; border-radius:999px; border:none;
-        background:linear-gradient(135deg, #00ffff, #5f00ff);
-        color: white; font-weight:bold; cursor:pointer; transition: 0.3s;
+        background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+        color:#fff; font-weight:bold; cursor:pointer;
     }
-    .buscador button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00ffff; }
 
     #resultado-principal{
-        margin-top:20px; background:#f0fff9; color:#1a1a1a;
-        padding:20px; border-radius:14px; line-height: 1.6;
-        border-left: 5px solid #00ffc8; min-height: 50px;
+        margin-top:10px; background:#e8fff6; color:#111;
+        padding:20px; border-radius:14px; font-size: 18px; line-height: 1.6;
+        border-left: 6px solid #5f00ff;
     }
-    .cita-header { color: #5f00ff; font-weight: bold; display: block; margin-bottom: 10px; font-size: 1.2em; }
-    
-    .similares-box{ margin-top:15px; padding: 10px; border-top: 1px solid #333; }
+    .similares-box{ margin-top:15px; color:#a8ffe8; font-size:14px; }
     .similares-box select{
-        background:#020b40; color:#fff; border-radius:8px;
-        border:1px solid #00ffc8; padding:8px; width: 100%; margin-top: 10px;
+        background:#020b40; color:#fff; border-radius:999px;
+        border:1px solid #00ffc8; padding:8px 15px; width: 100%; margin-top:8px;
     }
-    .footer{ margin-top:25px; text-align:center; font-size:12px; color:#4ee8ff; opacity: 0.7; }
-    .loading { color: #ffdf5e; text-align: center; font-size: 12px; margin-bottom: 10px; }
+    .footer{ margin-top:20px; text-align:center; font-size:12px; color:#4ee8ff; }
 </style>
 </head>
 <body>
@@ -64,16 +63,14 @@
         <div class="logo-box"><img src="https://gelmhistoria.webcindario.com/PMT/gelm.png"></div>
     </div>
 
-    <div id="status" class="loading">Optimizando base de datos...</div>
+    <div id="versoRandom" class="verso-random-box">Cargando palabra del día...</div>
 
-    <div class="buscador-caja">
-        <div class="buscador">
-            <input id="q" placeholder="Escribe un libro o palabra (ej: Juan, amor, fe)">
-            <button onclick="buscar()">BUSCAR</button>
-        </div>
+    <div class="buscador">
+        <input id="q" placeholder="Escribe para buscar (ej: Jesús, fe, amor...)">
+        <button onclick="buscar()">BUSCAR</button>
     </div>
 
-    <div id="resultado-principal">Los resultados aparecerán aquí...</div>
+    <div id="resultado-principal">Escribe algo arriba para comenzar la lectura.</div>
     <div id="similares-contenedor"></div>
 
     <div class="footer">
@@ -83,98 +80,77 @@
 </div>
 
 <script src="biblia_data.js"></script>
-
 <script>
-// --- MOTOR DE PROCESAMIENTO ---
-let BIBLIA_OPTIMIZADA = [];
-let resultadosBusqueda = [];
+let BIBLIA_LIMPIA = [];
 
-function inicializarDatos() {
-    if(!window.BIBLIA_DATA) return;
-    
-    document.getElementById("status").textContent = "Procesando texto...";
-    
-    // Tomamos el texto bruto
-    let rawText = window.BIBLIA_DATA[0].texto;
-
-    // 1. Limpieza de caracteres y basura de PDF
-    rawText = rawText.replace(/ĳ/g, "ij")
-                     .replace(/\d+\s+[A-ZÁÉÍÓÚa-z]+\s+\d+\.\s+\d+–\d+\.?\s+\d+/g, "") // Encabezados
-                     .replace(/\.\s+\.\s+\.\s+\d+/g, ""); // Índice
-
-    // 2. Segmentación simple por oraciones (Versículos aproximados)
-    // Ya que el JS original no tiene etiquetas, dividimos por puntos seguidos de espacio.
-    let fragmentos = rawText.split(/\.\s+/);
-    
-    BIBLIA_OPTIMIZADA = fragmentos.map((texto, index) => {
-        return {
-            id: index,
-            contenido: texto.trim() + ".",
-            // Intentamos detectar si el fragmento contiene un número al inicio (posible versículo)
-            resumen: texto.substring(0, 40) + "..."
-        };
-    });
-
-    document.getElementById("status").textContent = "✓ Biblia lista para búsqueda rápida";
-    setTimeout(() => document.getElementById("status").style.display = 'none', 3000);
-}
-
+// Función para normalizar texto (quitar acentos)
 function norm(t){
     return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 }
 
-function buscar(){
+function inicializar() {
+    if(!window.BIBLIA_DATA) return;
+    
+    // 1. Limpiamos el texto masivo de ruidos de página y caracteres raros
+    let texto = window.BIBLIA_DATA[0].texto
+        .replace(/ĳ/g, "ij")
+        .replace(/\d+\s+[A-ZÁÉÍÓÚa-z]+\s+\d+\.\s+\d+–\d+\.?\s+\d+/g, "") // Limpia "87 Éxodo 5. 8–6. 2"
+        .replace(/\.\s+\.\s+\.\s+\d+/g, ""); // Limpia índices
+
+    // 2. Dividimos por puntos para crear "versículos" usables
+    BIBLIA_LIMPIA = texto.split(/\.\s+/).filter(frase => frase.length > 20);
+
+    generarVersoAleatorio();
+}
+
+function generarVersoAleatorio() {
+    if(BIBLIA_LIMPIA.length === 0) return;
+    const aleatorio = BIBLIA_LIMPIA[Math.floor(Math.random() * BIBLIA_LIMPIA.length)];
+    document.getElementById("versoRandom").innerHTML = `<strong>Promesa del momento:</strong><br>"${aleatorio.trim()}."`;
+}
+
+let resultados = [];
+
+function buscar() {
     const q = document.getElementById("q").value.trim();
     const out = document.getElementById("resultado-principal");
     const sim = document.getElementById("similares-contenedor");
-    sim.innerHTML="";
+    sim.innerHTML = "";
 
-    if(!q || q.length < 3){
-        out.innerHTML = "Escribe al menos 3 letras para buscar.";
+    if(q.length < 3) {
+        out.textContent = "Por favor, escribe al menos 3 letras.";
         return;
     }
 
     const nQ = norm(q);
-    
-    // Filtrar en la biblia optimizada
-    resultadosBusqueda = BIBLIA_OPTIMIZADA.filter(item => norm(item.contenido).includes(nQ));
+    // Buscamos en los fragmentos limpios
+    resultados = BIBLIA_LIMPIA.filter(f => norm(f).includes(nQ));
 
-    if(resultadosBusqueda.length === 0){
-        out.innerHTML = "No se encontraron coincidencias.";
+    if(resultados.length === 0) {
+        out.textContent = "No se encontraron coincidencias en la Biblia.";
         return;
     }
 
-    // Mostrar el primer resultado
-    mostrarResultado(0);
+    mostrar(0);
 
-    // Si hay más de uno, crear el selector
-    if(resultadosBusqueda.length > 1){
-        let html = `<div class="similares-box">
-            <label>SE HAN ENCONTRADO ${resultadosBusqueda.length} COINCIDENCIAS:</label>
-            <select onchange="mostrarResultado(this.value)">`;
-        resultadosBusqueda.forEach((res, i) => {
-            html += `<option value="${i}">Resultado ${i+1}: ${res.resumen}</option>`;
+    if(resultados.length > 1) {
+        let html = `<div class="similares-box"><label>SE ENCONTRARON ${resultados.length} RESULTADOS:</label>`;
+        html += `<select onchange="mostrar(this.value)">`;
+        resultados.forEach((r, i) => {
+            // Cortamos un pedacito para que el selector no sea gigante
+            let resumen = r.substring(0, 60) + "...";
+            html += `<option value="${i}">Resultado ${i+1}: ${resumen}</option>`;
         });
         html += `</select></div>`;
         sim.innerHTML = html;
     }
 }
 
-function mostrarResultado(index) {
-    const item = resultadosBusqueda[index];
-    const out = document.getElementById("resultado-principal");
-    
-    // Resaltar la palabra buscada (opcional)
-    const q = document.getElementById("q").value;
-    let textoFinal = item.contenido;
-    
-    out.innerHTML = `
-        <span class="cita-header">Fragmento Hallado:</span>
-        <div class="texto-biblico">${textoFinal}</div>
-    `;
+function mostrar(i) {
+    const texto = resultados[i];
+    document.getElementById("resultado-principal").innerHTML = `"${texto.trim()}."`;
 }
 
-// Reloj y fecha
 function reloj(){
     const d = new Date();
     document.getElementById("fechaHora").textContent = 
@@ -184,7 +160,7 @@ function reloj(){
 
 setInterval(reloj,1000);
 reloj();
-window.onload = inicializarDatos;
+window.onload = inicializar;
 </script>
 </body>
 </html>

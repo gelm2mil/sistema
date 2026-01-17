@@ -3,164 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biblia — GELM</title>
-
+<title>Biblia Interactiva — GELM</title>
 <style>
-body{
-    margin:0;
-    padding:20px;
-    font-family:Arial,sans-serif;
-    color:#eee;
-    background:
-        radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
-        radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
-        #05010a;
-    background-attachment:fixed;
-}
-.contenedor{
-    max-width:1200px;
-    margin:0 auto;
-    background:rgba(0,0,0,.82);
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 0 18px rgba(0,255,255,.5),0 0 50px rgba(0,0,0,1);
-    border:1px solid rgba(0,255,255,.35);
-}
-.header-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-}
-.logo-box{
-    padding:6px;
-    border-radius:14px;
-    box-shadow:0 0 10px rgba(0,255,120,.9);
-    border:1px solid rgba(0,255,180,.9);
-}
-.logo-box img{max-width:110px}
-.titulo{
-    flex:1;
-    text-align:center;
-}
-.titulo h1{
-    margin:0;
-    color:#00ffc8;
-    text-shadow:0 0 10px #00ffff;
-}
-.titulo h2{
-    margin:6px 0 0 0;
-    color:#ffdf5e;
-    font-size:14px;
-}
-.verso-random{
-    margin:15px 0;
-    padding:10px 14px;
-    border-radius:999px;
-    border:1px solid rgba(0,255,255,.4);
-    text-align:center;
-    color:#a8ffe8;
-}
-.buscador{
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    margin-bottom:10px;
-}
-.buscador input{
-    padding:10px 14px;
-    border-radius:999px;
-    border:1px solid #00ffc8;
-    background:#050513;
-    color:#00ffc8;
-    min-width:260px;
-}
-.buscador button{
-    padding:10px 22px;
-    border-radius:999px;
-    border:none;
-    background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
-    font-weight:bold;
-    cursor:pointer;
-}
-#resultado-principal{
-    margin-top:10px;
-    background:#c7ffe9;
-    color:#000;
-    padding:14px;
-    border-radius:14px;
-}
-.similares-box{
-    margin-top:10px;
-    color:#a8ffe8;
-    font-size:12px;
-}
-.similares-box select{
-    background:#020b40;
-    color:#fff;
-    border-radius:999px;
-    border:1px solid #00ffc8;
-    padding:6px 10px;
-    min-width:260px;
-}
-.footer{
-    margin-top:16px;
-    text-align:center;
-    font-size:12px;
-    color:#4ee8ff;
-}
+    /* Mantenemos tu estilo original con ligeras mejoras de legibilidad */
+    body{
+        margin:0; padding:20px; font-family:'Segoe UI', Arial, sans-serif;
+        color:#eee; background: radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%), radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%), #05010a;
+        background-attachment:fixed;
+    }
+    .contenedor{
+        max-width:900px; margin:0 auto; background:rgba(0,0,0,.85);
+        border-radius:18px; padding:25px; box-shadow:0 0 20px rgba(0,255,255,0.3);
+        border:1px solid rgba(0,255,255,.2);
+    }
+    .header-top{ display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom: 20px;}
+    .logo-box img{ max-width:90px; border-radius: 10px; border: 1px solid #00ffc8; }
+    .titulo h1{ margin:0; color:#00ffc8; text-shadow:0 0 10px #00ffff; font-size: 24px; text-align: center; }
+    .titulo h2{ margin:5px 0; color:#ffdf5e; font-size:14px; text-align: center; font-style: italic; }
+
+    .buscador-caja {
+        background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 20px;
+    }
+    .buscador{ display:flex; gap:10px; justify-content:center; }
+    .buscador input{
+        padding:12px 20px; border-radius:999px; border:1px solid #00ffc8;
+        background:#050513; color:#fff; flex: 1; outline: none;
+    }
+    .buscador button{
+        padding:10px 25px; border-radius:999px; border:none;
+        background:linear-gradient(135deg, #00ffff, #5f00ff);
+        color: white; font-weight:bold; cursor:pointer; transition: 0.3s;
+    }
+    .buscador button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00ffff; }
+
+    #resultado-principal{
+        margin-top:20px; background:#f0fff9; color:#1a1a1a;
+        padding:20px; border-radius:14px; line-height: 1.6;
+        border-left: 5px solid #00ffc8; min-height: 50px;
+    }
+    .cita-header { color: #5f00ff; font-weight: bold; display: block; margin-bottom: 10px; font-size: 1.2em; }
+    
+    .similares-box{ margin-top:15px; padding: 10px; border-top: 1px solid #333; }
+    .similares-box select{
+        background:#020b40; color:#fff; border-radius:8px;
+        border:1px solid #00ffc8; padding:8px; width: 100%; margin-top: 10px;
+    }
+    .footer{ margin-top:25px; text-align:center; font-size:12px; color:#4ee8ff; opacity: 0.7; }
+    .loading { color: #ffdf5e; text-align: center; font-size: 12px; margin-bottom: 10px; }
 </style>
 </head>
-
 <body>
+
 <div class="contenedor">
     <div class="header-top">
-        <div class="logo-box">
-            <img src="https://gelmhistoria.webcindario.com/pmt.jpg">
-        </div>
-
+        <div class="logo-box"><img src="https://gelmhistoria.webcindario.com/pmt.jpg"></div>
         <div class="titulo">
             <h1>BIBLIA — PALABRA DE VIDA</h1>
             <h2>“Lámpara es a mis pies tu palabra.” — Salmos 119:105</h2>
         </div>
+        <div class="logo-box"><img src="https://gelmhistoria.webcindario.com/PMT/gelm.png"></div>
+    </div>
 
-        <div class="logo-box">
-            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
+    <div id="status" class="loading">Optimizando base de datos...</div>
+
+    <div class="buscador-caja">
+        <div class="buscador">
+            <input id="q" placeholder="Escribe un libro o palabra (ej: Juan, amor, fe)">
+            <button onclick="buscar()">BUSCAR</button>
         </div>
     </div>
 
-    <div id="versoRandom" class="verso-random"></div>
-
-    <div class="buscador">
-        <input id="q" placeholder="Ej: Génesis 1, Juan 3, amor, Jesús">
-        <button onclick="buscar()">Buscar</button>
-    </div>
-
-    <div id="resultado-principal"></div>
+    <div id="resultado-principal">Los resultados aparecerán aquí...</div>
     <div id="similares-contenedor"></div>
 
     <div class="footer">
-        BY GELM — Uso personal | Palabra Viva<br>
+        BY GELM — Uso personal | Reina-Valera 1960<br>
         <span id="fechaHora"></span>
     </div>
 </div>
 
 <script src="biblia_data.js"></script>
+
 <script>
-function norm(t){
-    return t.toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g,"");
+// --- MOTOR DE PROCESAMIENTO ---
+let BIBLIA_OPTIMIZADA = [];
+let resultadosBusqueda = [];
+
+function inicializarDatos() {
+    if(!window.BIBLIA_DATA) return;
+    
+    document.getElementById("status").textContent = "Procesando texto...";
+    
+    // Tomamos el texto bruto
+    let rawText = window.BIBLIA_DATA[0].texto;
+
+    // 1. Limpieza de caracteres y basura de PDF
+    rawText = rawText.replace(/ĳ/g, "ij")
+                     .replace(/\d+\s+[A-ZÁÉÍÓÚa-z]+\s+\d+\.\s+\d+–\d+\.?\s+\d+/g, "") // Encabezados
+                     .replace(/\.\s+\.\s+\.\s+\d+/g, ""); // Índice
+
+    // 2. Segmentación simple por oraciones (Versículos aproximados)
+    // Ya que el JS original no tiene etiquetas, dividimos por puntos seguidos de espacio.
+    let fragmentos = rawText.split(/\.\s+/);
+    
+    BIBLIA_OPTIMIZADA = fragmentos.map((texto, index) => {
+        return {
+            id: index,
+            contenido: texto.trim() + ".",
+            // Intentamos detectar si el fragmento contiene un número al inicio (posible versículo)
+            resumen: texto.substring(0, 40) + "..."
+        };
+    });
+
+    document.getElementById("status").textContent = "✓ Biblia lista para búsqueda rápida";
+    setTimeout(() => document.getElementById("status").style.display = 'none', 3000);
 }
 
-let resultados = [];
-
-function versoAleatorio(){
-    if(!window.BIBLIA_DATA || !BIBLIA_DATA.length) return;
-    const txt = BIBLIA_DATA[0].texto;
-    const partes = txt.split(".");
-    const v = partes[Math.floor(Math.random()*partes.length)];
-    document.getElementById("versoRandom").textContent = v.trim();
+function norm(t){
+    return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 }
 
 function buscar(){
@@ -168,63 +128,63 @@ function buscar(){
     const out = document.getElementById("resultado-principal");
     const sim = document.getElementById("similares-contenedor");
     sim.innerHTML="";
-    out.innerHTML="";
 
-    if(!q){
-        out.textContent="Escribe una búsqueda.";
+    if(!q || q.length < 3){
+        out.innerHTML = "Escribe al menos 3 letras para buscar.";
         return;
     }
 
     const nQ = norm(q);
-    resultados = [];
+    
+    // Filtrar en la biblia optimizada
+    resultadosBusqueda = BIBLIA_OPTIMIZADA.filter(item => norm(item.contenido).includes(nQ));
 
-    BIBLIA_DATA.forEach(b=>{
-        const texto = b.texto;
-        const nTexto = norm(texto);
-
-        let idx = nTexto.indexOf(nQ);
-        while(idx !== -1){
-            const start = Math.max(0, idx-120);
-            const end   = Math.min(texto.length, idx+200);
-            const frag  = texto.substring(start,end);
-            resultados.push(frag.trim());
-            idx = nTexto.indexOf(nQ, idx+1);
-        }
-    });
-
-    if(resultados.length===0){
-        out.textContent="No se encontraron coincidencias.";
+    if(resultadosBusqueda.length === 0){
+        out.innerHTML = "No se encontraron coincidencias.";
         return;
     }
 
-    out.textContent = resultados[0];
+    // Mostrar el primer resultado
+    mostrarResultado(0);
 
-    if(resultados.length>1){
-        let html = '<div class="similares-box"><label>SIMILARES:</label> ';
-        html += '<select onchange="mostrar(this.value)">';
-        html += '<option value="">-- seleccionar --</option>';
-        resultados.slice(1).forEach((r,i)=>{
-            html += `<option value="${i+1}">Resultado ${i+2}</option>`;
+    // Si hay más de uno, crear el selector
+    if(resultadosBusqueda.length > 1){
+        let html = `<div class="similares-box">
+            <label>SE HAN ENCONTRADO ${resultadosBusqueda.length} COINCIDENCIAS:</label>
+            <select onchange="mostrarResultado(this.value)">`;
+        resultadosBusqueda.forEach((res, i) => {
+            html += `<option value="${i}">Resultado ${i+1}: ${res.resumen}</option>`;
         });
-        html += '</select></div>';
+        html += `</select></div>`;
         sim.innerHTML = html;
     }
 }
 
-function mostrar(i){
-    if(!i) return;
-    document.getElementById("resultado-principal").textContent = resultados[i];
+function mostrarResultado(index) {
+    const item = resultadosBusqueda[index];
+    const out = document.getElementById("resultado-principal");
+    
+    // Resaltar la palabra buscada (opcional)
+    const q = document.getElementById("q").value;
+    let textoFinal = item.contenido;
+    
+    out.innerHTML = `
+        <span class="cita-header">Fragmento Hallado:</span>
+        <div class="texto-biblico">${textoFinal}</div>
+    `;
 }
 
+// Reloj y fecha
 function reloj(){
     const d = new Date();
-    document.getElementById("fechaHora").textContent =
+    document.getElementById("fechaHora").textContent = 
         d.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
         " — " + d.toLocaleTimeString("es-ES");
 }
+
 setInterval(reloj,1000);
 reloj();
-versoAleatorio();
+window.onload = inicializarDatos;
 </script>
 </body>
 </html>

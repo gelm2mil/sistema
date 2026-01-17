@@ -6,247 +6,225 @@
 <title>Biblia — GELM</title>
 
 <style>
-body {
-  margin: 0;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #eee;
-  background:
-    radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
-    radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
-    #05010a;
-  background-attachment: fixed;
+body{
+    margin:0;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    color:#eee;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+        radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+        #05010a;
+    background-attachment:fixed;
 }
-
-.contenedor {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: rgba(0, 0, 0, 0.82);
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow:
-    0 0 18px rgba(0,255,255,0.5),
-    0 0 50px rgba(0,0,0,1);
-  border: 1px solid rgba(0,255,255,0.35);
+.contenedor{
+    max-width:1200px;
+    margin:0 auto;
+    background:rgba(0,0,0,.82);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 18px rgba(0,255,255,.5),0 0 50px rgba(0,0,0,1);
+    border:1px solid rgba(0,255,255,.35);
 }
-
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 15px;
+.header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
 }
-
-.logo-box {
-  flex: 0 0 auto;
-  padding: 6px;
-  border-radius: 14px;
-  background: radial-gradient(circle at 30% 0, rgba(0,255,120,0.3), rgba(0,255,255,0.05));
-  box-shadow:
-    0 0 10px rgba(0,255,120,0.9),
-    0 0 25px rgba(0,0,0,0.9);
-  border: 1px solid rgba(0,255,180,0.9);
+.logo-box{
+    padding:6px;
+    border-radius:14px;
+    box-shadow:0 0 10px rgba(0,255,120,.9);
+    border:1px solid rgba(0,255,180,.9);
 }
-
-.logo-box img {
-  display: block;
-  max-width: 110px;
-  height: auto;
+.logo-box img{max-width:110px}
+.titulo{
+    flex:1;
+    text-align:center;
 }
-
-.titulos {
-  flex: 1 1 auto;
-  text-align: center;
+.titulo h1{
+    margin:0;
+    color:#00ffc8;
+    text-shadow:0 0 10px #00ffff;
 }
-
-.titulos-linea1 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #00ffc8;
-  text-shadow: 0 0 10px #00ffff, 0 0 25px #0044ff;
-  letter-spacing: 1px;
+.titulo h2{
+    margin:6px 0 0 0;
+    color:#ffdf5e;
+    font-size:14px;
 }
-
-.titulos-linea2 {
-  font-size: 14px;
-  margin-top: 6px;
-  color: #ffdf5e;
-  text-shadow: 0 0 6px #000;
+.verso-random{
+    margin:15px 0;
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid rgba(0,255,255,.4);
+    text-align:center;
+    color:#a8ffe8;
 }
-
-.verso-dinamico {
-  margin: 12px auto 18px auto;
-  max-width: 900px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  background: rgba(0,255,200,0.08);
-  border: 1px solid rgba(0,255,200,0.35);
-  color: #a8ffe8;
-  font-size: 14px;
-  text-align: center;
-  box-shadow: 0 0 12px rgba(0,255,200,0.35);
+.buscador{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:10px;
 }
-
-.buscador {
-  max-width: 700px;
-  margin: 0 auto 18px auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+.buscador input{
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513;
+    color:#00ffc8;
+    min-width:260px;
 }
-
-.buscador input {
-  padding: 10px 12px;
-  font-size: 16px;
-  border-radius: 999px;
-  border: 1px solid #00ffc8;
-  min-width: 230px;
-  outline: none;
-  background: #050513;
-  color: #00ffc8;
-  box-shadow: 0 0 10px rgba(0,255,255,0.5);
+.buscador button{
+    padding:10px 22px;
+    border-radius:999px;
+    border:none;
+    background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+    font-weight:bold;
+    cursor:pointer;
 }
-
-.buscador button {
-  padding: 10px 22px;
-  font-size: 16px;
-  border-radius: 999px;
-  border: none;
-  background: radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-  text-shadow: 0 0 4px #00ffea;
-  box-shadow:
-    0 0 10px rgba(0,255,255,0.8),
-    0 0 26px rgba(0,0,0,0.9);
+#resultado-principal{
+    margin-top:10px;
+    background:#c7ffe9;
+    color:#000;
+    padding:14px;
+    border-radius:14px;
 }
-
-.resultados {
-  margin-top: 10px;
+.similares-box{
+    margin-top:10px;
+    color:#a8ffe8;
+    font-size:12px;
 }
-
-.resultado {
-  background: #b8ffe6;
-  color: #001010;
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 12px;
-  border: 1px solid #00ffc8;
+.similares-box select{
+    background:#020b40;
+    color:#fff;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    padding:6px 10px;
+    min-width:260px;
 }
-
-.footer-info {
-  margin-top: 18px;
-  text-align: center;
-  font-size: 12px;
-  color: #4ee8ff;
-  text-shadow: 0 0 8px #00fff2;
-}
-
-.footer-info strong {
-  color: #7bffb2;
+.footer{
+    margin-top:16px;
+    text-align:center;
+    font-size:12px;
+    color:#4ee8ff;
 }
 </style>
 </head>
 
 <body>
-
 <div class="contenedor">
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/pmt.jpg">
+        </div>
 
-  <div class="header-top">
-    <div class="logo-box">
-      <img src="https://gelmhistoria.webcindario.com/pmt.jpg" alt="Logo">
+        <div class="titulo">
+            <h1>BIBLIA — PALABRA DE VIDA</h1>
+            <h2>“Lámpara es a mis pies tu palabra.” — Salmos 119:105</h2>
+        </div>
+
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
+        </div>
     </div>
 
-    <div class="titulos">
-      <div class="titulos-linea1">BIBLIA — PALABRA DE VIDA</div>
-      <div class="titulos-linea2">“Lámpara es a mis pies tu palabra, y lumbrera a mi camino.” — Salmos 119:105</div>
+    <div id="versoRandom" class="verso-random"></div>
+
+    <div class="buscador">
+        <input id="q" placeholder="Ej: Génesis 1, Juan 3, amor, Jesús">
+        <button onclick="buscar()">Buscar</button>
     </div>
 
-    <div class="logo-box">
-      <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="GELM">
+    <div id="resultado-principal"></div>
+    <div id="similares-contenedor"></div>
+
+    <div class="footer">
+        BY GELM — Uso personal | Palabra Viva<br>
+        <span id="fechaHora"></span>
     </div>
-  </div>
-
-  <div id="versoDinamico" class="verso-dinamico"></div>
-
-  <div class="buscador">
-    <input id="q" placeholder="Ej: génesis, levítico, juan, amor, luz">
-    <button onclick="buscar()">Buscar</button>
-  </div>
-
-  <div id="resultados" class="resultados"></div>
-
-  <div class="footer-info">
-    <div>BY GELM — Uso personal | <strong>Palabra Viva</strong></div>
-    <div id="fechaHora"></div>
-  </div>
-
 </div>
 
 <script src="biblia_data.js"></script>
-
 <script>
-const versosInicio = [
-  "El Señor es mi pastor; nada me faltará. — Salmos 23:1",
-  "Todo lo puedo en Cristo que me fortalece. — Filipenses 4:13",
-  "Porque yo sé los planes que tengo para vosotros. — Jeremías 29:11",
-  "En el principio creó Dios los cielos y la tierra. — Génesis 1:1",
-  "El que habita al abrigo del Altísimo morará bajo la sombra del Omnipotente. — Salmos 91:1"
-];
+function norm(t){
+    return t.toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g,"");
+}
+
+let resultados = [];
 
 function versoAleatorio(){
-  const v = versosInicio[Math.floor(Math.random()*versosInicio.length)];
-  document.getElementById("versoDinamico").textContent = v;
+    if(!window.BIBLIA_DATA || !BIBLIA_DATA.length) return;
+    const txt = BIBLIA_DATA[0].texto;
+    const partes = txt.split(".");
+    const v = partes[Math.floor(Math.random()*partes.length)];
+    document.getElementById("versoRandom").textContent = v.trim();
 }
-versoAleatorio();
-
-function actualizarFechaHora() {
-  const ahora = new Date();
-  const opciones = { weekday:"long", year:"numeric", month:"long", day:"numeric" };
-  const fecha = ahora.toLocaleDateString("es-ES", opciones);
-  const hora = ahora.toLocaleTimeString("es-ES");
-  const el = document.getElementById("fechaHora");
-  if (el) el.textContent = fecha + " — " + hora;
-}
-setInterval(actualizarFechaHora, 1000);
-actualizarFechaHora();
 
 function buscar(){
-  const q = document.getElementById("q").value.trim().toLowerCase();
-  const cont = document.getElementById("resultados");
-  cont.innerHTML = "";
-  if(!q) return;
+    const q = document.getElementById("q").value.trim();
+    const out = document.getElementById("resultado-principal");
+    const sim = document.getElementById("similares-contenedor");
+    sim.innerHTML="";
+    out.innerHTML="";
 
-  if(!window.BIBLIA_DATA || !BIBLIA_DATA.length){
-    cont.innerHTML = "<p>No hay datos cargados.</p>";
-    return;
-  }
+    if(!q){
+        out.textContent="Escribe una búsqueda.";
+        return;
+    }
 
-  const textoOriginal = BIBLIA_DATA[0].texto;
-  const texto = textoOriginal.toLowerCase();
-  const pos = texto.indexOf(q);
+    const nQ = norm(q);
+    resultados = [];
 
-  if(pos === -1){
-    cont.innerHTML = "<p>No se encontraron coincidencias.</p>";
-    return;
-  }
+    BIBLIA_DATA.forEach(b=>{
+        const texto = b.texto;
+        const nTexto = norm(texto);
 
-  const inicio = Math.max(0, pos - 300);
-  const fin = Math.min(textoOriginal.length, pos + 300);
-  let fragmento = textoOriginal.substring(inicio, fin);
+        let idx = nTexto.indexOf(nQ);
+        while(idx !== -1){
+            const start = Math.max(0, idx-120);
+            const end   = Math.min(texto.length, idx+200);
+            const frag  = texto.substring(start,end);
+            resultados.push(frag.trim());
+            idx = nTexto.indexOf(nQ, idx+1);
+        }
+    });
 
-  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")", "gi");
-  fragmento = fragmento.replace(re, "<mark>$1</mark>");
+    if(resultados.length===0){
+        out.textContent="No se encontraron coincidencias.";
+        return;
+    }
 
-  const div = document.createElement("div");
-  div.className = "resultado";
-  div.innerHTML = `<div>${fragmento}</div>`;
-  cont.appendChild(div);
+    out.textContent = resultados[0];
+
+    if(resultados.length>1){
+        let html = '<div class="similares-box"><label>SIMILARES:</label> ';
+        html += '<select onchange="mostrar(this.value)">';
+        html += '<option value="">-- seleccionar --</option>';
+        resultados.slice(1).forEach((r,i)=>{
+            html += `<option value="${i+1}">Resultado ${i+2}</option>`;
+        });
+        html += '</select></div>';
+        sim.innerHTML = html;
+    }
 }
-</script>
 
+function mostrar(i){
+    if(!i) return;
+    document.getElementById("resultado-principal").textContent = resultados[i];
+}
+
+function reloj(){
+    const d = new Date();
+    document.getElementById("fechaHora").textContent =
+        d.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
+        " — " + d.toLocaleTimeString("es-ES");
+}
+setInterval(reloj,1000);
+reloj();
+versoAleatorio();
+</script>
 </body>
 </html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Convertidor de Biblia TXT a JSON</h2>
+    <input type="file" id="fileInput" />
+    <p id="status"></p>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                let texto = e.target.result;
+                document.getElementById('status').innerText = "Procesando...";
+
+                // 1. Limpieza básica
+                texto = texto.replace(/ĳ/g, "ij");
+                // Eliminar encabezados de página (Ej: 22. 16–21 El Apocalipsis 1716)
+                texto = texto.replace(/\d+\.\s+\d+–\d+.*?\d+/g, "");
+
+                // 2. Lógica de separación (Aproximada por versículos)
+                // Buscamos patrones de números que suelen ser versículos
+                const partes = texto.split(/(\d+)\s+/); 
+                const data = [];
+                let currentLibro = "Génesis"; // Valor inicial
+                let currentCap = 1;
+
+                for (let i = 1; i < partes.length; i += 2) {
+                    let num = partes[i];
+                    let contenido = partes[i+1] ? partes[i+1].split('\r')[0].trim() : "";
+                    
+                    if (contenido.length > 5) {
+                        data.push({
+                            libro: currentLibro,
+                            capitulo: currentCap,
+                            versiculo: parseInt(num),
+                            texto: contenido
+                        });
+                    }
+                }
+
+                // 3. Descargar JSON
+                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "biblia.json";
+                a.click();
+                document.getElementById('status').innerText = "¡Listo! Archivo biblia.json descargado.";
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>

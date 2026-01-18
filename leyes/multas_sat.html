@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SISTEMA DE MULTAS SAT — BY GELM</title>
+
+<style>
+    body{
+        margin:0;padding:20px;font-family:Arial,sans-serif;color:#eee;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+          radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+          #05010a;
+        background-attachment:fixed;
+        animation:fondoGlow 6s ease-in-out infinite alternate;
+    }
+    @keyframes fondoGlow{
+        0%{box-shadow:inset 0 0 20px #ff00ff}
+        50%{box-shadow:inset 0 0 80px #00ffff}
+        100%{box-shadow:inset 0 0 120px #ff00ff}
+    }
+    .contenedor{
+        max-width:1200px;margin:0 auto;background:rgba(0,0,0,.82);
+        border-radius:18px;padding:20px;
+        box-shadow:0 0 18px rgba(0,255,255,.5),0 0 50px rgba(0,0,0,1);
+        border:1px solid rgba(0,255,255,.35);
+    }
+    .header-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:10px}
+    .logo-box{
+        padding:6px;border-radius:14px;
+        background:radial-gradient(circle at 30% 0, rgba(0,255,120,.3), rgba(0,255,255,.05));
+        box-shadow:0 0 10px rgba(0,255,120,.9),0 0 25px rgba(0,0,0,.9);
+        border:1px solid rgba(0,255,180,.9)
+    }
+    .logo-box img{max-width:110px;display:block}
+    .titulos{text-align:center;flex:1}
+    .t1{font-size:22px;font-weight:bold;color:#00ffc8;text-shadow:0 0 10px #00ffff,0 0 25px #0044ff}
+    .t2{font-size:14px;margin-top:6px;color:#ffdf5e}
+    .t3{font-size:13px;margin-top:4px;color:#a5ffe5}
+    .grid{
+        margin-top:18px;
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+        gap:14px;
+    }
+    .card{
+        position:relative;
+        background:linear-gradient(180deg, rgba(0,255,255,.08), rgba(0,0,0,.6));
+        border-radius:14px;
+        padding:14px 12px;
+        text-align:center;
+        text-decoration:none;
+        color:#eaffff;
+        border:1px solid rgba(0,255,255,.35);
+        box-shadow:0 0 12px rgba(0,255,255,.45), inset 0 0 10px rgba(0,255,255,.12);
+        transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+        overflow:hidden;
+    }
+    .card:hover{
+        transform:translateY(-2px);
+        filter:brightness(1.1);
+        box-shadow:0 0 20px rgba(0,255,255,.9), inset 0 0 14px rgba(0,255,255,.25);
+    }
+    .card::before{
+        content:"";position:absolute;inset:-2px;
+        background:linear-gradient(120deg, rgba(0,255,255,0), rgba(0,255,180,.7), rgba(0,255,255,0));
+        opacity:.25;transform:translateX(-120%);animation:scan 3s linear infinite;
+        pointer-events:none;
+    }
+    @keyframes scan{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+    .card img{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 0 6px #00ffff)}
+    .card span{display:block;margin-top:8px;font-size:13px}
+    .footer-info{
+        margin-top:18px;text-align:center;font-size:12px;color:#4ee8ff;text-shadow:0 0 8px #00fff2
+    }
+    .footer-info strong{color:#7bffb2}
+    @media(max-width:768px){
+        .header-top{flex-direction:column}
+        .logo-box img{max-width:95px}
+        .t1{font-size:20px}
+    }
+</style>
+</head>
+<body>
+<div class="contenedor">
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="GELM">
+        </div>
+        <div class="titulos">
+            <div class="t1">SISTEMA DE MULTAS SAT</div>
+            <div class="t2">Módulo interno de consulta</div>
+            <div class="t3">BY GELM</div>
+        </div>
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="GELM">
+        </div>
+    </div>
+
+    <div class="grid">
+        <!-- Ajusta las imágenes si tienes logos locales -->
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/pnc">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/pnc.png" alt="PNC">
+            <span>Multas Policía Nacional Civil</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/emetra">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/emetra.png" alt="EMETRA">
+            <span>Multas EMETRA</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/emixtra">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/emixtra.png" alt="EMIXTRA">
+            <span>Multas EMIXTRA</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/villanueva">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/vn.png" alt="Villa Nueva">
+            <span>Villa Nueva</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/pinula">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/pinula.png" alt="Pinula">
+            <span>Santa Catarina Pinula</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/palencia">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/palencia.png" alt="Palencia">
+            <span>Palencia</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/sanlucas">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/sanlucas.png" alt="San Lucas">
+            <span>San Lucas Sacatepéquez</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/amatitlan">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/amatitlan.png" alt="Amatitlán">
+            <span>Amatitlán</span>
+        </a>
+
+        <a class="card" target="_blank" href="https://portal.sat.gob.gt/portal/multas/escuintla">
+            <img src="https://portal.sat.gob.gt/portal/assets/img/escuintla.png" alt="Escuintla">
+            <span>Escuintla</span>
+        </a>
+    </div>
+
+    <div class="footer-info">
+        <div>2014 - 2026 | <strong>BY GELM</strong></div>
+        <div id="fechaHora"></div>
+    </div>
+</div>
+
+<script>
+function actualizarFechaHora(){
+  const a=new Date();
+  const f=a.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  const h=a.toLocaleTimeString("es-ES");
+  document.getElementById("fechaHora").textContent=f+" — "+h;
+}
+setInterval(actualizarFechaHora,1000); actualizarFechaHora();
+</script>
+</body>
+</html>

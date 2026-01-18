@@ -95,7 +95,7 @@ body{
     </div>
 
     <div class="buscador">
-        <input id="q" placeholder="Ej: 184, 184-1, 184.3, luces, licencia...">
+        <input id="q" placeholder="Ej: 184, 184-3, 184.1, luces, licencia...">
         <button onclick="buscar()">BUSCAR</button>
     </div>
 
@@ -114,12 +114,11 @@ body{
 <script>
 let resultados = [];
 
-// Normalizar texto
 function norm(t){
     return t.toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
         .replace(/articulo|art\.?/g,"")
-        .replace(/[\s\-]/g,"")
+        .replace(/[\s\-\.]/g,"")
         .trim();
 }
 
@@ -129,47 +128,65 @@ function buscar(){
     const sim = document.getElementById("similares-contenedor");
     sim.innerHTML = "";
 
-    if(q.length < 1){
+    if(!q){
         out.textContent = "Escribe un número de artículo o una palabra.";
         return;
     }
 
-    const nQ = norm(q);
+    const limpio = q.replace(/[^\d]/g,"");
+    const partes = q.match(/(\d+)[^\d]?(\d+)?/);
 
-    resultados = (window.LEYES_DATA || []).filter(v => {
-        const art = norm(v.articulo || "");
-        const txt = norm(v.texto || "");
-        return art.includes(nQ) || txt.includes(nQ);
-    });
+    let art = partes ? partes[1] : null;
+    let sub = partes && partes[2] ? partes[2] : null;
 
-    if(resultados.length === 0){
+    const data = window.LEYES_DATA || [];
+    const base = data.find(v => norm(v.articulo||"").startsWith(art||""));
+
+    if(!base){
         out.textContent = "No se encontraron coincidencias en el Reglamento.";
         return;
     }
 
-    mostrar(0);
+    const texto = base.texto || "";
+    const incisos = texto.split(/\s(?=\d+\.\s)/);
 
-    if(resultados.length > 1){
+    let lista = incisos.map((t,i)=>({
+        art: base.articulo.replace(/\.$/,"") + "." + (i+1),
+        texto: t.replace(/^\d+\.\s*/,"")
+    }));
+
+    if(sub){
+        const idx = parseInt(sub,10)-1;
+        if(lista[idx]){
+            out.innerHTML = `<strong>${lista[idx].art}</strong><br>${lista[idx].texto}`;
+        }else{
+            out.textContent = "No existe ese inciso.";
+        }
+        return;
+    }
+
+    out.innerHTML = `<strong>${base.articulo}</strong><br>${texto}`;
+
+    if(lista.length > 1){
         let html = `<div class="similares-box">
-            <label>SE ENCONTRARON ${resultados.length} RESULTADOS:</label>
-            <select onchange="mostrar(this.value)">`;
+        <label>INCISOS DEL ${base.articulo}:</label>
+        <select onchange="mostrarInciso(this.value)">`;
 
-        resultados.forEach((r,i)=>{
-            let resumen = (r.texto || "").substring(0,60) + "...";
-            html += `<option value="${i}">
-                ${r.articulo} — ${resumen}
-            </option>`;
+        lista.forEach((r,i)=>{
+            let res = r.texto.substring(0,60)+"...";
+            html += `<option value="${i}">${r.art} — ${res}</option>`;
         });
 
         html += `</select></div>`;
         sim.innerHTML = html;
+        window._incisos = lista;
     }
 }
 
-function mostrar(i){
-    const v = resultados[i];
+function mostrarInciso(i){
+    const v = window._incisos[i];
     document.getElementById("resultado-principal").innerHTML =
-        `<strong>${v.articulo}</strong><br>${v.texto}`;
+        `<strong>${v.art}</strong><br>${v.texto}`;
 }
 </script>
 </body>

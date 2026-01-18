@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SISTEMA - GELM</title>
+<title>GELM - SYSTEM</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00ffc8">
@@ -32,7 +32,12 @@ body{
   width:fit-content;
 }
 .header-btn h1{font-size:18px;color:#000;font-weight:bold;}
-.header-btn span{display:block;font-size:12px;color:#001010;font-weight:bold;}
+.header-btn span{
+  display:block;
+  font-size:12px;
+  color:#001010;
+  font-weight:bold;
+}
 .header-btn .hora-header{
   margin-top:6px;
   font-size:11px;
@@ -89,7 +94,7 @@ section{
 }
 .panel .estado{
   font-size:14px;
-  margin-bottom:12px;
+  margin-bottom:10px;
   color:#a8ffe8;
 }
 .panel ul{
@@ -97,6 +102,13 @@ section{
 }
 .panel li{
   margin:6px 0;
+}
+.subpanel{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px dashed rgba(0,255,200,.35);
+  font-size:13px;
+  color:#bfffee;
 }
 
 /* FOOTER */
@@ -115,8 +127,8 @@ footer{
 <body>
 
 <div class="header-btn">
-  <h1>SISTEMA - GELM</h1>
-  <span>todos los derechos de Genrin Lorenzo Ch.078 — BY GELM</span>
+  <h1>GELM - SYSTEM</h1>
+  <span id="fraseViva"></span>
   <div id="horaHeader" class="hora-header"></div>
 </div>
 
@@ -140,6 +152,11 @@ footer{
     <h2>Plan del Día</h2>
     <div id="estadoDia" class="estado"></div>
     <ul id="tareasHoy"></ul>
+
+    <div class="subpanel">
+      <div id="modoTurno"></div>
+      <div id="siguienteAccion" style="margin-top:8px;"></div>
+    </div>
   </div>
 </section>
 
@@ -150,6 +167,21 @@ footer{
 </footer>
 
 <script>
+const frases = [
+  "Gracias a Dios, un nuevo día: nuevo comienzo.",
+  "El día avanza… y tú lo estás logrando.",
+  "Disciplina hoy, tranquilidad mañana.",
+  "Orden, visión y firmeza en cada paso.",
+  "Todo trabajo hecho con honra deja huella."
+];
+
+function rotarFrase(){
+  const f = frases[Math.floor(Math.random()*frases.length)];
+  document.getElementById("fraseViva").textContent = f;
+}
+rotarFrase();
+setInterval(rotarFrase, 1000 * 60 * 45); // cada 45 min
+
 function actualizarFechaHora(){
   const ahora = new Date();
   const opciones = { weekday:"long", year:"numeric", month:"long", day:"numeric" };
@@ -167,48 +199,52 @@ actualizarFechaHora();
 
 /* ==== PLANIFICADOR ==== */
 
-// Fecha base: sábado 17/01/2026 = fin de semana de trabajo
 const base = new Date(2026,0,17);
 
 function planDelDia(){
   const hoy = new Date();
-  const dia = hoy.getDay(); // 0 dom ... 6 sab
+  const dia = hoy.getDay();
 
   const estado = document.getElementById("estadoDia");
   const lista = document.getElementById("tareasHoy");
+  const modo = document.getElementById("modoTurno");
+  const sig = document.getElementById("siguienteAccion");
+
   lista.innerHTML = "";
 
-  // Calcular si este fin de semana es de trabajo
   let diff = Math.floor((hoy - base) / (1000*60*60*24));
   let bloque = Math.floor(diff / 14);
   let findeTrabajo = bloque % 2 === 0;
 
   let tareas = [];
+  let accion = "";
+  let estadoTurno = "";
 
-  if(dia === 6 || dia === 0){ // sábado o domingo
+  if(dia === 6 || dia === 0){
     if(findeTrabajo){
       estado.textContent = "Hoy estás de turno (Fin de semana laboral).";
-      tareas.push("Supervisión al personal.");
-      tareas.push("Apoyo en regulación.");
-      tareas.push("Control de transporte en puntos clave.");
+      tareas = ["Supervisión al personal.","Apoyo en regulación.","Control en puntos clave."];
+      estadoTurno = "🟡 Fin de semana operativo";
+      accion = "Revisar punto Terminal Central.";
     }else{
-      estado.textContent = "Hoy es fin de semana libre. Descanso merecido.";
-      tareas.push("Descanso personal.");
-      tareas.push("Revisión ligera si lo deseas.");
+      estado.textContent = "Fin de semana libre.";
+      tareas = ["Descanso personal.","Revisión ligera si lo deseas."];
+      estadoTurno = "⚫ Descanso";
+      accion = "Recargar energías.";
     }
   }else{
     estado.textContent = "Día laboral ordinario.";
-    if(dia >= 1 && dia <= 4){
-      tareas.push("07:45 Ingreso.");
-      tareas.push("08:00 – 09:00 Atención al vecino.");
-      tareas.push("09:15 Recorridos y control de transporte.");
-      if(dia === 2 || dia === 4){
-        tareas.push("Enfoque administrativo en oficina.");
-      }
+    tareas = ["07:45 Ingreso.","08:00 – 09:00 Atención al vecino.","09:15 Recorridos."];
+    if(dia === 2 || dia === 4){
+      tareas.push("Enfoque administrativo.");
+      estadoTurno = "🔵 Administrativo";
+      accion = "Actualizar datos pendientes.";
+    }else{
+      estadoTurno = "🟢 Turno activo";
+      accion = "Verificar rutas en casco urbano.";
     }
     if(dia === 5){
-      tareas.push("Apoyo a encargados en regulación.");
-      tareas.push("Control operativo de campo.");
+      tareas.push("Apoyo en regulación.");
     }
   }
 
@@ -217,6 +253,9 @@ function planDelDia(){
     li.textContent = t;
     lista.appendChild(li);
   });
+
+  modo.textContent = "Hoy estás en modo: " + estadoTurno;
+  sig.innerHTML = "<strong>Siguiente acción sugerida:</strong> " + accion;
 }
 
 planDelDia();

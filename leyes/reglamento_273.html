@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REGLAMENTO DE TRÁNSITO — GELM</title>
+
+<style>
+body{
+    margin:0; padding:20px; font-family:Arial, sans-serif;
+    color:#eee;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+        radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+        #05010a;
+    background-attachment:fixed;
+}
+.contenedor{
+    max-width:1100px; margin:0 auto;
+    background:rgba(0,0,0,.85);
+    border-radius:18px; padding:25px;
+    box-shadow:0 0 20px rgba(0,255,255,0.4);
+    border:1px solid rgba(0,255,255,.25);
+}
+.header-top{
+    display:flex; align-items:center; justify-content:space-between; gap:15px;
+}
+.logo-box img{
+    max-width:90px; border-radius:12px; border:1px solid #00ffc8;
+}
+.titulo{ flex:1; text-align:center; }
+.titulo h1{
+    margin:0; color:#00ffc8;
+    text-shadow:0 0 10px #00ffff;
+    font-size:26px;
+}
+.titulo h2{
+    margin:6px 0; color:#ffdf5e; font-size:14px;
+}
+
+.buscador{
+    display:flex; gap:10px; justify-content:center; margin:20px 0;
+}
+.buscador input{
+    padding:12px 20px; border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513; color:#00ffc8;
+    flex:1; font-size:16px;
+}
+.buscador button{
+    padding:10px 25px; border-radius:999px; border:none;
+    background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+    color:#fff; font-weight:bold; cursor:pointer;
+}
+
+#resultado-principal{
+    margin-top:10px; background:#e8fff6; color:#111;
+    padding:20px; border-radius:14px;
+    font-size:16px; line-height:1.6;
+    border-left:6px solid #5f00ff;
+}
+
+.similares-box{
+    margin-top:15px; color:#a8ffe8; font-size:14px;
+}
+.similares-box select{
+    background:#020b40; color:#fff;
+    border-radius:999px; border:1px solid #00ffc8;
+    padding:8px 15px; width:100%; margin-top:8px;
+}
+
+.footer{
+    margin-top:20px; text-align:center;
+    font-size:12px; color:#4ee8ff;
+}
+</style>
+</head>
+
+<body>
+<div class="contenedor">
+
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/pmt.jpg">
+        </div>
+
+        <div class="titulo">
+            <h1>REGLAMENTO DE TRÁNSITO</h1>
+            <h2>Acuerdo Gubernativo 273 — Guatemala</h2>
+        </div>
+
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
+        </div>
+    </div>
+
+    <div class="buscador">
+        <input id="q" placeholder="Ej: 184, 184-1, 184.3, luces, licencia...">
+        <button onclick="buscar()">BUSCAR</button>
+    </div>
+
+    <div id="resultado-principal">
+        Escribe un número de artículo o una palabra clave.
+    </div>
+
+    <div id="similares-contenedor"></div>
+
+    <div class="footer">
+        BY GELM — Uso personal | Reglamento de Tránsito (Acuerdo 273)
+    </div>
+</div>
+
+<script src="reglamento_273.js"></script>
+<script>
+let resultados = [];
+
+// Normalizar texto
+function norm(t){
+    return t.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+        .replace(/articulo|art\.?/g,"")
+        .replace(/[\s\-]/g,"")
+        .trim();
+}
+
+function buscar(){
+    const q = document.getElementById("q").value.trim();
+    const out = document.getElementById("resultado-principal");
+    const sim = document.getElementById("similares-contenedor");
+    sim.innerHTML = "";
+
+    if(q.length < 1){
+        out.textContent = "Escribe un número de artículo o una palabra.";
+        return;
+    }
+
+    const nQ = norm(q);
+
+    resultados = (window.LEYES_DATA || []).filter(v => {
+        const art = norm(v.articulo || "");
+        const txt = norm(v.texto || "");
+        return art.includes(nQ) || txt.includes(nQ);
+    });
+
+    if(resultados.length === 0){
+        out.textContent = "No se encontraron coincidencias en el Reglamento.";
+        return;
+    }
+
+    mostrar(0);
+
+    if(resultados.length > 1){
+        let html = `<div class="similares-box">
+            <label>SE ENCONTRARON ${resultados.length} RESULTADOS:</label>
+            <select onchange="mostrar(this.value)">`;
+
+        resultados.forEach((r,i)=>{
+            let resumen = (r.texto || "").substring(0,60) + "...";
+            html += `<option value="${i}">
+                ${r.articulo} — ${resumen}
+            </option>`;
+        });
+
+        html += `</select></div>`;
+        sim.innerHTML = html;
+    }
+}
+
+function mostrar(i){
+    const v = resultados[i];
+    document.getElementById("resultado-principal").innerHTML =
+        `<strong>${v.articulo}</strong><br>${v.texto}`;
+}
+</script>
+</body>
+</html>

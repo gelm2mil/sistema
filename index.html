@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SISTEMA - GELM</title>
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00ffc8">
 
@@ -47,7 +46,7 @@ body{
 
 /* SIDEBAR */
 nav{
-  width:120px;              /* más ancho */
+  width:120px;
   padding:12px 8px;
   background:rgba(0,0,0,.65);
   border-right:1px solid rgba(0,255,200,.35);
@@ -58,7 +57,7 @@ nav{
 nav a{
   text-decoration:none;
   text-align:center;
-  padding:14px 8px;         /* botones más cómodos */
+  padding:14px 8px;
   border-radius:16px;
   color:var(--neon);
   font-size:12px;
@@ -66,11 +65,39 @@ nav a{
   border:1px solid rgba(0,255,200,.45);
   background:linear-gradient(145deg,#020616,#05001a);
   box-shadow:0 0 12px rgba(0,255,255,.45);
-  white-space:normal;       /* permite 2 líneas si hace falta */
+  white-space:normal;
 }
 
 /* CONTENT */
-section{flex:1;padding:30px;}
+section{
+  flex:1;
+  padding:24px;
+}
+.panel{
+  max-width:700px;
+  margin:auto;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(0,255,200,.35);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 0 20px rgba(0,255,255,.35);
+}
+.panel h2{
+  color:#00ffc8;
+  text-shadow:0 0 8px #00ffff;
+  margin-bottom:10px;
+}
+.panel .estado{
+  font-size:14px;
+  margin-bottom:12px;
+  color:#a8ffe8;
+}
+.panel ul{
+  margin-left:18px;
+}
+.panel li{
+  margin:6px 0;
+}
 
 /* FOOTER */
 footer{
@@ -108,7 +135,13 @@ footer{
   <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">Biblia</a>
 </nav>
 
-<section></section>
+<section>
+  <div class="panel">
+    <h2>Plan del Día</h2>
+    <div id="estadoDia" class="estado"></div>
+    <ul id="tareasHoy"></ul>
+  </div>
+</section>
 
 </div>
 
@@ -119,25 +152,74 @@ footer{
 <script>
 function actualizarFechaHora(){
   const ahora = new Date();
-  const opciones = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  };
+  const opciones = { weekday:"long", year:"numeric", month:"long", day:"numeric" };
   const fecha = ahora.toLocaleDateString("es-ES", opciones);
   const hora = ahora.toLocaleTimeString("es-ES");
   const texto = fecha + " — " + hora;
 
   const f = document.getElementById("fechaHora");
   const h = document.getElementById("horaHeader");
-
   if(f) f.textContent = texto;
   if(h) h.textContent = texto;
 }
-
-setInterval(actualizarFechaHora, 1000);
+setInterval(actualizarFechaHora,1000);
 actualizarFechaHora();
+
+/* ==== PLANIFICADOR ==== */
+
+// Fecha base: sábado 17/01/2026 = fin de semana de trabajo
+const base = new Date(2026,0,17);
+
+function planDelDia(){
+  const hoy = new Date();
+  const dia = hoy.getDay(); // 0 dom ... 6 sab
+
+  const estado = document.getElementById("estadoDia");
+  const lista = document.getElementById("tareasHoy");
+  lista.innerHTML = "";
+
+  // Calcular si este fin de semana es de trabajo
+  let diff = Math.floor((hoy - base) / (1000*60*60*24));
+  let bloque = Math.floor(diff / 14);
+  let findeTrabajo = bloque % 2 === 0;
+
+  let tareas = [];
+
+  if(dia === 6 || dia === 0){ // sábado o domingo
+    if(findeTrabajo){
+      estado.textContent = "Hoy estás de turno (Fin de semana laboral).";
+      tareas.push("Supervisión al personal.");
+      tareas.push("Apoyo en regulación.");
+      tareas.push("Control de transporte en puntos clave.");
+    }else{
+      estado.textContent = "Hoy es fin de semana libre. Descanso merecido.";
+      tareas.push("Descanso personal.");
+      tareas.push("Revisión ligera si lo deseas.");
+    }
+  }else{
+    estado.textContent = "Día laboral ordinario.";
+    if(dia >= 1 && dia <= 4){
+      tareas.push("07:45 Ingreso.");
+      tareas.push("08:00 – 09:00 Atención al vecino.");
+      tareas.push("09:15 Recorridos y control de transporte.");
+      if(dia === 2 || dia === 4){
+        tareas.push("Enfoque administrativo en oficina.");
+      }
+    }
+    if(dia === 5){
+      tareas.push("Apoyo a encargados en regulación.");
+      tareas.push("Control operativo de campo.");
+    }
+  }
+
+  tareas.forEach(t=>{
+    const li = document.createElement("li");
+    li.textContent = t;
+    lista.appendChild(li);
+  });
+}
+
+planDelDia();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js');

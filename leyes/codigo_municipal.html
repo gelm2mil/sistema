@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CÓDIGO MUNICIPAL — GELM</title>
+
+<style>
+body{
+    margin:0; padding:20px; font-family:Arial, sans-serif;
+    color:#eee;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+        radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+        #05010a;
+    background-attachment:fixed;
+}
+.contenedor{
+    max-width:1100px; margin:0 auto;
+    background:rgba(0,0,0,.85);
+    border-radius:18px; padding:25px;
+    box-shadow:0 0 20px rgba(0,255,255,0.4);
+    border:1px solid rgba(0,255,255,.25);
+}
+.header-top{
+    display:flex; align-items:center; justify-content:space-between; gap:15px;
+}
+.logo-box img{
+    max-width:90px; border-radius:12px; border:1px solid #00ffc8;
+}
+.titulo{ flex:1; text-align:center; }
+.titulo h1{
+    margin:0; color:#00ffc8;
+    text-shadow:0 0 10px #00ffff;
+    font-size:26px;
+}
+.titulo h2{
+    margin:6px 0; color:#ffdf5e; font-size:14px;
+}
+
+.buscador{
+    display:flex; gap:10px; justify-content:center; margin:20px 0;
+}
+.buscador input{
+    padding:12px 20px; border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513; color:#00ffc8;
+    flex:1; font-size:16px;
+}
+.buscador button{
+    padding:10px 25px; border-radius:999px; border:none;
+    background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+    color:#fff; font-weight:bold; cursor:pointer;
+}
+
+#resultado-principal{
+    margin-top:10px; background:#e8fff6; color:#111;
+    padding:20px; border-radius:14px;
+    font-size:16px; line-height:1.6;
+    border-left:6px solid #5f00ff;
+}
+
+.similares-box{
+    margin-top:15px; color:#a8ffe8; font-size:14px;
+}
+.similares-box select{
+    background:#020b40; color:#fff;
+    border-radius:999px; border:1px solid #00ffc8;
+    padding:8px 15px; width:100%; margin-top:8px;
+}
+
+mark{
+    background:#ffdf5e;
+    color:#000;
+    padding:2px 4px;
+    border-radius:4px;
+}
+
+.footer{
+    margin-top:20px; text-align:center;
+    font-size:12px; color:#4ee8ff;
+}
+</style>
+</head>
+
+<body>
+<div class="contenedor">
+
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="../icons/icon-192.png">
+        </div>
+
+        <div class="titulo">
+            <h1>CÓDIGO MUNICIPAL</h1>
+            <h2>Guatemala — GELM</h2>
+        </div>
+
+        <div class="logo-box">
+            <img src="../icons/icon-512.png">
+        </div>
+    </div>
+
+    <div class="buscador">
+        <input id="q" placeholder="Ej: 17, 35a, autonomía, policía municipal...">
+        <button onclick="buscar()">BUSCAR</button>
+    </div>
+
+    <div id="resultado-principal">
+        Escribe un número de artículo, inciso o una palabra clave.
+    </div>
+
+    <div id="similares-contenedor"></div>
+
+    <div class="footer">
+        BY GELM — Uso personal | Código Municipal
+    </div>
+</div>
+
+<script>
+let DATA = [];
+let INCISOS = [];
+
+async function cargarJSON(){
+    const resp = await fetch("codigo_municipal.json");
+    DATA = await resp.json();
+}
+cargarJSON();
+
+function norm(t){
+    return t.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^\w\d]/g,"");
+}
+
+function resaltar(texto, q){
+    if(!q) return texto;
+    const safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const r = new RegExp(`(${safe})`, "gi");
+    return texto.replace(r, "<mark>$1</mark>");
+}
+
+function buscar(){
+    const q = document.getElementById("q").value.trim();
+    const out = document.getElementById("resultado-principal");
+    const sim = document.getElementById("similares-contenedor");
+    sim.innerHTML = "";
+
+    if(!q){
+        out.textContent = "Escribe un número de artículo o una palabra.";
+        return;
+    }
+
+    const nq = norm(q);
+    const m = q.match(/(\d+)\s*([a-zA-Z])?/);
+    const artNum = m ? m[1] : null;
+    const inc = m && m[2] ? m[2].toLowerCase() : null;
+
+    let base = null;
+
+    if(artNum){
+        base = DATA.find(a => a.articulo.includes(artNum));
+    }
+
+    if(!base){
+        base = DATA.find(a => norm(JSON.stringify(a)).includes(nq));
+    }
+
+    if(!base){
+        out.textContent = "No se encontraron coincidencias.";
+        return;
+    }
+
+    INCISOS = [];
+    let html = `<strong>${base.articulo}</strong><br><br>`;
+
+    for(const k in base.incisos){
+        if(k === "texto"){
+            INCISOS.push({id:"", texto: base.incisos[k]});
+        }else{
+            INCISOS.push({id:k, texto: base.incisos[k]});
+        }
+    }
+
+    if(inc){
+        const found = INCISOS.find(x => x.id === inc);
+        if(found){
+            out.innerHTML = `<strong>${base.articulo} ${inc})</strong><br>${resaltar(found.texto, q)}`;
+            return;
+        }
+    }
+
+    INCISOS.forEach(i=>{
+        if(i.id){
+            html += `<p><strong>${i.id})</strong> ${resaltar(i.texto, q)}</p>`;
+        }else{
+            html += `<p>${resaltar(i.texto, q)}</p>`;
+        }
+    });
+
+    out.innerHTML = html;
+
+    if(INCISOS.length > 1){
+        let s = `<div class="similares-box">
+            <label>INCISOS:</label>
+            <select onchange="mostrarInciso(this.value)">
+                <option value="">— seleccionar —</option>`;
+        INCISOS.forEach((r,i)=>{
+            const prev = r.texto.substring(0,60).replace(/\s+/g," ") + "...";
+            s += `<option value="${i}">${r.id || "texto"} — ${prev}</option>`;
+        });
+        s += `</select></div>`;
+        sim.innerHTML = s;
+    }
+}
+
+function mostrarInciso(i){
+    if(i === "") return;
+    const v = INCISOS[i];
+    document.getElementById("resultado-principal").innerHTML =
+        `<strong>${v.id ? v.id + ")" : ""}</strong><br>${v.texto}`;
+}
+</script>
+</body>
+</html>

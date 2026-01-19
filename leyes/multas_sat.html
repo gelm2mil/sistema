@@ -38,30 +38,33 @@
     .t1{font-size:22px;font-weight:bold;color:#00ffc8;text-shadow:0 0 10px #00ffff,0 0 25px #0044ff}
     .t2{font-size:14px;margin-top:6px;color:#ffdf5e}
     .t3{font-size:13px;margin-top:4px;color:#a5ffe5}
+
     .grid{
         margin-top:18px;
         display:grid;
         grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
         gap:14px;
     }
+
     .card{
         position:relative;
         background:linear-gradient(180deg, rgba(0,255,255,.08), rgba(0,0,0,.6));
         border-radius:14px;
-        padding:14px 12px;
+        padding:16px 12px;
         text-align:center;
         text-decoration:none;
-        color:#eaffff;
         border:1px solid rgba(0,255,255,.35);
         box-shadow:0 0 12px rgba(0,255,255,.45), inset 0 0 10px rgba(0,255,255,.12);
         transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
         overflow:hidden;
     }
+
     .card:hover{
         transform:translateY(-2px);
-        filter:brightness(1.1);
+        filter:brightness(1.15);
         box-shadow:0 0 20px rgba(0,255,255,.9), inset 0 0 14px rgba(0,255,255,.25);
     }
+
     .card::before{
         content:"";position:absolute;inset:-2px;
         background:linear-gradient(120deg, rgba(0,255,255,0), rgba(0,255,180,.7), rgba(0,255,255,0));
@@ -69,12 +72,33 @@
         pointer-events:none;
     }
     @keyframes scan{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-    .card img{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 0 6px #00ffff)}
-    .card span{display:block;margin-top:8px;font-size:13px}
+
+    .neon{
+        display:block;
+        font-size:20px;
+        font-weight:bold;
+        letter-spacing:2px;
+        color:#00fff2;
+        text-shadow:
+            0 0 6px #00fff2,
+            0 0 12px #00e5ff,
+            0 0 22px #00b7ff,
+            0 0 40px rgba(0,255,255,0.9);
+        margin-bottom:6px;
+    }
+
+    .card small{
+        display:block;
+        font-size:12px;
+        color:#b8fff6;
+        opacity:0.9;
+    }
+
     .footer-info{
         margin-top:18px;text-align:center;font-size:12px;color:#4ee8ff;text-shadow:0 0 8px #00fff2
     }
     .footer-info strong{color:#7bffb2}
+
     @media(max-width:768px){
         .header-top{flex-direction:column}
         .logo-box img{max-width:95px}
@@ -99,58 +123,59 @@
     </div>
 
     <div class="grid">
-        <!-- Ajusta las imágenes si tienes logos locales -->
         <a class="card" target="_blank" href="https://sistemas.transito.gob.gt/consultaremisiones/consultaremisiones">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/pnc.png" alt="PNC">
-            <span>Multas Policía Nacional Civil</span>
+            <span class="neon">PNC</span>
+            <small>Policía Nacional Civil</small>
         </a>
 
         <a class="card" target="_blank" href="https://especiales.muniguate.com/remisiones.htm">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/emetra.png" alt="EMETRA">
-            <span>Multas EMETRA</span>
+            <span class="neon">EMETRA</span>
+            <small>Municipalidad de Guatemala</small>
         </a>
 
         <a class="card" target="_blank" href="https://consultas.munimixco.gob.gt/emixtra/consulta">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/emixtra.png" alt="EMIXTRA">
-            <span>Multas EMIXTRA</span>
+            <span class="neon">EMIXTRA</span>
+            <small>Municipalidad de Mixco</small>
         </a>
 
         <a class="card" target="_blank" href="https://www.villanueva.gob.gt/">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/vn.png" alt="Villa Nueva">
-            <span>Villa Nueva</span>
+            <span class="neon">VILLA NUEVA</span>
+            <small>Municipalidad</small>
         </a>
 
         <a class="card" target="_blank" href="http://www.consultas.scp.gob.gt/transito/">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/pinula.png" alt="Pinula">
-            <span>Santa Catarina Pinula</span>
+            <span class="neon">PINULA</span>
+            <small>Santa Catarina Pinula</small>
         </a>
 
         <a class="card" target="_blank" href="http://consultamulta.munipalencia.gob.gt/">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/palencia.png" alt="Palencia">
-            <span>Palencia</span>
+            <span class="neon">PALENCIA</span>
+            <small>Municipalidad</small>
         </a>
 
         <a class="card" target="_blank" href="http://www.munisanlucas.gob.gt/Municipalidad_de_San_Lucas/Consulta_de_Remisiones.html">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/sanlucas.png" alt="San Lucas">
-            <span>San Lucas Sacatepéquez</span>
+            <span class="neon">SAN LUCAS</span>
+            <small>Sacatepéquez</small>
         </a>
 
         <a class="card" target="_blank" href="https://amatitlanpmt.com/">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/amatitlan.png" alt="Amatitlán">
-            <span>Amatitlán</span>
+            <span class="neon">AMATITLÁN</span>
+            <small>Municipalidad</small>
         </a>
 
         <a class="card" target="_blank" href="https://muniescuintla.gob.gt/multas-de-transito-municipalidad-de-escuintla/">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/escuintla.png" alt="Escuintla">
-            <span>Escuintla</span>
+            <span class="neon">ESCUINTLA</span>
+            <small>Municipalidad</small>
         </a>
-         <a class="card" target="_blank" href="https://portal.muniantigua.gob.gt/#/remisiones">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/escuintla.png" alt="antigua">
-            <span>antigua</span>
+
+        <a class="card" target="_blank" href="https://portal.muniantigua.gob.gt/#/remisiones">
+            <span class="neon">ANTIGUA</span>
+            <small>Municipalidad</small>
         </a>
-        <a class="card" target="_blank"https://munisoftware.com/jutiapa.php">
-            <img src="https://portal.sat.gob.gt/portal/assets/img/escuintla.png" alt="jutiapa">
-            <span>Jutiapa</span>
+
+        <a class="card" target="_blank" href="https://munisoftware.com/jutiapa.php">
+            <span class="neon">JUTIAPA</span>
+            <small>Municipalidad</small>
         </a>
     </div>
 

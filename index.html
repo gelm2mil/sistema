@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -121,6 +121,24 @@ footer{
   border-top:1px solid rgba(0,255,200,.3);
   font-weight:bold;
 }
+
+/* BOTÓN GPT FLOTANTE */
+.btn-gpt{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:12px 18px;
+  border-radius:999px;
+  background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  box-shadow:0 0 16px rgba(0,255,255,.95);
+  z-index:9999;
+}
+.btn-gpt:hover{
+  transform:scale(1.05);
+}
 </style>
 </head>
 
@@ -141,17 +159,13 @@ footer{
   <a href="https://gelm2mil.github.io/gelm/" target="_blank">Transportes</a>
   <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
   <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">Backup</a>
-   <a href="https://gelm2mil.github.io/sistema/revisiones.html" target="_blank">Revisiones</a>
+  <a href="https://gelm2mil.github.io/sistema/revisiones.html" target="_blank">Revisiones</a>
   <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">Registro 2026</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">reglamento 273</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS sat</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/transito_2025.html" target="_blank">reforma 2025 sat</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">Codigo Municipal</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">Biblia</a>
-  <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">
-    🤖 GPT
-</a>
-
 </nav>
 
 <section>
@@ -173,6 +187,10 @@ footer{
   <div id="fechaHora"></div>
 </footer>
 
+<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">
+  🤖 GPT
+</a>
+
 <script>
 const frases = [
   "Gracias a Dios, un nuevo día: nuevo comienzo.",
@@ -187,7 +205,7 @@ function rotarFrase(){
   document.getElementById("fraseViva").textContent = f;
 }
 rotarFrase();
-setInterval(rotarFrase, 1000 * 60 * 45); // cada 45 min
+setInterval(rotarFrase, 1000 * 60 * 45);
 
 function actualizarFechaHora(){
   const ahora = new Date();
@@ -274,12 +292,3 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-

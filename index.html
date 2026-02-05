@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -51,26 +51,24 @@ body{
 
 /* SIDEBAR */
 nav{
-  width:120px;
+  width:130px;
   padding:12px 8px;
   background:rgba(0,0,0,.65);
   border-right:1px solid rgba(0,255,200,.35);
   display:flex;
   flex-direction:column;
-  gap:14px;
+  gap:12px;
 }
 nav a{
   text-decoration:none;
   text-align:center;
-  padding:14px 8px;
+  padding:12px 8px;
   border-radius:16px;
   color:var(--neon);
   font-size:12px;
-  line-height:1.2;
   border:1px solid rgba(0,255,200,.45);
   background:linear-gradient(145deg,#020616,#05001a);
   box-shadow:0 0 12px rgba(0,255,255,.45);
-  white-space:normal;
 }
 
 /* CONTENT */
@@ -98,14 +96,13 @@ section{
   color:#a8ffe8;
 }
 
-/* === REPRODUCTOR === */
+/* PLAYER */
 .player-box{
   margin-top:14px;
   padding:10px;
   border-radius:14px;
   background:rgba(0,0,0,.6);
   border:1px solid rgba(0,255,200,.35);
-  box-shadow:0 0 14px rgba(0,255,255,.35);
 }
 .player-box iframe{
   width:100%;
@@ -117,12 +114,10 @@ section{
 /* FOOTER */
 footer{
   text-align:center;
+  font-size:12px;
   padding:12px;
-  font-size:11px;
-  color:#00ff9c;
-  text-shadow:0 0 8px #00ffcc;
   border-top:1px solid rgba(0,255,200,.3);
-  font-weight:bold;
+  color:#00ff9c;
 }
 
 /* GPT */
@@ -137,7 +132,6 @@ footer{
   font-weight:bold;
   text-decoration:none;
   box-shadow:0 0 16px rgba(0,255,255,.95);
-  z-index:9999;
 }
 </style>
 </head>
@@ -160,13 +154,12 @@ footer{
   <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
   <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">Backup</a>
 
-  <a href="renovacion.html">RENOVACIÓN</a>
-  <a href="traspaso.html">TRASPASO</a>
-  <a href="consignaciones.html">CONSIGNACIONES</a>
-  <a href="suplentes.html">SUPLENTES</a>
-  <a href="l_nueva.html">LICENCIA NUEVA</a>
-  <a href="c_permanente.html">C. PERMANENTE</a>
-  <a href="c_temporal.html">C. TEMPORAL</a>
+  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
+  <a href="traspaso.html" target="_blank">TRASPASO</a>
+  <a href="suplentes.html" target="_blank">SUPLENTES</a>
+  <a href="linea_nueva.html" target="_blank">LICENCIA NUEVA</a>
+  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
+  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
 
   <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">Registro 2026</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">Reglamento 273</a>
@@ -179,7 +172,6 @@ footer{
   <div class="panel">
     <h2>Plan del Día</h2>
     <div id="estadoDia" class="estado"></div>
-
     <div class="player-box">
       <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
     </div>
@@ -189,7 +181,9 @@ footer{
 </div>
 
 <footer>
-  <div id="fechaHora"></div>
+  © 2025–2026 — Sistema GELM<br>
+  Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
+  Uso interno autorizado
 </footer>
 
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
@@ -210,14 +204,13 @@ rotarFrase();setInterval(rotarFrase,1000*60*45);
 
 function actualizarFechaHora(){
  const d=new Date();
- const f=d.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
- const h=d.toLocaleTimeString("es-ES");
- document.getElementById("fechaHora").textContent=f+" — "+h;
+ const f=d.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+ const h=d.toLocaleTimeString("es-GT");
  document.getElementById("horaHeader").textContent=f+" — "+h;
 }
-setInterval(actualizarFechaHora,1000);actualizarFechaHora();
+setInterval(actualizarFechaHora,1000);
+actualizarFechaHora();
 </script>
 
 </body>
 </html>
-

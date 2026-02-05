@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYSTEM BY GELM — SUPLENTES 2026</title>
+
+<style>
+:root{
+  --neon:#00ffd5;
+  --bg1:#020b18;
+  --bg2:#041d33;
+  --card:rgba(4,18,34,.92);
+  --txt:#e9ffff;
+  --glow:0 0 18px rgba(0,255,213,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:system-ui,Segoe UI,Arial;
+  background:
+    radial-gradient(circle at 20% 20%, #063b7a 0%, transparent 55%),
+    radial-gradient(circle at 80% 80%, #0a0033 0%, transparent 60%),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:var(--txt);
+  min-height:100vh;
+}
+
+/* ===== CONTENEDOR ===== */
+.wrapper{
+  max-width:1100px;
+  margin:20px auto;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:22px;
+  box-shadow:var(--glow);
+  overflow:hidden;
+}
+
+/* ===== HEADER ===== */
+.header{
+  text-align:center;
+  padding:18px;
+  border-bottom:1px solid rgba(0,255,213,.25);
+}
+.header h1{
+  color:var(--neon);
+  text-shadow:var(--glow);
+}
+.fecha-hora{
+  font-size:13px;
+  opacity:.85;
+  margin-top:4px;
+}
+
+/* ===== CONTENIDO ===== */
+.content{
+  padding:24px;
+}
+
+/* ===== BUSCADOR ===== */
+.buscador{
+  max-width:520px;
+  margin:0 auto 12px;
+}
+.buscador input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(0,255,213,.45);
+  background:#000;
+  color:var(--neon);
+  font-size:16px;
+  outline:none;
+}
+
+/* ===== SIMILARES ===== */
+.similares{
+  max-width:520px;
+  margin:0 auto 16px;
+  background:#000;
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:16px;
+  display:none;
+  max-height:260px;
+  overflow-y:auto;
+}
+.similares .item{
+  padding:12px 14px;
+  border-bottom:1px solid rgba(0,255,213,.15);
+  cursor:pointer;
+}
+.similares .item:hover{
+  background:var(--neon);
+  color:#000;
+}
+
+/* ===== LISTA FIJA ===== */
+.lista{
+  max-width:520px;
+  margin:0 auto 18px;
+  background:#000;
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:16px;
+  max-height:220px;
+  overflow-y:auto;
+}
+.lista div{
+  padding:10px 14px;
+  border-bottom:1px solid rgba(0,255,213,.15);
+  cursor:pointer;
+}
+.lista div:hover{
+  background:var(--neon);
+  color:#000;
+}
+
+/* ===== INFO ACTIVA ===== */
+.info-activa{
+  max-width:720px;
+  margin:0 auto 18px;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(0,255,213,.35);
+  box-shadow:var(--glow);
+  text-align:center;
+  color:var(--neon);
+  font-size:15px;
+}
+
+/* ===== RESULTADO ===== */
+.resultado{
+  max-width:900px;
+  margin:0 auto;
+  background:var(--card);
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:18px;
+  box-shadow:var(--glow);
+  padding:16px;
+  display:none;
+}
+
+/* ===== SCROLL HORIZONTAL ===== */
+.resultado-scroll{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.resultado-scroll table{
+  min-width:720px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  border:1px solid rgba(255,255,255,.15);
+  padding:8px;
+}
+th{
+  background:var(--neon);
+  color:#000;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  font-size:12px;
+  padding:12px;
+  border-top:1px solid rgba(0,255,213,.25);
+  opacity:.85;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="header">
+    <h1>SYSTEM BY GELM — SUPLENTES 2026</h1>
+    <div id="fechaHora" class="fecha-hora"></div>
+  </div>
+
+  <div class="content">
+
+    <div class="buscador">
+      <input id="buscar" placeholder="Buscar placa..." autocomplete="off">
+    </div>
+
+    <div id="similares" class="similares"></div>
+    <div id="lista" class="lista"></div>
+
+    <div id="infoActiva" class="info-activa">
+      Seleccione una placa
+    </div>
+
+    <div id="resultado" class="resultado resultado-scroll"></div>
+
+  </div>
+
+  <div class="footer">
+    © 2025–2026 — Sistema GELM<br>
+    Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
+    Uso interno autorizado
+  </div>
+
+</div>
+
+<script>
+function actualizarHora(){
+  const f=new Date();
+  document.getElementById("fechaHora").textContent =
+    f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
+    " — "+f.toLocaleTimeString("es-GT");
+}
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+/* === CSV SUPLENTE === */
+const URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=1370905759&single=true&output=csv";
+
+let filas=[];
+
+function norm(t){
+  return t.toUpperCase().replace(/[^A-Z0-9]/g,"");
+}
+
+fetch(URL)
+.then(r=>r.text())
+.then(t=>{
+  filas=t.split("\n").map(l=>l.split(","));
+  cargarLista();
+});
+
+function cargarLista(){
+  const box=document.getElementById("lista");
+  box.innerHTML="";
+  filas.forEach((f,i)=>{
+    if(i===0) return;
+    const d=document.createElement("div");
+    d.textContent=f[1];
+    d.onclick=()=>mostrar(f);
+    box.appendChild(d);
+  });
+}
+
+const input=document.getElementById("buscar");
+const similares=document.getElementById("similares");
+
+input.addEventListener("input",()=>{
+  const q=norm(input.value);
+  similares.innerHTML="";
+  if(q.length<2){ similares.style.display="none"; return; }
+
+  const hits=filas.filter((f,i)=>i>0 && norm(f.join(" ")).includes(q));
+  if(!hits.length){ similares.style.display="none"; return; }
+
+  hits.slice(0,20).forEach(f=>{
+    const d=document.createElement("div");
+    d.className="item";
+    d.innerHTML=`<strong>${f[1]}</strong><br>
+      <span style="font-size:13px;opacity:.85">
+      ${f[3]} — ${f[2]}<br>${f[4]}</span>`;
+    d.onclick=()=>mostrar(f);
+    similares.appendChild(d);
+  });
+  similares.style.display="block";
+});
+
+function mostrar(f){
+  similares.style.display="none";
+  document.getElementById("infoActiva").innerHTML =
+    `<strong>${f[1]}</strong> — ${f[3]}<br>
+     Fecha: ${f[2]} | ${f[4]}`;
+
+  let h="<table><tr>";
+  f.forEach(()=>h+="<th>Dato</th>");
+  h+="</tr><tr>";
+  f.forEach(c=>h+="<td>"+c+"</td>");
+  h+="</tr></table>";
+
+  const r=document.getElementById("resultado");
+  r.innerHTML=h;
+  r.style.display="block";
+}
+</script>
+
+</body>
+</html>

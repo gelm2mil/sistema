@@ -14,30 +14,28 @@
   --txt:#e9ffff;
   --glow:0 0 18px rgba(0,255,213,.35);
 }
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",system-ui}
 
-*{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:"Segoe UI",system-ui;
+  min-height:100vh;
   background:linear-gradient(135deg,var(--bg1),var(--bg2));
   color:var(--txt);
-  min-height:100vh;
 }
 
-/* ===== CONTENEDOR PRINCIPAL ===== */
-.wrap{
-  max-width:1100px;
-  margin:20px auto;
-  padding:20px;
+.contenedor{
+  max-width:920px;
+  margin:18px auto;
   background:rgba(0,0,0,.45);
   border:1px solid rgba(0,255,213,.35);
   border-radius:22px;
   box-shadow:var(--glow);
+  padding:20px;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
   text-align:center;
-  padding-bottom:15px;
+  padding-bottom:14px;
   border-bottom:1px solid rgba(0,255,213,.25);
 }
 .header h1{
@@ -49,12 +47,12 @@ body{
   opacity:.85;
 }
 
-/* ===== BUSCADOR ===== */
-.busqueda{
-  margin:25px auto 10px;
-  max-width:420px;
+/* BUSCADOR */
+.buscador{
+  margin:18px auto;
+  max-width:520px;
 }
-.busqueda input{
+.buscador input{
   width:100%;
   padding:14px;
   border-radius:14px;
@@ -62,119 +60,103 @@ body{
   background:#000;
   color:var(--neon);
   font-size:15px;
-  outline:none;
 }
 
-/* ===== LISTA SIMILARES ===== */
-.similares{
-  max-width:420px;
-  margin:10px auto;
-  background:#000;
-  border-radius:14px;
-  border:1px solid rgba(0,255,213,.35);
+/* LISTA PLACAS */
+.lista{
+  margin-top:10px;
   max-height:180px;
   overflow-y:auto;
+  border-radius:14px;
+  border:1px solid rgba(0,255,213,.25);
 }
-.similares div{
+.item{
   padding:12px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.similares div:hover{
-  background:rgba(0,255,213,.2);
+.item:hover{
+  background:rgba(0,255,213,.18);
 }
 
-/* ===== BARRA RESUMEN ===== */
-.barra-resumen{
-  margin:18px auto;
+/* MENSAJE */
+.mensaje{
+  margin:16px 0;
+  padding:12px;
+  text-align:center;
+  border-radius:14px;
+  background:#000;
+  border:1px solid rgba(0,255,213,.35);
+  color:var(--neon);
+}
+
+/* RESUMEN */
+.resumen{
+  margin-top:16px;
   padding:14px;
-  max-width:700px;
   background:#000;
   border-radius:14px;
-  border:1px solid rgba(0,255,213,.45);
-  text-align:center;
+  border:1px solid rgba(0,255,213,.35);
   color:var(--neon);
-
-  overflow-x:auto;
-  white-space:nowrap;
-  -webkit-overflow-scrolling:touch;
+  text-align:center;
 }
 
-/* ===== TABLA ===== */
+/* TABLA */
 .tabla-scroll{
-  margin-top:18px;
+  margin-top:14px;
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
 }
 table{
-  min-width:800px;
+  min-width:720px;
+  width:100%;
   border-collapse:collapse;
-  background:#000;
-  border-radius:14px;
-  overflow:hidden;
 }
 th,td{
-  padding:12px;
+  padding:10px;
+  border:1px solid rgba(0,255,213,.25);
   text-align:center;
-  border-bottom:1px solid rgba(0,255,213,.2);
 }
 th{
-  background:linear-gradient(90deg,#00ffd5,#00bfa5);
+  background:linear-gradient(90deg,#0affd5,#00cfa9);
   color:#000;
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer{
-  margin-top:25px;
-  padding-top:12px;
+  margin-top:16px;
   text-align:center;
   font-size:12px;
   opacity:.8;
   border-top:1px solid rgba(0,255,213,.25);
+  padding-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrap">
+<div class="contenedor">
 
-  <!-- HEADER -->
   <div class="header">
     <h1>SYSTEM BY GELM — RENOVACIÓN 2026</h1>
     <div id="fechaHora" class="fecha"></div>
   </div>
 
-  <!-- BUSCADOR -->
-  <div class="busqueda">
-    <input id="buscar" placeholder="Buscar placa..." oninput="filtrar()">
+  <div class="buscador">
+    <input id="busqueda" placeholder="Buscar placa..." oninput="filtrar()">
   </div>
 
-  <!-- SIMILARES -->
-  <div id="lista" class="similares"></div>
+  <div id="lista" class="lista"></div>
 
-  <!-- RESUMEN -->
-  <div id="resumen" class="barra-resumen">
+  <div id="mensaje" class="mensaje">
     Seleccione una placa
   </div>
 
-  <!-- TABLA -->
-  <div class="tabla-scroll">
-    <table id="tabla">
-      <thead>
-        <tr>
-          <th>Dato</th>
-          <th>Dato</th>
-          <th>Dato</th>
-          <th>Dato</th>
-          <th>Dato</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+  <div id="resumen" class="resumen" style="display:none"></div>
 
-  <!-- FOOTER -->
+  <div id="tabla" class="tabla-scroll"></div>
+
   <div class="footer">
     © 2025–2026 — Sistema GELM<br>
     Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
@@ -184,49 +166,60 @@ th{
 </div>
 
 <script>
-/* ===== FECHA ===== */
-function actualizarHora(){
+const datos = [
+  {id:24, placa:"C-985BZH", fecha:"04/02/2026", tipo:"RENOVACION 2026", obs:"ESCOLAR 12-2025"},
+  {id:12, placa:"C-001CBC", fecha:"15/01/2026", tipo:"RENOVACION 2026", obs:"PARTICULAR"},
+  {id:8, placa:"C-423BLD", fecha:"10/01/2026", tipo:"RENOVACION 2026", obs:"MOTO"}
+];
+
+function renderLista(lista){
+  const cont=document.getElementById("lista");
+  cont.innerHTML="";
+  lista.forEach(d=>{
+    const div=document.createElement("div");
+    div.className="item";
+    div.textContent=d.placa;
+    div.onclick=()=>mostrar(d);
+    cont.appendChild(div);
+  });
+}
+
+function filtrar(){
+  const q=document.getElementById("busqueda").value.toUpperCase();
+  const res = q===""
+    ? datos
+    : datos.filter(d=>d.placa.includes(q));
+  renderLista(res);
+}
+
+function mostrar(d){
+  document.getElementById("mensaje").style.display="none";
+  document.getElementById("resumen").style.display="block";
+  document.getElementById("resumen").innerHTML=
+    `${d.placa} — ${d.tipo}<br>Fecha: ${d.fecha} | ${d.obs}`;
+
+  document.getElementById("tabla").innerHTML=`
+    <table>
+      <tr><th>Dato</th><th>Placa</th><th>Fecha</th><th>Tipo</th><th>Obs</th></tr>
+      <tr>
+        <td>${d.id}</td>
+        <td>${d.placa}</td>
+        <td>${d.fecha}</td>
+        <td>${d.tipo}</td>
+        <td>${d.obs}</td>
+      </tr>
+    </table>`;
+}
+
+function reloj(){
   const f=new Date();
   document.getElementById("fechaHora").textContent=
     f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
     " — "+f.toLocaleTimeString("es-GT");
 }
-setInterval(actualizarHora,1000);
-actualizarHora();
+setInterval(reloj,1000);reloj();
 
-/* ===== DATOS DEMO (tu Sheet ya lo conectas igual que antes) ===== */
-const datos=[
- {id:24,placa:"C-985BZH",fecha:"04/02/2026",tipo:"RENOVACION 2026",obs:"ESCOLAR 12-2025"},
- {id:12,placa:"C-001CBC",fecha:"01/02/2026",tipo:"RENOVACION 2026",obs:"PARTICULAR"},
- {id:7,placa:"C-423BLD",fecha:"30/01/2026",tipo:"RENOVACION 2026",obs:"CARGA"}
-];
-
-function filtrar(){
-  const q=document.getElementById("buscar").value.toUpperCase();
-  const lista=document.getElementById("lista");
-  lista.innerHTML="";
-  datos.filter(d=>d.placa.includes(q)).forEach(d=>{
-    const div=document.createElement("div");
-    div.textContent=d.placa;
-    div.onclick=()=>mostrar(d);
-    lista.appendChild(div);
-  });
-}
-
-function mostrar(d){
-  document.getElementById("resumen").textContent=
-    `${d.placa} — ${d.tipo} | Fecha: ${d.fecha} | ${d.obs}`;
-
-  const tb=document.querySelector("#tabla tbody");
-  tb.innerHTML=`
-    <tr>
-      <td>${d.id}</td>
-      <td>${d.placa}</td>
-      <td>${d.fecha}</td>
-      <td>${d.tipo}</td>
-      <td>${d.obs}</td>
-    </tr>`;
-}
+renderLista(datos);
 </script>
 
 </body>

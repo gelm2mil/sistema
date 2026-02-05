@@ -97,21 +97,8 @@ section{
   margin-bottom:10px;
   color:#a8ffe8;
 }
-.panel ul{
-  margin-left:18px;
-}
-.panel li{
-  margin:6px 0;
-}
-.subpanel{
-  margin-top:14px;
-  padding-top:12px;
-  border-top:1px dashed rgba(0,255,200,.35);
-  font-size:13px;
-  color:#bfffee;
-}
 
-/* === REPRODUCTOR COMPACTO === */
+/* === REPRODUCTOR === */
 .player-box{
   margin-top:14px;
   padding:10px;
@@ -138,7 +125,7 @@ footer{
   font-weight:bold;
 }
 
-/* BOTÓN GPT FLOTANTE */
+/* GPT */
 .btn-gpt{
   position:fixed;
   bottom:20px;
@@ -151,9 +138,6 @@ footer{
   text-decoration:none;
   box-shadow:0 0 16px rgba(0,255,255,.95);
   z-index:9999;
-}
-.btn-gpt:hover{
-  transform:scale(1.05);
 }
 </style>
 </head>
@@ -175,12 +159,19 @@ footer{
   <a href="https://gelm2mil.github.io/gelm/" target="_blank">Transportes</a>
   <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
   <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">Backup</a>
-  <a href="https://gelm2mil.github.io/sistema/revisiones.html" target="_blank">Revisiones</a>
+
+  <a href="modulos/renovacion.html">RENOVACIÓN</a>
+  <a href="modulos/traspaso.html">TRASPASO</a>
+  <a href="modulos/consignaciones.html">CONSIGNACIONES</a>
+  <a href="modulos/suplentes.html">SUPLENTES</a>
+  <a href="modulos/licencia_nueva.html">LICENCIA NUEVA</a>
+  <a href="modulos/c_permanente.html">C. PERMANENTE</a>
+  <a href="modulos/c_temporal.html">C. TEMPORAL</a>
+
   <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">Registro 2026</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">reglamento 273</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS sat</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/transito_2025.html" target="_blank">reforma 2025 sat</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">Codigo Municipal</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">Reglamento 273</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">Multas SAT</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">Código Municipal</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">Biblia</a>
 </nav>
 
@@ -188,18 +179,10 @@ footer{
   <div class="panel">
     <h2>Plan del Día</h2>
     <div id="estadoDia" class="estado"></div>
-    <ul id="tareasHoy"></ul>
 
-    <div class="subpanel">
-      <div id="modoTurno"></div>
-      <div id="siguienteAccion" style="margin-top:8px;"></div>
-    </div>
-
-    <!-- 🎧 REPRODUCTOR GELM -->
     <div class="player-box">
       <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
     </div>
-
   </div>
 </section>
 
@@ -209,48 +192,30 @@ footer{
   <div id="fechaHora"></div>
 </footer>
 
-<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">
-  🤖 GPT
-</a>
+<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
 <script>
-/* === TODO TU JS ORIGINAL, SIN CAMBIOS === */
-const frases = [
-  "Gracias a Dios, un nuevo día: nuevo comienzo.",
-  "El día avanza… y tú lo estás logrando.",
-  "Disciplina hoy, tranquilidad mañana.",
-  "Orden, visión y firmeza en cada paso.",
-  "Todo trabajo hecho con honra deja huella."
+const frases=[
+"Gracias a Dios, un nuevo día: nuevo comienzo.",
+"El día avanza… y tú lo estás logrando.",
+"Disciplina hoy, tranquilidad mañana.",
+"Orden, visión y firmeza en cada paso.",
+"Todo trabajo hecho con honra deja huella."
 ];
-
 function rotarFrase(){
-  const f = frases[Math.floor(Math.random()*frases.length)];
-  document.getElementById("fraseViva").textContent = f;
+ document.getElementById("fraseViva").textContent=
+ frases[Math.floor(Math.random()*frases.length)];
 }
-rotarFrase();
-setInterval(rotarFrase, 1000 * 60 * 45);
+rotarFrase();setInterval(rotarFrase,1000*60*45);
 
 function actualizarFechaHora(){
-  const ahora = new Date();
-  const opciones = { weekday:"long", year:"numeric", month:"long", day:"numeric" };
-  const fecha = ahora.toLocaleDateString("es-ES", opciones);
-  const hora = ahora.toLocaleTimeString("es-ES");
-  const texto = fecha + " — " + hora;
-
-  document.getElementById("fechaHora").textContent = texto;
-  document.getElementById("horaHeader").textContent = texto;
+ const d=new Date();
+ const f=d.toLocaleDateString("es-ES",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+ const h=d.toLocaleTimeString("es-ES");
+ document.getElementById("fechaHora").textContent=f+" — "+h;
+ document.getElementById("horaHeader").textContent=f+" — "+h;
 }
-setInterval(actualizarFechaHora,1000);
-actualizarFechaHora();
-
-/* ==== PLANIFICADOR ==== */
-const base = new Date(2026,0,17);
-function planDelDia(){ /* SIN CAMBIOS */ }
-planDelDia();
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
+setInterval(actualizarFechaHora,1000);actualizarFechaHora();
 </script>
 
 </body>

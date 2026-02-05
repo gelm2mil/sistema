@@ -14,148 +14,188 @@
   --txt:#e9ffff;
   --glow:0 0 18px rgba(0,255,213,.35);
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",system-ui}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-  min-height:100vh;
-  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  font-family:system-ui,Segoe UI,Arial;
+  background:
+    radial-gradient(circle at 20% 20%, #063b7a 0%, transparent 55%),
+    radial-gradient(circle at 80% 80%, #0a0033 0%, transparent 60%),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
   color:var(--txt);
+  min-height:100vh;
 }
 
-.contenedor{
-  max-width:920px;
-  margin:18px auto;
+/* ===== CONTENEDOR ===== */
+.wrapper{
+  max-width:1100px;
+  margin:20px auto;
   background:rgba(0,0,0,.45);
   border:1px solid rgba(0,255,213,.35);
   border-radius:22px;
   box-shadow:var(--glow);
-  padding:20px;
+  overflow:hidden;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
   text-align:center;
-  padding-bottom:14px;
+  padding:18px;
   border-bottom:1px solid rgba(0,255,213,.25);
 }
 .header h1{
   color:var(--neon);
   text-shadow:var(--glow);
 }
-.header .fecha{
+.fecha-hora{
   font-size:13px;
   opacity:.85;
+  margin-top:4px;
 }
 
-/* BUSCADOR */
+/* ===== CONTENIDO ===== */
+.content{
+  padding:24px;
+}
+
+/* ===== BUSCADOR ===== */
 .buscador{
-  margin:18px auto;
   max-width:520px;
+  margin:0 auto 12px;
+  position:relative;
 }
 .buscador input{
   width:100%;
-  padding:14px;
+  padding:14px 16px;
   border-radius:14px;
   border:1px solid rgba(0,255,213,.45);
   background:#000;
   color:var(--neon);
-  font-size:15px;
+  font-size:16px;
+  outline:none;
 }
 
-/* LISTA PLACAS */
-.lista{
-  margin-top:10px;
-  max-height:180px;
+/* ===== SIMILARES ===== */
+.similares{
+  max-width:520px;
+  margin:0 auto 16px;
+  background:#000;
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:16px;
+  display:none;
+  max-height:260px;
   overflow-y:auto;
-  border-radius:14px;
-  border:1px solid rgba(0,255,213,.25);
 }
-.item{
-  padding:12px;
+.similares .item{
+  padding:12px 14px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.item:hover{
-  background:rgba(0,255,213,.18);
-}
-
-/* MENSAJE */
-.mensaje{
-  margin:16px 0;
-  padding:12px;
-  text-align:center;
-  border-radius:14px;
-  background:#000;
-  border:1px solid rgba(0,255,213,.35);
-  color:var(--neon);
-}
-
-/* RESUMEN */
-.resumen{
-  margin-top:16px;
-  padding:14px;
-  background:#000;
-  border-radius:14px;
-  border:1px solid rgba(0,255,213,.35);
-  color:var(--neon);
-  text-align:center;
-}
-
-/* TABLA */
-.tabla-scroll{
-  margin-top:14px;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-table{
-  min-width:720px;
-  width:100%;
-  border-collapse:collapse;
-}
-th,td{
-  padding:10px;
-  border:1px solid rgba(0,255,213,.25);
-  text-align:center;
-}
-th{
-  background:linear-gradient(90deg,#0affd5,#00cfa9);
+.similares .item:hover{
+  background:var(--neon);
   color:#000;
 }
 
-/* FOOTER */
+/* ===== LISTA FIJA ===== */
+.lista{
+  max-width:520px;
+  margin:0 auto 18px;
+  background:#000;
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:16px;
+  max-height:220px;
+  overflow-y:auto;
+}
+.lista div{
+  padding:10px 14px;
+  border-bottom:1px solid rgba(0,255,213,.15);
+  cursor:pointer;
+}
+.lista div:hover{
+  background:var(--neon);
+  color:#000;
+}
+
+/* ===== INFO ACTIVA ===== */
+.info-activa{
+  max-width:720px;
+  margin:0 auto 18px;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(0,255,213,.35);
+  box-shadow:var(--glow);
+  text-align:center;
+  color:var(--neon);
+  font-size:15px;
+}
+
+/* ===== RESULTADO ===== */
+.resultado{
+  max-width:900px;
+  margin:0 auto;
+  background:var(--card);
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:18px;
+  box-shadow:var(--glow);
+  padding:16px;
+  display:none;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  border:1px solid rgba(255,255,255,.15);
+  padding:8px;
+}
+th{
+  background:var(--neon);
+  color:#000;
+}
+
+/* ===== FOOTER ===== */
 .footer{
-  margin-top:16px;
   text-align:center;
   font-size:12px;
-  opacity:.8;
+  padding:12px;
   border-top:1px solid rgba(0,255,213,.25);
-  padding-top:10px;
+  opacity:.85;
 }
 </style>
 </head>
 
 <body>
 
-<div class="contenedor">
+<div class="wrapper">
 
   <div class="header">
     <h1>SYSTEM BY GELM — RENOVACIÓN 2026</h1>
-    <div id="fechaHora" class="fecha"></div>
+    <div id="fechaHora" class="fecha-hora"></div>
   </div>
 
-  <div class="buscador">
-    <input id="busqueda" placeholder="Buscar placa..." oninput="filtrar()">
+  <div class="content">
+
+    <!-- BUSCADOR -->
+    <div class="buscador">
+      <input id="buscar" placeholder="Buscar placa..." autocomplete="off">
+    </div>
+
+    <!-- SIMILARES -->
+    <div id="similares" class="similares"></div>
+
+    <!-- LISTA FIJA -->
+    <div id="lista" class="lista"></div>
+
+    <!-- INFO ACTIVA -->
+    <div id="infoActiva" class="info-activa">
+      Seleccione una placa
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="resultado" class="resultado"></div>
+
   </div>
-
-  <div id="lista" class="lista"></div>
-
-  <div id="mensaje" class="mensaje">
-    Seleccione una placa
-  </div>
-
-  <div id="resumen" class="resumen" style="display:none"></div>
-
-  <div id="tabla" class="tabla-scroll"></div>
 
   <div class="footer">
     © 2025–2026 — Sistema GELM<br>
@@ -166,60 +206,116 @@ th{
 </div>
 
 <script>
-const datos = [
-  {id:24, placa:"C-985BZH", fecha:"04/02/2026", tipo:"RENOVACION 2026", obs:"ESCOLAR 12-2025"},
-  {id:12, placa:"C-001CBC", fecha:"15/01/2026", tipo:"RENOVACION 2026", obs:"PARTICULAR"},
-  {id:8, placa:"C-423BLD", fecha:"10/01/2026", tipo:"RENOVACION 2026", obs:"MOTO"}
-];
-
-function renderLista(lista){
-  const cont=document.getElementById("lista");
-  cont.innerHTML="";
-  lista.forEach(d=>{
-    const div=document.createElement("div");
-    div.className="item";
-    div.textContent=d.placa;
-    div.onclick=()=>mostrar(d);
-    cont.appendChild(div);
-  });
-}
-
-function filtrar(){
-  const q=document.getElementById("busqueda").value.toUpperCase();
-  const res = q===""
-    ? datos
-    : datos.filter(d=>d.placa.includes(q));
-  renderLista(res);
-}
-
-function mostrar(d){
-  document.getElementById("mensaje").style.display="none";
-  document.getElementById("resumen").style.display="block";
-  document.getElementById("resumen").innerHTML=
-    `${d.placa} — ${d.tipo}<br>Fecha: ${d.fecha} | ${d.obs}`;
-
-  document.getElementById("tabla").innerHTML=`
-    <table>
-      <tr><th>Dato</th><th>Placa</th><th>Fecha</th><th>Tipo</th><th>Obs</th></tr>
-      <tr>
-        <td>${d.id}</td>
-        <td>${d.placa}</td>
-        <td>${d.fecha}</td>
-        <td>${d.tipo}</td>
-        <td>${d.obs}</td>
-      </tr>
-    </table>`;
-}
-
-function reloj(){
+/* ===== FECHA Y HORA ===== */
+function actualizarHora(){
   const f=new Date();
-  document.getElementById("fechaHora").textContent=
+  document.getElementById("fechaHora").textContent =
     f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
     " — "+f.toLocaleTimeString("es-GT");
 }
-setInterval(reloj,1000);reloj();
+setInterval(actualizarHora,1000);
+actualizarHora();
 
-renderLista(datos);
+/* ===== CONFIG ===== */
+const URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=164141285&single=true&output=csv";
+
+/*
+Columnas esperadas:
+f[0] ID
+f[1] PLACA
+f[2] FECHA
+f[3] TIPO
+f[4] OBSERVACIÓN
+*/
+
+let filas=[];
+
+function norm(t){
+  return t.toUpperCase().replace(/[^A-Z0-9]/g,"");
+}
+
+/* ===== CARGA DATOS ===== */
+fetch(URL)
+.then(r=>r.text())
+.then(t=>{
+  filas=t.split("\n").map(l=>l.split(","));
+  cargarLista();
+});
+
+/* ===== LISTA FIJA ===== */
+function cargarLista(){
+  const box=document.getElementById("lista");
+  box.innerHTML="";
+  filas.forEach((f,i)=>{
+    if(i===0) return;
+    const d=document.createElement("div");
+    d.textContent=f[1];
+    d.onclick=()=>mostrar(f);
+    box.appendChild(d);
+  });
+}
+
+/* ===== BUSCADOR + SIMILARES ===== */
+const input=document.getElementById("buscar");
+const similares=document.getElementById("similares");
+
+input.addEventListener("input",()=>{
+  const q=norm(input.value);
+  similares.innerHTML="";
+  if(q.length<2){
+    similares.style.display="none";
+    return;
+  }
+
+  const hits=[];
+  filas.forEach((f,i)=>{
+    if(i===0) return;
+    if(norm(f.join(" ")).includes(q)){
+      hits.push(f);
+    }
+  });
+
+  if(hits.length===0){
+    similares.style.display="none";
+    return;
+  }
+
+  hits.slice(0,20).forEach(f=>{
+    const d=document.createElement("div");
+    d.className="item";
+    d.innerHTML=`
+      <strong>${f[1]}</strong><br>
+      <span style="font-size:13px;opacity:.85">
+        ${f[3]} — ${f[2]}<br>
+        ${f[4]}
+      </span>
+    `;
+    d.onclick=()=>mostrar(f);
+    similares.appendChild(d);
+  });
+
+  similares.style.display="block";
+});
+
+/* ===== MOSTRAR ===== */
+function mostrar(f){
+  similares.style.display="none";
+
+  document.getElementById("infoActiva").innerHTML =
+    `<strong>${f[1]}</strong> — ${f[3]}<br>
+     Fecha: ${f[2]} | ${f[4]}`;
+
+  let h="<table><tr>";
+  f.forEach(()=>h+="<th>Dato</th>");
+  h+="</tr><tr>";
+  f.forEach(c=>h+="<td>"+c+"</td>");
+  h+="</tr></table>";
+
+  const r=document.getElementById("resultado");
+  r.innerHTML=h;
+  r.style.display="block";
+}
 </script>
 
 </body>

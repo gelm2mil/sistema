@@ -53,9 +53,7 @@ body{
 }
 
 /* ===== CONTENIDO ===== */
-.content{
-  padding:24px;
-}
+.content{ padding:24px; }
 
 /* ===== BUSCADOR ===== */
 .buscador{
@@ -94,7 +92,7 @@ body{
   color:#000;
 }
 
-/* ===== LISTA FIJA ===== */
+/* ===== LISTA ===== */
 .lista{
   max-width:520px;
   margin:0 auto 18px;
@@ -125,7 +123,6 @@ body{
   box-shadow:var(--glow);
   text-align:center;
   color:var(--neon);
-  font-size:15px;
 }
 
 /* ===== RESULTADO ===== */
@@ -139,15 +136,11 @@ body{
   padding:16px;
   display:none;
 }
-
-/* ===== SCROLL HORIZONTAL MÓVIL ===== */
 .resultado-scroll{
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
 }
-.resultado-scroll table{
-  min-width:720px;
-}
+.resultado-scroll table{ min-width:720px; }
 
 table{
   width:100%;
@@ -215,10 +208,9 @@ function actualizarHora(){
     f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
     " — "+f.toLocaleTimeString("es-GT");
 }
-setInterval(actualizarHora,1000);
-actualizarHora();
+setInterval(actualizarHora,1000);actualizarHora();
 
-/* === CSV C. TEMPORAL === */
+/* ===== CSV C. TEMPORAL ===== */
 const URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=1642448788&single=true&output=csv";
 
@@ -261,9 +253,7 @@ input.addEventListener("input",()=>{
   hits.slice(0,20).forEach(f=>{
     const d=document.createElement("div");
     d.className="item";
-    d.innerHTML=`<strong>${f[1]}</strong><br>
-      <span style="font-size:13px;opacity:.85">
-      ${f[3]} — ${f[2]}<br>${f[4]}</span>`;
+    d.innerHTML=`<strong>${f[1]}</strong><br>${f[3]} — ${f[2]}<br>${f[4]}`;
     d.onclick=()=>mostrar(f);
     similares.appendChild(d);
   });
@@ -273,8 +263,7 @@ input.addEventListener("input",()=>{
 function mostrar(f){
   similares.style.display="none";
   document.getElementById("infoActiva").innerHTML =
-    `<strong>${f[1]}</strong> — ${f[3]}<br>
-     Fecha: ${f[2]} | ${f[4]}`;
+    `<strong>${f[1]}</strong> — ${f[3]}<br>Fecha: ${f[2]} | ${f[4]}`;
 
   let h="<table><tr>";
   f.forEach(()=>h+="<th>Dato</th>");

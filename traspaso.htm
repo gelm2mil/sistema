@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRASPASO 2026 — BY GELM</title>
+
+<style>
+:root{
+  --neon:#00ffd5;
+  --bg1:#020b18;
+  --bg2:#041d33;
+  --card:rgba(4,18,34,.92);
+  --txt:#e9ffff;
+  --glow:0 0 18px rgba(0,255,213,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:system-ui,Segoe UI,Arial;
+  background:
+    radial-gradient(circle at 20% 20%, #063b7a 0%, transparent 55%),
+    radial-gradient(circle at 80% 80%, #0a0033 0%, transparent 60%),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:var(--txt);
+  height:100vh;
+}
+
+/* ===== LAYOUT ===== */
+.layout{
+  display:flex;
+  height:100%;
+  padding:12px;
+  gap:12px;
+}
+.centro{
+  flex:1;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:20px;
+  box-shadow:var(--glow);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+/* HEADER */
+.centro-header{
+  padding:16px;
+  text-align:center;
+  border-bottom:1px solid rgba(0,255,213,.25);
+}
+.centro-header h1{
+  color:var(--neon);
+  text-shadow:var(--glow);
+  margin-bottom:4px;
+}
+.fecha-hora{
+  font-size:13px;
+  opacity:.85;
+}
+
+/* CONTENIDO */
+.contenido{
+  flex:1;
+  padding:24px;
+  overflow-y:auto;
+}
+
+/* BUSCADOR */
+.buscador{
+  max-width:520px;
+  margin:0 auto 20px;
+  position:relative;
+}
+.buscador input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(0,255,213,.45);
+  background:#000;
+  color:var(--neon);
+  font-size:16px;
+  outline:none;
+}
+.sugerencias{
+  position:absolute;
+  top:56px;
+  left:0;
+  right:0;
+  background:#000;
+  border:1px solid rgba(0,255,213,.45);
+  border-radius:14px;
+  max-height:260px;
+  overflow-y:auto;
+  display:none;
+  z-index:99;
+}
+.sugerencias div{
+  padding:10px 14px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(0,255,213,.15);
+}
+.sugerencias div:hover{
+  background:var(--neon);
+  color:#000;
+}
+
+/* RESULTADO */
+.resultado{
+  max-width:900px;
+  margin:0 auto;
+  background:var(--card);
+  border:1px solid rgba(0,255,213,.35);
+  border-radius:18px;
+  box-shadow:var(--glow);
+  padding:16px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  border:1px solid rgba(255,255,255,.15);
+  padding:8px;
+}
+th{
+  background:var(--neon);
+  color:#000;
+  text-align:left;
+}
+
+/* FOOTER */
+.centro-footer{
+  text-align:center;
+  font-size:12px;
+  padding:10px;
+  border-top:1px solid rgba(0,255,213,.25);
+  opacity:.85;
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+  <div class="centro">
+
+    <!-- HEADER -->
+    <div class="centro-header">
+      <h1>SYSTEM BY GELM — TRASPASO 2026</h1>
+      <div id="fechaHora" class="fecha-hora"></div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="contenido">
+
+      <div class="buscador">
+        <input id="buscar" placeholder="Buscar placa..." autocomplete="off">
+        <div id="sugerencias" class="sugerencias"></div>
+      </div>
+
+      <div id="resultado" class="resultado" style="display:none"></div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="centro-footer">
+      © 2025–2026 — Sistema GELM<br>
+      Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
+      Uso interno autorizado
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== FECHA Y HORA ===== */
+function actualizarHora(){
+  const f=new Date();
+  document.getElementById("fechaHora").textContent=
+    f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
+    " — "+f.toLocaleTimeString("es-GT");
+}
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+/* ===== DATOS TRASPASO ===== */
+const URL_TRASPASO =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=1819752615&single=true&output=csv";
+
+let filas=[];
+
+function normalizar(t){
+  return t.toString().toUpperCase().replace(/[^A-Z0-9]/g,"");
+}
+
+fetch(URL_TRASPASO)
+.then(r=>r.text())
+.then(t=>{
+  filas=t.split("\n").map(l=>l.split(","));
+});
+
+/* ===== BUSCADOR CON DESPLEGABLE ===== */
+const input=document.getElementById("buscar");
+const sug=document.getElementById("sugerencias");
+const res=document.getElementById("resultado");
+
+input.addEventListener("input",()=>{
+  const q=normalizar(input.value);
+  sug.innerHTML="";
+  if(q.length<2){sug.style.display="none";return;}
+
+  const hits=[];
+  filas.forEach((f,i)=>{
+    if(i===0) return;
+    if(normalizar(f.join(" ")).includes(q)){
+      hits.push(f);
+    }
+  });
+
+  if(hits.length===0){sug.style.display="none";return;}
+
+  hits.slice(0,20).forEach(f=>{
+    const d=document.createElement("div");
+    d.textContent=f[0];
+    d.onclick=()=>mostrar(f);
+    sug.appendChild(d);
+  });
+  sug.style.display="block";
+});
+
+function mostrar(f){
+  sug.style.display="none";
+  res.style.display="block";
+  let h="<table><tr>";
+  f.forEach(()=>h+="<th>Dato</th>");
+  h+="</tr><tr>";
+  f.forEach(c=>h+="<td>"+c+"</td>");
+  h+="</tr></table>";
+  res.innerHTML=h;
+}
+</script>
+
+</body>
+</html>

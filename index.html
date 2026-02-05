@@ -6,150 +6,130 @@
 <title>GELM - SYSTEM</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00ffc8">
+<meta name="theme-color" content="#00ff66">
 
 <style>
 :root{
-  --neon:#00ffc8;
+  --neon:#00ff66;
   --bg1:#020b12;
-  --bg2:#2b0033;
+  --bg2:#1a0022;
+  --card:rgba(0,0,0,.65);
+  --glow:0 0 18px rgba(0,255,102,.55);
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
+
 body{
   min-height:100vh;
   background:linear-gradient(135deg,var(--bg1),var(--bg2));
-  color:#eaffff;
+  color:#eafff2;
 }
 
-/* HEADER */
-.header-btn{
-  margin:16px auto;
-  padding:14px 32px;
+/* ===== HEADER ===== */
+.header{
+  margin:14px auto 10px;
+  padding:14px 26px;
   border-radius:999px;
-  background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
-  box-shadow:0 0 16px rgba(0,255,255,.95);
-  text-align:center;
+  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
+  box-shadow:var(--glow);
   width:fit-content;
+  text-align:center;
+  color:#000;
 }
-.header-btn h1{font-size:18px;color:#000;font-weight:bold;}
-.header-btn span{
+.header h1{font-size:18px;font-weight:800}
+.header span{
   display:block;
   font-size:12px;
-  color:#001010;
-  font-weight:bold;
+  font-weight:700;
 }
-.header-btn .hora-header{
-  margin-top:6px;
+.header .hora{
+  margin-top:4px;
   font-size:11px;
-  color:#00ff9c;
-  text-shadow:0 0 6px #00ffcc;
-  font-weight:bold;
+  color:#003311;
+  font-weight:700;
 }
 
-/* LAYOUT */
-.main{display:flex;min-height:calc(100vh - 140px);}
-
-/* MENU GRID */
-nav{
-  width:260px;
-  padding:12px;
-  background:rgba(0,0,0,.65);
-  border-right:1px solid rgba(0,255,200,.35);
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-nav a{
-  text-decoration:none;
-  text-align:center;
-  padding:10px 6px;
-  border-radius:14px;
-  color:var(--neon);
-  font-size:12px;
-  font-weight:bold;
-  border:1px solid rgba(0,255,200,.45);
-  background:linear-gradient(145deg,#020616,#05001a);
-  box-shadow:0 0 10px rgba(0,255,255,.35);
-}
-
-/* CONTENT */
-section{
-  flex:1;
-  padding:24px;
-}
-.panel{
-  max-width:700px;
-  margin:auto;
-  background:rgba(0,0,0,.55);
-  border:1px solid rgba(0,255,200,.35);
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 0 20px rgba(0,255,255,.35);
-}
-.panel h2{
-  color:#00ffc8;
-  text-shadow:0 0 8px #00ffff;
-  margin-bottom:10px;
-}
-.panel .estado{
-  font-size:14px;
-  margin-bottom:10px;
-  color:#a8ffe8;
-}
-
-/* PLAYER */
-.player-box{
-  margin-top:14px;
+/* ===== PLAYER ===== */
+.player{
+  max-width:420px;
+  margin:10px auto 18px;
   padding:10px;
-  border-radius:14px;
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(0,255,200,.35);
+  border-radius:16px;
+  background:var(--card);
+  border:1px solid rgba(0,255,102,.45);
+  box-shadow:var(--glow);
 }
-.player-box iframe{
+.player iframe{
   width:100%;
-  height:110px;
+  height:120px;
   border:none;
   border-radius:12px;
 }
 
-/* FOOTER */
-footer{
+/* ===== GRID BOTONES ===== */
+.menu{
+  max-width:620px;
+  margin:0 auto 40px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  padding:0 14px;
+}
+.menu a{
+  text-decoration:none;
   text-align:center;
-  font-size:12px;
-  padding:12px;
-  border-top:1px solid rgba(0,255,200,.3);
-  color:#00ff9c;
+  padding:14px 10px;
+  border-radius:16px;
+  color:var(--neon);
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:.5px;
+  background:linear-gradient(145deg,#020b12,#050014);
+  border:1px solid rgba(0,255,102,.45);
+  box-shadow:0 0 14px rgba(0,255,102,.45);
 }
 
-/* GPT */
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;
+  font-size:11px;
+  padding:12px;
+  color:#00ff99;
+  border-top:1px solid rgba(0,255,102,.25);
+}
+
+/* ===== GPT ===== */
 .btn-gpt{
   position:fixed;
-  bottom:20px;
-  right:20px;
+  bottom:18px;
+  right:18px;
   padding:12px 18px;
   border-radius:999px;
-  background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
   color:#000;
-  font-weight:bold;
+  font-weight:900;
   text-decoration:none;
-  box-shadow:0 0 16px rgba(0,255,255,.95);
+  box-shadow:var(--glow);
 }
 </style>
 </head>
 
 <body>
 
-<div class="header-btn">
+<!-- HEADER -->
+<div class="header">
   <h1>GELM - SYSTEM</h1>
-  <span id="fraseViva"></span>
-  <div id="horaHeader" class="hora-header"></div>
+  <span id="frase"></span>
+  <div id="hora" class="hora"></div>
 </div>
 
-<div class="main">
+<!-- PLAYER -->
+<div class="player">
+  <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
+</div>
 
-<nav>
-  <!-- ORDEN SEGÚN NECESIDAD DIARIA -->
+<!-- BOTONERA -->
+<div class="menu">
+
   <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
   <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
 
@@ -176,51 +156,37 @@ footer{
 
   <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
   <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
-</nav>
-
-<section>
-  <div class="panel">
-    <h2>PLAN DEL DÍA</h2>
-    <div id="estadoDia" class="estado"></div>
-    <div class="player-box">
-      <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
-    </div>
-  </div>
-</section>
 
 </div>
 
 <footer>
-  © 2025–2026 — Sistema GELM<br>
-  Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
-  Uso interno autorizado
+© 2025–2026 — Sistema GELM<br>
+Uso interno autorizado
 </footer>
 
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
 <script>
 const frases=[
-"Gracias a Dios, un nuevo día: nuevo comienzo.",
-"El día avanza… y tú lo estás logrando.",
+"Gracias a Dios, un nuevo día.",
+"El día avanza y tú lo estás logrando.",
 "Disciplina hoy, tranquilidad mañana.",
-"Orden, visión y firmeza en cada paso.",
-"Todo trabajo hecho con honra deja huella."
+"Orden, visión y firmeza.",
+"Todo trabajo bien hecho deja huella."
 ];
-function rotarFrase(){
- document.getElementById("fraseViva").textContent=
+function rotar(){
+ document.getElementById("frase").textContent=
  frases[Math.floor(Math.random()*frases.length)];
 }
-rotarFrase();
-setInterval(rotarFrase,1000*60*45);
+rotar();setInterval(rotar,1000*60*30);
 
-function actualizarFechaHora(){
+function reloj(){
  const d=new Date();
- const f=d.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
- const h=d.toLocaleTimeString("es-GT");
- document.getElementById("horaHeader").textContent=f+" — "+h;
+ document.getElementById("hora").textContent=
+ d.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long"})+
+ " — "+d.toLocaleTimeString("es-GT");
 }
-setInterval(actualizarFechaHora,1000);
-actualizarFechaHora();
+reloj();setInterval(reloj,1000);
 </script>
 
 </body>

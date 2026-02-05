@@ -23,82 +23,77 @@ body{
 
 /* HEADER */
 .header-btn{
-  margin:16px auto;
-  padding:14px 32px;
+  margin:14px auto;
+  padding:14px 30px;
   border-radius:999px;
   background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
-  box-shadow:0 0 16px rgba(0,255,255,.95);
+  box-shadow:0 0 16px rgba(0,255,255,.9);
   text-align:center;
   width:fit-content;
 }
 .header-btn h1{font-size:18px;color:#000;font-weight:bold;}
-.header-btn span{
-  display:block;
-  font-size:12px;
-  color:#001010;
-  font-weight:bold;
-}
-.header-btn .hora-header{
-  margin-top:6px;
-  font-size:11px;
-  color:#00ff9c;
-  text-shadow:0 0 6px #00ffcc;
-  font-weight:bold;
-}
+.header-btn span{font-size:12px;color:#001010;font-weight:bold;}
+.hora-header{font-size:11px;color:#00ff9c;margin-top:4px}
 
 /* LAYOUT */
-.main{display:flex;min-height:calc(100vh - 140px);}
+.main{display:flex;min-height:calc(100vh - 130px);}
 
 /* SIDEBAR */
 nav{
-  width:130px;
-  padding:12px 8px;
+  width:150px;
+  padding:10px;
   background:rgba(0,0,0,.65);
   border-right:1px solid rgba(0,255,200,.35);
-  display:flex;
-  flex-direction:column;
-  gap:12px;
 }
-nav a{
-  text-decoration:none;
+.group{
+  margin-bottom:14px;
+}
+.group h3{
+  font-size:12px;
   text-align:center;
-  padding:12px 8px;
-  border-radius:16px;
+  margin-bottom:6px;
+  color:#00ffcc;
+  text-shadow:0 0 6px #00ffff;
+}
+.group a{
+  display:block;
+  margin-bottom:8px;
+  padding:10px;
+  text-align:center;
+  border-radius:14px;
   color:var(--neon);
+  text-decoration:none;
   font-size:12px;
   border:1px solid rgba(0,255,200,.45);
   background:linear-gradient(145deg,#020616,#05001a);
-  box-shadow:0 0 12px rgba(0,255,255,.45);
+  box-shadow:0 0 10px rgba(0,255,255,.4);
 }
 
 /* CONTENT */
 section{
   flex:1;
-  padding:24px;
+  padding:20px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
 }
 .panel{
-  max-width:700px;
-  margin:auto;
+  width:100%;
+  max-width:620px;
   background:rgba(0,0,0,.55);
   border:1px solid rgba(0,255,200,.35);
   border-radius:18px;
-  padding:20px;
+  padding:18px;
   box-shadow:0 0 20px rgba(0,255,255,.35);
 }
 .panel h2{
+  text-align:center;
   color:#00ffc8;
-  text-shadow:0 0 8px #00ffff;
   margin-bottom:10px;
-}
-.panel .estado{
-  font-size:14px;
-  margin-bottom:10px;
-  color:#a8ffe8;
 }
 
 /* PLAYER */
 .player-box{
-  margin-top:14px;
   padding:10px;
   border-radius:14px;
   background:rgba(0,0,0,.6);
@@ -106,7 +101,7 @@ section{
 }
 .player-box iframe{
   width:100%;
-  height:110px;
+  height:120px;
   border:none;
   border-radius:12px;
 }
@@ -115,7 +110,7 @@ section{
 footer{
   text-align:center;
   font-size:12px;
-  padding:12px;
+  padding:10px;
   border-top:1px solid rgba(0,255,200,.3);
   color:#00ff9c;
 }
@@ -123,8 +118,8 @@ footer{
 /* GPT */
 .btn-gpt{
   position:fixed;
-  bottom:20px;
-  right:20px;
+  bottom:16px;
+  right:16px;
   padding:12px 18px;
   border-radius:999px;
   background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
@@ -147,31 +142,40 @@ footer{
 <div class="main">
 
 <nav>
-  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">Agenda</a>
-  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">Hechos</a>
-  <a href="https://gelm2mil.github.io/control/consignacion_pwa.html" target="_blank">Consigna</a>
-  <a href="https://gelm2mil.github.io/gelm/" target="_blank">Transportes</a>
-  <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
-  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">Backup</a>
 
-  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
-  <a href="traspaso.html" target="_blank">TRASPASO</a>
-  <a href="suplentes.html" target="_blank">SUPLENTES</a>
-  <a href="linea_nueva.html" target="_blank">LINEA NUEVA</a>
-  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
-  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
+  <div class="group">
+    <h3>Gestión</h3>
+    <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">Agenda</a>
+    <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">Hechos</a>
+    <a href="https://gelm2mil.github.io/control/consignacion_pwa.html" target="_blank">Consigna</a>
+    <a href="https://gelm2mil.github.io/gelm/" target="_blank">Transportes</a>
+    <a href="https://gelm2mil.github.io/buscador/" target="_blank">Multas</a>
+  </div>
 
-  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">Registro 2026</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">Reglamento 273</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">Multas SAT</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">Código Municipal</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">Biblia</a>
+  <div class="group">
+    <h3>Trámites 2026</h3>
+    <a href="renovacion.html" target="_blank">Renovación</a>
+    <a href="traspaso.html" target="_blank">Traspaso</a>
+    <a href="suplentes.html" target="_blank">Suplentes</a>
+    <a href="linea_nueva.html" target="_blank">Línea Nueva</a>
+    <a href="c_permanentes.html" target="_blank">C. Permanente</a>
+    <a href="c_temporal.html" target="_blank">C. Temporal</a>
+  </div>
+
+  <div class="group">
+    <h3>Normativa</h3>
+    <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">Registro 2026</a>
+    <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">Reglamento 273</a>
+    <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">Multas SAT</a>
+    <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">Código Municipal</a>
+    <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">Biblia</a>
+  </div>
+
 </nav>
 
 <section>
   <div class="panel">
     <h2>Plan del Día</h2>
-    <div id="estadoDia" class="estado"></div>
     <div class="player-box">
       <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
     </div>
@@ -181,37 +185,32 @@ footer{
 </div>
 
 <footer>
-  © 2025–2026 — Sistema GELM<br>
-  Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
-  Uso interno autorizado
+© 2025–2026 — Sistema GELM · Uso interno autorizado
 </footer>
 
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
 <script>
 const frases=[
-"Gracias a Dios, un nuevo día: nuevo comienzo.",
-"El día avanza… y tú lo estás logrando.",
-"Disciplina hoy, tranquilidad mañana.",
-"Orden, visión y firmeza en cada paso.",
-"Todo trabajo hecho con honra deja huella."
+"Gracias a Dios, un nuevo día.",
+"Orden hoy, tranquilidad mañana.",
+"Disciplina crea libertad.",
+"Todo trabajo bien hecho deja huella."
 ];
 function rotarFrase(){
  document.getElementById("fraseViva").textContent=
  frases[Math.floor(Math.random()*frases.length)];
 }
-rotarFrase();setInterval(rotarFrase,1000*60*45);
+rotarFrase();setInterval(rotarFrase,1000*60*30);
 
 function actualizarFechaHora(){
  const d=new Date();
- const f=d.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
- const h=d.toLocaleTimeString("es-GT");
- document.getElementById("horaHeader").textContent=f+" — "+h;
+ document.getElementById("horaHeader").textContent=
+ d.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long"})+
+ " — "+d.toLocaleTimeString("es-GT");
 }
-setInterval(actualizarFechaHora,1000);
-actualizarFechaHora();
+setInterval(actualizarFechaHora,1000);actualizarFechaHora();
 </script>
 
 </body>
 </html>
-

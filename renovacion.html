@@ -14,189 +14,167 @@
   --txt:#e9ffff;
   --glow:0 0 18px rgba(0,255,213,.35);
 }
+
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:system-ui,Segoe UI,Arial;
-  background:
-    radial-gradient(circle at 20% 20%, #063b7a 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, #0a0033 0%, transparent 60%),
-    linear-gradient(180deg,var(--bg1),var(--bg2));
+  font-family:"Segoe UI",system-ui;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
   color:var(--txt);
   min-height:100vh;
 }
 
-/* ===== CONTENEDOR ===== */
-.wrapper{
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.wrap{
   max-width:1100px;
   margin:20px auto;
+  padding:20px;
   background:rgba(0,0,0,.45);
   border:1px solid rgba(0,255,213,.35);
   border-radius:22px;
   box-shadow:var(--glow);
-  overflow:hidden;
 }
 
 /* ===== HEADER ===== */
 .header{
   text-align:center;
-  padding:18px;
+  padding-bottom:15px;
   border-bottom:1px solid rgba(0,255,213,.25);
 }
 .header h1{
   color:var(--neon);
   text-shadow:var(--glow);
 }
-.fecha-hora{
+.header .fecha{
   font-size:13px;
   opacity:.85;
-  margin-top:4px;
-}
-
-/* ===== CONTENIDO ===== */
-.content{
-  padding:24px;
 }
 
 /* ===== BUSCADOR ===== */
-.buscador{
-  max-width:520px;
-  margin:0 auto 12px;
-  position:relative;
+.busqueda{
+  margin:25px auto 10px;
+  max-width:420px;
 }
-.buscador input{
+.busqueda input{
   width:100%;
-  padding:14px 16px;
+  padding:14px;
   border-radius:14px;
   border:1px solid rgba(0,255,213,.45);
   background:#000;
   color:var(--neon);
-  font-size:16px;
+  font-size:15px;
   outline:none;
 }
 
-/* ===== SIMILARES ===== */
+/* ===== LISTA SIMILARES ===== */
 .similares{
-  max-width:520px;
-  margin:0 auto 16px;
+  max-width:420px;
+  margin:10px auto;
   background:#000;
+  border-radius:14px;
   border:1px solid rgba(0,255,213,.35);
-  border-radius:16px;
-  display:none;
-  max-height:260px;
+  max-height:180px;
   overflow-y:auto;
 }
-.similares .item{
-  padding:12px 14px;
+.similares div{
+  padding:12px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.similares .item:hover{
-  background:var(--neon);
-  color:#000;
+.similares div:hover{
+  background:rgba(0,255,213,.2);
 }
 
-/* ===== LISTA FIJA ===== */
-.lista{
-  max-width:520px;
-  margin:0 auto 18px;
-  background:#000;
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:16px;
-  max-height:220px;
-  overflow-y:auto;
-}
-.lista div{
-  padding:10px 14px;
-  border-bottom:1px solid rgba(0,255,213,.15);
-  cursor:pointer;
-}
-.lista div:hover{
-  background:var(--neon);
-  color:#000;
-}
-
-/* ===== INFO ACTIVA ===== */
-.info-activa{
-  max-width:720px;
-  margin:0 auto 18px;
+/* ===== BARRA RESUMEN ===== */
+.barra-resumen{
+  margin:18px auto;
   padding:14px;
-  border-radius:16px;
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(0,255,213,.35);
-  box-shadow:var(--glow);
+  max-width:700px;
+  background:#000;
+  border-radius:14px;
+  border:1px solid rgba(0,255,213,.45);
   text-align:center;
   color:var(--neon);
-  font-size:15px;
+
+  overflow-x:auto;
+  white-space:nowrap;
+  -webkit-overflow-scrolling:touch;
 }
 
-/* ===== RESULTADO ===== */
-.resultado{
-  max-width:900px;
-  margin:0 auto;
-  background:var(--card);
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:18px;
-  box-shadow:var(--glow);
-  padding:16px;
-  display:none;
+/* ===== TABLA ===== */
+.tabla-scroll{
+  margin-top:18px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
 table{
-  width:100%;
+  min-width:800px;
   border-collapse:collapse;
-  font-size:14px;
+  background:#000;
+  border-radius:14px;
+  overflow:hidden;
 }
 th,td{
-  border:1px solid rgba(255,255,255,.15);
-  padding:8px;
+  padding:12px;
+  text-align:center;
+  border-bottom:1px solid rgba(0,255,213,.2);
 }
 th{
-  background:var(--neon);
+  background:linear-gradient(90deg,#00ffd5,#00bfa5);
   color:#000;
 }
 
 /* ===== FOOTER ===== */
 .footer{
+  margin-top:25px;
+  padding-top:12px;
   text-align:center;
   font-size:12px;
-  padding:12px;
+  opacity:.8;
   border-top:1px solid rgba(0,255,213,.25);
-  opacity:.85;
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<div class="wrap">
 
+  <!-- HEADER -->
   <div class="header">
     <h1>SYSTEM BY GELM — RENOVACIÓN 2026</h1>
-    <div id="fechaHora" class="fecha-hora"></div>
+    <div id="fechaHora" class="fecha"></div>
   </div>
 
-  <div class="content">
-
-    <!-- BUSCADOR -->
-    <div class="buscador">
-      <input id="buscar" placeholder="Buscar placa..." autocomplete="off">
-    </div>
-
-    <!-- SIMILARES -->
-    <div id="similares" class="similares"></div>
-
-    <!-- LISTA FIJA -->
-    <div id="lista" class="lista"></div>
-
-    <!-- INFO ACTIVA -->
-    <div id="infoActiva" class="info-activa">
-      Seleccione una placa
-    </div>
-
-    <!-- RESULTADO -->
-    <div id="resultado" class="resultado"></div>
-
+  <!-- BUSCADOR -->
+  <div class="busqueda">
+    <input id="buscar" placeholder="Buscar placa..." oninput="filtrar()">
   </div>
 
+  <!-- SIMILARES -->
+  <div id="lista" class="similares"></div>
+
+  <!-- RESUMEN -->
+  <div id="resumen" class="barra-resumen">
+    Seleccione una placa
+  </div>
+
+  <!-- TABLA -->
+  <div class="tabla-scroll">
+    <table id="tabla">
+      <thead>
+        <tr>
+          <th>Dato</th>
+          <th>Dato</th>
+          <th>Dato</th>
+          <th>Dato</th>
+          <th>Dato</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
   <div class="footer">
     © 2025–2026 — Sistema GELM<br>
     Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
@@ -206,115 +184,48 @@ th{
 </div>
 
 <script>
-/* ===== FECHA Y HORA ===== */
+/* ===== FECHA ===== */
 function actualizarHora(){
   const f=new Date();
-  document.getElementById("fechaHora").textContent =
+  document.getElementById("fechaHora").textContent=
     f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
     " — "+f.toLocaleTimeString("es-GT");
 }
 setInterval(actualizarHora,1000);
 actualizarHora();
 
-/* ===== CONFIG ===== */
-const URL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=164141285&single=true&output=csv";
+/* ===== DATOS DEMO (tu Sheet ya lo conectas igual que antes) ===== */
+const datos=[
+ {id:24,placa:"C-985BZH",fecha:"04/02/2026",tipo:"RENOVACION 2026",obs:"ESCOLAR 12-2025"},
+ {id:12,placa:"C-001CBC",fecha:"01/02/2026",tipo:"RENOVACION 2026",obs:"PARTICULAR"},
+ {id:7,placa:"C-423BLD",fecha:"30/01/2026",tipo:"RENOVACION 2026",obs:"CARGA"}
+];
 
-/*
-Columnas esperadas:
-f[0] ID
-f[1] PLACA
-f[2] FECHA
-f[3] TIPO
-f[4] OBSERVACIÓN
-*/
-
-let filas=[];
-
-function norm(t){
-  return t.toUpperCase().replace(/[^A-Z0-9]/g,"");
-}
-
-/* ===== CARGA DATOS ===== */
-fetch(URL)
-.then(r=>r.text())
-.then(t=>{
-  filas=t.split("\n").map(l=>l.split(","));
-  cargarLista();
-});
-
-/* ===== LISTA FIJA ===== */
-function cargarLista(){
-  const box=document.getElementById("lista");
-  box.innerHTML="";
-  filas.forEach((f,i)=>{
-    if(i===0) return;
-    const d=document.createElement("div");
-    d.textContent=f[1];
-    d.onclick=()=>mostrar(f);
-    box.appendChild(d);
+function filtrar(){
+  const q=document.getElementById("buscar").value.toUpperCase();
+  const lista=document.getElementById("lista");
+  lista.innerHTML="";
+  datos.filter(d=>d.placa.includes(q)).forEach(d=>{
+    const div=document.createElement("div");
+    div.textContent=d.placa;
+    div.onclick=()=>mostrar(d);
+    lista.appendChild(div);
   });
 }
 
-/* ===== BUSCADOR + SIMILARES ===== */
-const input=document.getElementById("buscar");
-const similares=document.getElementById("similares");
+function mostrar(d){
+  document.getElementById("resumen").textContent=
+    `${d.placa} — ${d.tipo} | Fecha: ${d.fecha} | ${d.obs}`;
 
-input.addEventListener("input",()=>{
-  const q=norm(input.value);
-  similares.innerHTML="";
-  if(q.length<2){
-    similares.style.display="none";
-    return;
-  }
-
-  const hits=[];
-  filas.forEach((f,i)=>{
-    if(i===0) return;
-    if(norm(f.join(" ")).includes(q)){
-      hits.push(f);
-    }
-  });
-
-  if(hits.length===0){
-    similares.style.display="none";
-    return;
-  }
-
-  hits.slice(0,20).forEach(f=>{
-    const d=document.createElement("div");
-    d.className="item";
-    d.innerHTML=`
-      <strong>${f[1]}</strong><br>
-      <span style="font-size:13px;opacity:.85">
-        ${f[3]} — ${f[2]}<br>
-        ${f[4]}
-      </span>
-    `;
-    d.onclick=()=>mostrar(f);
-    similares.appendChild(d);
-  });
-
-  similares.style.display="block";
-});
-
-/* ===== MOSTRAR ===== */
-function mostrar(f){
-  similares.style.display="none";
-
-  document.getElementById("infoActiva").innerHTML =
-    `<strong>${f[1]}</strong> — ${f[3]}<br>
-     Fecha: ${f[2]} | ${f[4]}`;
-
-  let h="<table><tr>";
-  f.forEach(()=>h+="<th>Dato</th>");
-  h+="</tr><tr>";
-  f.forEach(c=>h+="<td>"+c+"</td>");
-  h+="</tr></table>";
-
-  const r=document.getElementById("resultado");
-  r.innerHTML=h;
-  r.style.display="block";
+  const tb=document.querySelector("#tabla tbody");
+  tb.innerHTML=`
+    <tr>
+      <td>${d.id}</td>
+      <td>${d.placa}</td>
+      <td>${d.fecha}</td>
+      <td>${d.tipo}</td>
+      <td>${d.obs}</td>
+    </tr>`;
 }
 </script>
 

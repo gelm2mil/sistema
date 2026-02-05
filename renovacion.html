@@ -140,6 +140,16 @@ body{
   padding:16px;
   display:none;
 }
+
+/* ===== SCROLL HORIZONTAL MÓVIL (NUEVO) ===== */
+.resultado-scroll{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.resultado-scroll table{
+  min-width:720px;
+}
+
 table{
   width:100%;
   border-collapse:collapse;
@@ -193,7 +203,7 @@ th{
     </div>
 
     <!-- RESULTADO -->
-    <div id="resultado" class="resultado"></div>
+    <div id="resultado" class="resultado resultado-scroll"></div>
 
   </div>
 
@@ -219,15 +229,6 @@ actualizarHora();
 /* ===== CONFIG ===== */
 const URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=164141285&single=true&output=csv";
-
-/*
-Columnas esperadas:
-f[0] ID
-f[1] PLACA
-f[2] FECHA
-f[3] TIPO
-f[4] OBSERVACIÓN
-*/
 
 let filas=[];
 

@@ -25,6 +25,7 @@ body{
   min-height:100vh;
 }
 
+/* ===== CONTENEDOR ===== */
 .wrapper{
   max-width:1100px;
   margin:20px auto;
@@ -35,6 +36,7 @@ body{
   overflow:hidden;
 }
 
+/* ===== HEADER ===== */
 .header{
   text-align:center;
   padding:18px;
@@ -50,8 +52,12 @@ body{
   margin-top:4px;
 }
 
-.content{ padding:24px; }
+/* ===== CONTENIDO ===== */
+.content{
+  padding:24px;
+}
 
+/* ===== BUSCADOR ===== */
 .buscador{
   max-width:520px;
   margin:0 auto 12px;
@@ -67,6 +73,7 @@ body{
   outline:none;
 }
 
+/* ===== SIMILARES ===== */
 .similares{
   max-width:520px;
   margin:0 auto 16px;
@@ -87,25 +94,27 @@ body{
   color:#000;
 }
 
+/* ===== LISTA FIJA ===== */
 .lista{
   max-width:520px;
   margin:0 auto 18px;
   background:#000;
   border:1px solid rgba(0,255,213,.35);
   border-radius:16px;
-  max-height:220px;
+  max-height:240px;
   overflow-y:auto;
 }
-.lista div{
-  padding:10px 14px;
+.lista .item{
+  padding:12px 14px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.lista div:hover{
+.lista .item:hover{
   background:var(--neon);
   color:#000;
 }
 
+/* ===== INFO ACTIVA ===== */
 .info-activa{
   max-width:720px;
   margin:0 auto 18px;
@@ -119,6 +128,7 @@ body{
   font-size:15px;
 }
 
+/* ===== RESULTADO ===== */
 .resultado{
   max-width:900px;
   margin:0 auto;
@@ -128,9 +138,14 @@ body{
   box-shadow:var(--glow);
   padding:16px;
   display:none;
-  overflow-x:auto;
 }
-
+.resultado-scroll{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.resultado-scroll table{
+  min-width:720px;
+}
 table{
   width:100%;
   border-collapse:collapse;
@@ -145,6 +160,7 @@ th{
   color:#000;
 }
 
+/* ===== FOOTER ===== */
 .footer{
   text-align:center;
   font-size:12px;
@@ -158,12 +174,14 @@ th{
 <body>
 
 <div class="wrapper">
+
   <div class="header">
     <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
     <div id="fechaHora" class="fecha-hora"></div>
   </div>
 
   <div class="content">
+
     <div class="buscador">
       <input id="buscar" placeholder="Buscar por placa, línea o propietario..." autocomplete="off">
     </div>
@@ -175,16 +193,20 @@ th{
       Seleccione un registro de transporte
     </div>
 
-    <div id="resultado" class="resultado"></div>
+    <div id="resultado" class="resultado resultado-scroll"></div>
+
   </div>
 
   <div class="footer">
     © 2025–2026 — Sistema GELM<br>
+    Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
     Uso interno autorizado — Transportes
   </div>
+
 </div>
 
 <script>
+/* ===== FECHA Y HORA ===== */
 function actualizarHora(){
   const f=new Date();
   document.getElementById("fechaHora").textContent =
@@ -194,7 +216,7 @@ function actualizarHora(){
 setInterval(actualizarHora,1000);
 actualizarHora();
 
-/* === CSV TRANSPORTES === */
+/* ===== CONFIG ===== */
 const URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
 
@@ -204,6 +226,7 @@ function norm(t){
   return t.toUpperCase().replace(/[^A-Z0-9]/g,"");
 }
 
+/* ===== CARGA DATOS ===== */
 fetch(URL)
 .then(r=>r.text())
 .then(t=>{
@@ -211,43 +234,73 @@ fetch(URL)
   cargarLista();
 });
 
+/* ===== LISTA FIJA (MEJORADA) ===== */
 function cargarLista(){
   const box=document.getElementById("lista");
   box.innerHTML="";
   filas.forEach((f,i)=>{
     if(i===0) return;
     const d=document.createElement("div");
-    d.textContent=f[1] || f[0];
+    d.className="item";
+    d.innerHTML=`
+      <strong>${f[1]}</strong><br>
+      <span style="font-size:13px;opacity:.85">
+        ${f[2]}<br>
+        ${f[4]}
+      </span>
+    `;
     d.onclick=()=>mostrar(f);
     box.appendChild(d);
   });
 }
 
+/* ===== BUSCADOR + SIMILARES ===== */
 const input=document.getElementById("buscar");
 const similares=document.getElementById("similares");
 
 input.addEventListener("input",()=>{
   const q=norm(input.value);
   similares.innerHTML="";
-  if(q.length<2){ similares.style.display="none"; return; }
+  if(q.length<2){
+    similares.style.display="none";
+    return;
+  }
 
-  const hits=filas.filter((f,i)=>i>0 && norm(f.join(" ")).includes(q));
-  if(!hits.length){ similares.style.display="none"; return; }
+  const hits=[];
+  filas.forEach((f,i)=>{
+    if(i===0) return;
+    if(norm(f.join(" ")).includes(q)){
+      hits.push(f);
+    }
+  });
+
+  if(hits.length===0){
+    similares.style.display="none";
+    return;
+  }
 
   hits.slice(0,20).forEach(f=>{
     const d=document.createElement("div");
     d.className="item";
-    d.innerHTML=`<strong>${f[1]||f[0]}</strong><br><span style="font-size:13px;opacity:.85">${f.slice(2,5).join(" — ")}</span>`;
+    d.innerHTML=`
+      <strong>${f[1]}</strong><br>
+      <span style="font-size:13px;opacity:.85">
+        ${f[2]} — ${f[4]}
+      </span>
+    `;
     d.onclick=()=>mostrar(f);
     similares.appendChild(d);
   });
+
   similares.style.display="block";
 });
 
+/* ===== MOSTRAR ===== */
 function mostrar(f){
   similares.style.display="none";
+
   document.getElementById("infoActiva").innerHTML =
-    `<strong>${f[1]||f[0]}</strong><br>${f.slice(2,5).join(" | ")}`;
+    `<strong>${f[1]}</strong><br>${f[2]} — ${f[4]}`;
 
   let h="<table><tr>";
   f.forEach(()=>h+="<th>Dato</th>");

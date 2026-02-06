@@ -25,7 +25,6 @@ body{
   min-height:100vh;
 }
 
-/* CONTENEDOR */
 .wrapper{
   max-width:1100px;
   margin:20px auto;
@@ -36,7 +35,6 @@ body{
   overflow:hidden;
 }
 
-/* HEADER */
 .header{
   text-align:center;
   padding:18px;
@@ -47,15 +45,13 @@ body{
   text-shadow:var(--glow);
 }
 .fecha-hora{
-  font-size:14px;
-  opacity:.9;
-  margin-top:6px;
+  font-size:13px;
+  opacity:.85;
+  margin-top:4px;
 }
 
-/* CONTENIDO */
-.content{padding:24px}
+.content{ padding:24px; }
 
-/* BUSCADOR */
 .buscador{
   max-width:520px;
   margin:0 auto 12px;
@@ -71,7 +67,6 @@ body{
   outline:none;
 }
 
-/* SIMILARES */
 .similares{
   max-width:520px;
   margin:0 auto 16px;
@@ -92,7 +87,6 @@ body{
   color:#000;
 }
 
-/* LISTA */
 .lista{
   max-width:520px;
   margin:0 auto 18px;
@@ -112,21 +106,19 @@ body{
   color:#000;
 }
 
-/* INFO */
 .info-activa{
   max-width:720px;
   margin:0 auto 18px;
-  padding:16px;
+  padding:14px;
   border-radius:16px;
   background:rgba(0,0,0,.6);
   border:1px solid rgba(0,255,213,.35);
   box-shadow:var(--glow);
   text-align:center;
   color:var(--neon);
-  font-size:16px;
+  font-size:15px;
 }
 
-/* RESULTADO */
 .resultado{
   max-width:900px;
   margin:0 auto;
@@ -143,7 +135,6 @@ table{
   width:100%;
   border-collapse:collapse;
   font-size:14px;
-  min-width:720px;
 }
 th,td{
   border:1px solid rgba(255,255,255,.15);
@@ -154,7 +145,6 @@ th{
   color:#000;
 }
 
-/* FOOTER */
 .footer{
   text-align:center;
   font-size:12px;
@@ -168,14 +158,12 @@ th{
 <body>
 
 <div class="wrapper">
-
   <div class="header">
     <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
     <div id="fechaHora" class="fecha-hora"></div>
   </div>
 
   <div class="content">
-
     <div class="buscador">
       <input id="buscar" placeholder="Buscar por placa, línea o propietario..." autocomplete="off">
     </div>
@@ -188,18 +176,15 @@ th{
     </div>
 
     <div id="resultado" class="resultado"></div>
-
   </div>
 
   <div class="footer">
     © 2025–2026 — Sistema GELM<br>
     Uso interno autorizado — Transportes
   </div>
-
 </div>
 
 <script>
-/* FECHA Y HORA */
 function actualizarHora(){
   const f=new Date();
   document.getElementById("fechaHora").textContent =
@@ -209,7 +194,7 @@ function actualizarHora(){
 setInterval(actualizarHora,1000);
 actualizarHora();
 
-/* URL TRANSPORTES 2026 */
+/* === CSV TRANSPORTES === */
 const URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
 
@@ -219,7 +204,6 @@ function norm(t){
   return t.toUpperCase().replace(/[^A-Z0-9]/g,"");
 }
 
-/* CARGA */
 fetch(URL)
 .then(r=>r.text())
 .then(t=>{
@@ -227,7 +211,6 @@ fetch(URL)
   cargarLista();
 });
 
-/* LISTA */
 function cargarLista(){
   const box=document.getElementById("lista");
   box.innerHTML="";
@@ -240,34 +223,31 @@ function cargarLista(){
   });
 }
 
-/* BUSCADOR */
 const input=document.getElementById("buscar");
 const similares=document.getElementById("similares");
 
 input.addEventListener("input",()=>{
   const q=norm(input.value);
   similares.innerHTML="";
-  if(q.length<2){similares.style.display="none";return;}
+  if(q.length<2){ similares.style.display="none"; return; }
 
   const hits=filas.filter((f,i)=>i>0 && norm(f.join(" ")).includes(q));
-  if(!hits.length){similares.style.display="none";return;}
+  if(!hits.length){ similares.style.display="none"; return; }
 
-  hits.slice(0,25).forEach(f=>{
+  hits.slice(0,20).forEach(f=>{
     const d=document.createElement("div");
     d.className="item";
-    d.textContent=f.join(" | ");
+    d.innerHTML=`<strong>${f[1]||f[0]}</strong><br><span style="font-size:13px;opacity:.85">${f.slice(2,5).join(" — ")}</span>`;
     d.onclick=()=>mostrar(f);
     similares.appendChild(d);
   });
   similares.style.display="block";
 });
 
-/* MOSTRAR */
 function mostrar(f){
   similares.style.display="none";
-
   document.getElementById("infoActiva").innerHTML =
-    `<strong>${f[1] || "TRANSPORTE"}</strong><br>${f[2] || ""}`;
+    `<strong>${f[1]||f[0]}</strong><br>${f.slice(2,5).join(" | ")}`;
 
   let h="<table><tr>";
   f.forEach(()=>h+="<th>Dato</th>");

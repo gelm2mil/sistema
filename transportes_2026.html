@@ -14,7 +14,7 @@
   --txt:#e9ffff;
   --glow:0 0 18px rgba(0,255,213,.35);
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:system-ui,Segoe UI,Arial;
   background:
@@ -35,30 +35,16 @@ body{
   overflow:hidden;
 }
 
-.header{
-  text-align:center;
-  padding:18px;
-  border-bottom:1px solid rgba(0,255,213,.25);
-}
-.header h1{
-  color:var(--neon);
-  text-shadow:var(--glow);
-}
-.fecha-hora{
-  font-size:13px;
-  opacity:.85;
-  margin-top:4px;
-}
+.header{text-align:center;padding:18px;border-bottom:1px solid rgba(0,255,213,.25)}
+.header h1{color:var(--neon);text-shadow:var(--glow)}
+.fecha-hora{font-size:13px;opacity:.85}
 
 .content{padding:24px}
 
-.buscador{
-  max-width:520px;
-  margin:0 auto 12px;
-}
+.buscador{max-width:520px;margin:0 auto 12px}
 .buscador input{
   width:100%;
-  padding:14px 16px;
+  padding:14px;
   border-radius:14px;
   border:1px solid rgba(0,255,213,.45);
   background:#000;
@@ -68,7 +54,7 @@ body{
 
 .lista{
   max-width:520px;
-  margin:0 auto 18px;
+  margin:0 auto 16px;
   background:#000;
   border:1px solid rgba(0,255,213,.35);
   border-radius:16px;
@@ -83,16 +69,12 @@ body{
 }
 .item strong{color:var(--neon)}
 .item small{opacity:.85}
-.item:hover,
-.item.active{
-  background:var(--neon);
-  color:#000;
-}
+.item:hover,.item.active{background:var(--neon);color:#000}
 
 .info-activa{
   max-width:720px;
-  margin:0 auto 16px;
-  padding:14px;
+  margin:0 auto 14px;
+  padding:12px;
   border-radius:16px;
   background:rgba(0,0,0,.6);
   border:1px solid rgba(0,255,213,.35);
@@ -113,28 +95,11 @@ body{
   overflow-x:auto;
 }
 
-table{
-  width:100%;
-  min-width:900px;
-  border-collapse:collapse;
-  font-size:14px;
-}
-th,td{
-  border:1px solid rgba(255,255,255,.15);
-  padding:8px;
-}
-th{
-  background:var(--neon);
-  color:#000;
-}
+table{width:100%;min-width:900px;border-collapse:collapse}
+th,td{border:1px solid rgba(255,255,255,.15);padding:8px}
+th{background:var(--neon);color:#000}
 
-.footer{
-  text-align:center;
-  font-size:12px;
-  padding:12px;
-  border-top:1px solid rgba(0,255,213,.25);
-  opacity:.85;
-}
+.footer{text-align:center;font-size:12px;padding:12px;border-top:1px solid rgba(0,255,213,.25);opacity:.85}
 </style>
 </head>
 
@@ -142,20 +107,20 @@ th{
 <div class="wrapper">
 
 <div class="header">
-  <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
-  <div id="fechaHora" class="fecha-hora"></div>
+<h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
+<div id="fechaHora" class="fecha-hora"></div>
 </div>
 
 <div class="content">
 
 <div class="buscador">
-  <input id="buscar" placeholder="Buscar por placa, línea o propietario…">
+<input id="buscar" placeholder="Buscar por placa, línea o propietario…">
 </div>
 
 <div id="lista" class="lista"></div>
 
 <div id="infoActiva" class="info-activa">
-  Seleccione un registro de transporte
+Seleccione un registro de transporte
 </div>
 
 <div id="resultado" class="resultado"></div>
@@ -172,30 +137,40 @@ Uso interno autorizado — Transportes
 <script>
 const URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
 
-let filas=[];
+let registros=[];
 
 function hora(){
  const f=new Date();
- fechaHora.textContent=f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
+ fechaHora.textContent=
+ f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
  " — "+f.toLocaleTimeString("es-GT");
 }
 setInterval(hora,1000);hora();
 
 fetch(URL).then(r=>r.text()).then(t=>{
- filas=t.split("\n").map(l=>l.split(","));
+ const filas=t.split("\n").map(l=>l.split(","));
+
+ filas.forEach(f=>{
+   const no=f[1]?.trim();
+   const nombre=f[2]?.trim();
+   const ruta=f[4]?.trim();
+   if(no && nombre && ruta){
+     registros.push(f);
+   }
+ });
+
  renderLista();
 });
 
 function renderLista(){
  lista.innerHTML="";
- filas.forEach((f,i)=>{
-  if(i===0) return;
+ registros.forEach((f,i)=>{
   const d=document.createElement("div");
   d.className="item";
   d.innerHTML=`
     <strong>${f[1]}</strong><br>
-    ${f[2]||""}<br>
-    <small>${f[4]||""}</small>
+    ${f[2]}<br>
+    <small>${f[4]}</small>
   `;
   d.onclick=()=>mostrar(f,d);
   lista.appendChild(d);
@@ -209,15 +184,19 @@ function mostrar(f,el){
  infoActiva.innerHTML=`<strong>${f[1]}</strong> — ${f[4]}`;
 
  let h="<table><tr>";
- filas[0].forEach(c=>h+=`<th>${c}</th>`);
+ h+=`
+ <th>NO. PLACA</th><th>NO. CALCOMANÍA</th><th>CONCESIONARIO</th>
+ <th>TEL. DUEÑO</th><th>RUTA</th><th>TEL. PILOTO</th>
+ <th>NOMBRE PILOTO</th><th>DPI</th><th>LICENCIA</th>
+ <th>TIPO</th><th>DIRECCIÓN</th>`;
  h+="</tr><tr>";
- f.forEach(c=>h+=`<td>${c}</td>`);
+
+ f.forEach(c=>h+=`<td>${c||""}</td>`);
  h+="</tr></table>";
 
  resultado.innerHTML=h;
  resultado.style.display="block";
 }
 </script>
-
 </body>
 </html>

@@ -97,7 +97,7 @@ footer{
   border-top:1px solid rgba(0,255,102,.25);
 }
 
-/* ===== GPT ===== */
+/* ===== BOTÓN GPT ===== */
 .btn-gpt{
   position:fixed;
   bottom:18px;
@@ -109,8 +109,10 @@ footer{
   font-weight:900;
   text-decoration:none;
   box-shadow:var(--glow);
+  z-index:9999;
 }
-  /* ===== BOTÓN 2026 ===== */
+
+/* ===== BOTÓN 2026 ===== */
 .btn-2026{
   position:fixed;
   bottom:18px;
@@ -178,6 +180,8 @@ footer{
 Uso interno autorizado
 </footer>
 
+<!-- BOTONES FLOTANTES -->
+<a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
 <script>
@@ -202,8 +206,6 @@ function reloj(){
 }
 reloj();setInterval(reloj,1000);
 </script>
-<a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
+
 </body>
 </html>
-
-

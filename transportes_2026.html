@@ -1,231 +1,223 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYSTEM BY GELM — TRANSPORTES 2026</title>
+<title>PMT TRANSPORTES 2026 — BY GELM</title>
+
+<!-- XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
-:root{
-  --neon:#00ffd5;
-  --bg1:#020b18;
-  --bg2:#041d33;
-  --card:rgba(4,18,34,.92);
-  --txt:#e9ffff;
-  --glow:0 0 18px rgba(0,255,213,.35);
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-
 body{
-  font-family:system-ui,Segoe UI,Arial;
-  background:
-    radial-gradient(circle at 20% 20%, #063b7a 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, #0a0033 0%, transparent 60%),
-    linear-gradient(180deg,var(--bg1),var(--bg2));
-  color:var(--txt);
-  min-height:100vh;
+    margin:0;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    color:#eee;
+    background:radial-gradient(circle at 20% 0%,rgba(0,255,255,.2),transparent 50%),
+               radial-gradient(circle at 80% 0%,rgba(255,0,255,.18),transparent 55%),
+               #05010a;
+    background-attachment:fixed;
 }
-
-/* CONTENEDOR */
-.wrapper{
-  max-width:1100px;
-  margin:20px auto;
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:22px;
-  box-shadow:var(--glow);
-  overflow:hidden;
+.contenedor{
+    max-width:1200px;
+    margin:auto;
+    background:rgba(0,0,0,.85);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 18px rgba(0,255,255,.5);
+    border:1px solid rgba(0,255,255,.35);
 }
-
-/* HEADER */
-.header{
-  text-align:center;
-  padding:18px;
-  border-bottom:1px solid rgba(0,255,213,.25);
+h1{
+    text-align:center;
+    color:#00ffc8;
+    text-shadow:0 0 10px #00ffff;
 }
-.header h1{
-  color:var(--neon);
-  text-shadow:var(--glow);
+#estado{
+    text-align:center;
+    font-size:14px;
+    color:#aaa;
+    margin:10px 0;
 }
-.fecha{
-  font-size:13px;
-  opacity:.85;
-  margin-top:4px;
-}
-
-/* BUSCADOR */
 .buscador{
-  max-width:520px;
-  margin:20px auto 10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:10px;
 }
 .buscador input{
-  width:100%;
-  padding:14px 16px;
-  border-radius:14px;
-  border:1px solid rgba(0,255,213,.45);
-  background:#000;
-  color:var(--neon);
-  font-size:15px;
-  outline:none;
+    padding:10px;
+    font-size:16px;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513;
+    color:#00ffc8;
 }
-
-/* LISTA */
-.lista{
-  max-width:520px;
-  margin:0 auto 16px;
-  background:#000;
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:16px;
-  max-height:260px;
-  overflow-y:auto;
+.buscador button{
+    padding:10px 22px;
+    font-size:16px;
+    border-radius:999px;
+    border:none;
+    background:radial-gradient(circle at 30% 0,#00ffff,#5f00ff);
+    font-weight:bold;
+    cursor:pointer;
 }
-.item{
-  padding:12px 14px;
-  border-bottom:1px solid rgba(0,255,213,.15);
-  cursor:pointer;
-}
-.item strong{color:var(--neon)}
-.item small{
-  display:block;
-  opacity:.8;
-  font-size:12px;
-}
-.item:hover{
-  background:var(--neon);
-  color:#000;
-}
-.item:hover strong{color:#000}
-
-/* INFO ACTIVA */
-.info{
-  max-width:720px;
-  margin:0 auto 16px;
-  padding:12px;
-  border-radius:14px;
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(0,255,213,.35);
-  text-align:center;
-  color:var(--neon);
-  font-size:14px;
-}
-
-/* RESULTADO */
-.resultado{
-  max-width:100%;
-  margin:0 auto 18px;
-  background:var(--card);
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:18px;
-  box-shadow:var(--glow);
-  padding:10px;
-  overflow-x:auto;
-}
-
-/* TABLA */
 table{
-  width:100%;
-  min-width:900px;
-  border-collapse:collapse;
-  font-size:13px;
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    background:#141414;
 }
 th,td{
-  border:1px solid rgba(255,255,255,.15);
-  padding:8px 10px;
-  white-space:nowrap;          /* 🔑 CLAVE */
-  text-overflow:ellipsis;
+    border:1px solid #333;
+    padding:6px;
+    font-size:13px;
 }
 th{
-  background:var(--neon);
-  color:#000;
-  font-weight:800;
+    background:#00ffc8;
+    color:#000;
 }
-
-/* FOOTER */
+.similares-box{
+    margin-top:10px;
+    font-size:12px;
+}
+.similares-box select{
+    background:#020b40;
+    color:#fff;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    padding:6px 10px;
+}
 .footer{
-  text-align:center;
-  font-size:12px;
-  padding:12px;
-  border-top:1px solid rgba(0,255,213,.25);
-  opacity:.85;
+    margin-top:15px;
+    text-align:center;
+    font-size:12px;
+    color:#6fffe9;
 }
 </style>
 </head>
 
 <body>
+<div class="contenedor">
+<h1>SISTEMA DE TRANSPORTES 2026 — PMT CHIMALTENANGO</h1>
 
-<div class="wrapper">
+<div id="estado">Cargando registros…</div>
 
-  <div class="header">
-    <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
-    <div id="fecha" class="fecha"></div>
-  </div>
+<div class="buscador">
+<input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
+<button onclick="buscar()">Buscar</button>
+</div>
 
-  <div class="buscador">
-    <input id="buscar" placeholder="Buscar placa, calcomanía, nombre, ruta…">
-  </div>
+<div id="resultado">
+<div id="resultado-principal"></div>
+<div id="similares-contenedor"></div>
+</div>
 
-  <div id="lista" class="lista"></div>
-
-  <div id="info" class="info">Seleccione un registro</div>
-
-  <div id="resultado" class="resultado" style="display:none"></div>
-
-  <div class="footer">
-    © 2025–2026 — Sistema GELM · Uso interno autorizado
-  </div>
-
+<div class="footer">
+© 2026 — Sistema GELM · Uso interno autorizado
+</div>
 </div>
 
 <script>
-const URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
-let filas=[];
+let registros=[];
+let similares=[];
 
-/* FECHA */
-setInterval(()=>{
- const f=new Date();
- document.getElementById("fecha").textContent=
-  f.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+
-  " — "+f.toLocaleTimeString("es-GT");
-},1000);
+async function cargarExcel(){
+    try{
+        const resp = await fetch("https://docs.google.com/spreadsheets/d/1H03tNpXEYw-H288A6yuxtmV_ZN8rfolx/export?format=xlsx");
+        const data=await resp.arrayBuffer();
+        const wb=XLSX.read(data,{type:"array"});
+        const hoja=wb.Sheets[wb.SheetNames[0]];
+        const filas=XLSX.utils.sheet_to_json(hoja,{header:1,raw:false});
 
-/* CARGA */
-fetch(URL).then(r=>r.text()).then(t=>{
- filas=t.split("\n").map(l=>l.split(","));
- renderLista();
+        let inicio=filas.findIndex(f=>(f[0]||"").toUpperCase().startsWith("M-"));
+        for(let i=inicio;i<filas.length;i++){
+            const f=filas[i];
+            if(!f[0])continue;
+            registros.push({
+                placa:(f[0]||"").toUpperCase(),
+                calcomania:(f[1]||""),
+                concesionario:(f[3]||""),
+                telDueno:(f[4]||""),
+                ruta:(f[5]||""),
+                telPilotos:(f[6]||""),
+                nombrePiloto:(f[7]||""),
+                dpi:(f[8]||""),
+                documento:(f[9]||""),
+                licencia:(f[10]||""),
+                tipoLic:(f[11]||"")
+            });
+        }
+        document.getElementById("estado").textContent="Registros cargados: "+registros.length;
+    }catch(e){
+        document.getElementById("estado").textContent="Error cargando datos";
+        console.error(e);
+    }
+}
+
+function norm(t){
+    return t.replace(/\s+/g,"").replace(/-/g,"").toUpperCase();
+}
+
+function tabla(r){
+return `
+<table>
+<tr>
+<th>PLACA</th><th>CALCOMANÍA</th><th>CONCESIONARIO</th><th>TEL DUEÑO</th>
+<th>RUTA</th><th>TEL PILOTO</th><th>PILOTO</th><th>DPI</th>
+<th>DOCUMENTO</th><th>LICENCIA</th><th>TIPO</th>
+</tr>
+<tr>
+<td>${r.placa}</td><td>${r.calcomania}</td><td>${r.concesionario}</td>
+<td>${r.telDueno}</td><td>${r.ruta}</td><td>${r.telPilotos}</td>
+<td>${r.nombrePiloto}</td><td>${r.dpi}</td><td>${r.documento}</td>
+<td>${r.licencia}</td><td>${r.tipoLic}</td>
+</tr>
+</table>`;
+}
+
+function buscar(){
+const t=document.getElementById("busquedaInput").value.trim();
+const limpio=norm(t);
+const res=document.getElementById("resultado-principal");
+const sim=document.getElementById("similares-contenedor");
+sim.innerHTML="";
+if(!t){res.innerHTML="";return;}
+
+const c=[];
+registros.forEach(r=>{
+let p=0;
+if(norm(r.calcomania)===limpio)p=100;
+if(norm(r.placa)===limpio)p=Math.max(p,90);
+if(norm(r.dpi)===limpio)p=Math.max(p,80);
+if(norm(r.licencia)===limpio)p=Math.max(p,70);
+if(norm(r.documento)===limpio)p=Math.max(p,60);
+if(p>0)c.push({r,p});
 });
 
-/* LISTA */
-function renderLista(){
- const box=document.getElementById("lista");
- box.innerHTML="";
- filas.slice(1).forEach(f=>{
-  const d=document.createElement("div");
-  d.className="item";
-  d.innerHTML=`
-    <strong>${f[1]||"SIN NOMBRE"}</strong>
-    <small>${f[4]||""} · ${f[0]||""}</small>`;
-  d.onclick=()=>mostrar(f);
-  box.appendChild(d);
- });
+if(!c.length){res.innerHTML="No encontrado";return;}
+c.sort((a,b)=>b.p-a.p);
+
+res.innerHTML=tabla(c[0].r);
+similares=c.slice(1).map(x=>x.r);
+
+if(similares.length){
+let opt='<option value="">-- similares --</option>';
+similares.forEach((r,i)=>{
+opt+=`<option value="${i}">${r.calcomania} — ${r.ruta}</option>`;
+});
+sim.innerHTML=`<div class="similares-box">
+<select onchange="sel(this.value)">${opt}</select>
+</div>`;
+}
 }
 
-/* MOSTRAR */
-function mostrar(f){
- document.getElementById("info").innerHTML=
-  `<strong>${f[1]}</strong> — ${f[4]}`;
-
- let h="<table><tr>";
- f.forEach(()=>h+="<th>Dato</th>");
- h+="</tr><tr>";
- f.forEach(c=>h+=`<td>${c||""}</td>`);
- h+="</tr></table>";
-
- const r=document.getElementById("resultado");
- r.innerHTML=h;
- r.style.display="block";
+function sel(i){
+if(similares[i])document.getElementById("resultado-principal").innerHTML=tabla(similares[i]);
 }
+
+cargarExcel();
 </script>
-
 </body>
 </html>

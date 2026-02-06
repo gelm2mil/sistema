@@ -24,82 +24,94 @@ body{
   color:var(--txt);
   min-height:100vh;
 }
-
 .wrapper{
-  max-width:1100px;
+  max-width:1200px;
   margin:20px auto;
-  background:rgba(0,0,0,.45);
   border:1px solid rgba(0,255,213,.35);
   border-radius:22px;
+  background:rgba(0,0,0,.45);
   box-shadow:var(--glow);
-  overflow:hidden;
 }
+.header{
+  text-align:center;
+  padding:18px;
+  border-bottom:1px solid rgba(0,255,213,.25);
+}
+.header h1{color:var(--neon)}
+.fecha{font-size:13px;opacity:.8}
 
-.header{text-align:center;padding:18px;border-bottom:1px solid rgba(0,255,213,.25)}
-.header h1{color:var(--neon);text-shadow:var(--glow)}
-.fecha-hora{font-size:13px;opacity:.85}
+.content{padding:22px}
 
-.content{padding:24px}
-
-.buscador{max-width:520px;margin:0 auto 12px}
-.buscador input{
+input{
   width:100%;
   padding:14px;
   border-radius:14px;
-  border:1px solid rgba(0,255,213,.45);
   background:#000;
+  border:1px solid rgba(0,255,213,.45);
   color:var(--neon);
   font-size:16px;
+  outline:none;
+  margin-bottom:12px;
 }
 
 .lista{
-  max-width:520px;
-  margin:0 auto 16px;
+  max-height:300px;
+  overflow-y:auto;
   background:#000;
   border:1px solid rgba(0,255,213,.35);
   border-radius:16px;
-  max-height:260px;
-  overflow-y:auto;
 }
-
 .item{
-  padding:10px 14px;
+  padding:12px 14px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.item strong{color:var(--neon)}
-.item small{opacity:.85}
-.item:hover,.item.active{background:var(--neon);color:#000}
+.item:hover{
+  background:var(--neon);
+  color:#000;
+}
 
-.info-activa{
-  max-width:720px;
-  margin:0 auto 14px;
-  padding:12px;
+.preview{
+  font-size:13px;
+  opacity:.9;
+}
+
+.info{
+  margin:16px 0;
+  padding:14px;
   border-radius:16px;
   background:rgba(0,0,0,.6);
   border:1px solid rgba(0,255,213,.35);
-  box-shadow:var(--glow);
-  text-align:center;
   color:var(--neon);
+  text-align:center;
 }
 
-.resultado{
-  max-width:100%;
-  margin:0 auto;
-  background:var(--card);
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:18px;
-  box-shadow:var(--glow);
-  padding:16px;
-  display:none;
+.tabla{
   overflow-x:auto;
+  background:var(--card);
+  border-radius:16px;
+  border:1px solid rgba(0,255,213,.35);
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+}
+th,td{
+  padding:8px;
+  border:1px solid rgba(255,255,255,.15);
+}
+th{
+  background:var(--neon);
+  color:#000;
 }
 
-table{width:100%;min-width:900px;border-collapse:collapse}
-th,td{border:1px solid rgba(255,255,255,.15);padding:8px}
-th{background:var(--neon);color:#000}
-
-.footer{text-align:center;font-size:12px;padding:12px;border-top:1px solid rgba(0,255,213,.25);opacity:.85}
+.footer{
+  text-align:center;
+  font-size:12px;
+  padding:12px;
+  opacity:.8;
+}
 </style>
 </head>
 
@@ -107,96 +119,84 @@ th{background:var(--neon);color:#000}
 <div class="wrapper">
 
 <div class="header">
-<h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
-<div id="fechaHora" class="fecha-hora"></div>
+  <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
+  <div id="fecha" class="fecha"></div>
 </div>
 
 <div class="content">
+  <input id="buscar" placeholder="Buscar por placa, calcomanía, nombre, ruta...">
 
-<div class="buscador">
-<input id="buscar" placeholder="Buscar por placa, línea o propietario…">
-</div>
+  <div id="lista" class="lista"></div>
 
-<div id="lista" class="lista"></div>
+  <div id="info" class="info">Seleccione un registro</div>
 
-<div id="infoActiva" class="info-activa">
-Seleccione un registro de transporte
-</div>
-
-<div id="resultado" class="resultado"></div>
-
+  <div id="tabla" class="tabla"></div>
 </div>
 
 <div class="footer">
-© 2025–2026 — Sistema GELM<br>
-Uso interno autorizado — Transportes
+© 2025–2026 — Sistema GELM · Uso interno autorizado
 </div>
 
 </div>
 
 <script>
 const URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+let data=[];
 
-let registros=[];
-
-function hora(){
- const f=new Date();
- fechaHora.textContent=
- f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
- " — "+f.toLocaleTimeString("es-GT");
+function fecha(){
+  const f=new Date();
+  fechaEl.textContent=f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
+  " — "+f.toLocaleTimeString("es-GT");
 }
-setInterval(hora,1000);hora();
+const fechaEl=document.getElementById("fecha");
+setInterval(fecha,1000);fecha();
 
-fetch(URL).then(r=>r.text()).then(t=>{
- const filas=t.split("\n").map(l=>l.split(","));
-
- filas.forEach(f=>{
-   const no=f[1]?.trim();
-   const nombre=f[2]?.trim();
-   const ruta=f[4]?.trim();
-   if(no && nombre && ruta){
-     registros.push(f);
-   }
- });
-
- renderLista();
+fetch(URL)
+.then(r=>r.text())
+.then(t=>{
+  data=t.split("\n").map(l=>l.split(","));
+  renderLista();
 });
 
 function renderLista(){
- lista.innerHTML="";
- registros.forEach((f,i)=>{
-  const d=document.createElement("div");
-  d.className="item";
-  d.innerHTML=`
-    <strong>${f[1]}</strong><br>
-    ${f[2]}<br>
-    <small>${f[4]}</small>
-  `;
-  d.onclick=()=>mostrar(f,d);
-  lista.appendChild(d);
- });
+  lista.innerHTML="";
+  data.slice(1).forEach(f=>{
+    const d=document.createElement("div");
+    d.className="item";
+    d.innerHTML=`
+      <strong>${f[1]}</strong> — ${f[2] || "SIN NOMBRE"}<br>
+      <span class="preview">${f[4] || ""} · ${f[0] || ""}</span>
+    `;
+    d.onclick=()=>mostrar(f);
+    lista.appendChild(d);
+  });
 }
 
-function mostrar(f,el){
- document.querySelectorAll(".item").forEach(i=>i.classList.remove("active"));
- el.classList.add("active");
-
- infoActiva.innerHTML=`<strong>${f[1]}</strong> — ${f[4]}`;
-
- let h="<table><tr>";
- h+=`
- <th>NO. PLACA</th><th>NO. CALCOMANÍA</th><th>CONCESIONARIO</th>
- <th>TEL. DUEÑO</th><th>RUTA</th><th>TEL. PILOTO</th>
- <th>NOMBRE PILOTO</th><th>DPI</th><th>LICENCIA</th>
- <th>TIPO</th><th>DIRECCIÓN</th>`;
- h+="</tr><tr>";
-
- f.forEach(c=>h+=`<td>${c||""}</td>`);
- h+="</tr></table>";
-
- resultado.innerHTML=h;
- resultado.style.display="block";
+function mostrar(f){
+  info.innerHTML=`<strong>${f[1]}</strong> — ${f[4]}`;
+  let h="<table><tr>";
+  data[0].forEach(c=>h+=`<th>${c}</th>`);
+  h+="</tr><tr>";
+  f.forEach(c=>h+=`<td>${c}</td>`);
+  h+="</tr></table>";
+  tabla.innerHTML=h;
 }
+
+buscar.addEventListener("input",()=>{
+  const q=buscar.value.toLowerCase();
+  lista.innerHTML="";
+  data.slice(1).filter(f=>f.join(" ").toLowerCase().includes(q))
+  .forEach(f=>{
+    const d=document.createElement("div");
+    d.className="item";
+    d.innerHTML=`
+      <strong>${f[1]}</strong> — ${f[2] || "SIN NOMBRE"}<br>
+      <span class="preview">${f[4] || ""} · ${f[0] || ""}</span>
+    `;
+    d.onclick=()=>mostrar(f);
+    lista.appendChild(d);
+  });
+});
 </script>
 </body>
 </html>

@@ -24,8 +24,6 @@ body{
   color:var(--txt);
   min-height:100vh;
 }
-
-/* ===== CONTENEDOR ===== */
 .wrapper{
   max-width:1100px;
   margin:20px auto;
@@ -35,8 +33,6 @@ body{
   box-shadow:var(--glow);
   overflow:hidden;
 }
-
-/* ===== HEADER ===== */
 .header{
   text-align:center;
   padding:18px;
@@ -47,17 +43,13 @@ body{
   text-shadow:var(--glow);
 }
 .fecha-hora{
-  font-size:13px;
+  font-size:14px;
   opacity:.85;
   margin-top:4px;
 }
+.content{padding:24px}
 
-/* ===== CONTENIDO ===== */
-.content{
-  padding:24px;
-}
-
-/* ===== BUSCADOR ===== */
+/* BUSCADOR */
 .buscador{
   max-width:520px;
   margin:0 auto 12px;
@@ -73,7 +65,7 @@ body{
   outline:none;
 }
 
-/* ===== SIMILARES ===== */
+/* SIMILARES */
 .similares{
   max-width:520px;
   margin:0 auto 16px;
@@ -94,27 +86,27 @@ body{
   color:#000;
 }
 
-/* ===== LISTA FIJA ===== */
+/* LISTA */
 .lista{
   max-width:520px;
   margin:0 auto 18px;
   background:#000;
   border:1px solid rgba(0,255,213,.35);
   border-radius:16px;
-  max-height:240px;
+  max-height:220px;
   overflow-y:auto;
 }
-.lista .item{
-  padding:12px 14px;
+.lista div{
+  padding:10px 14px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.lista .item:hover{
+.lista div:hover{
   background:var(--neon);
   color:#000;
 }
 
-/* ===== INFO ACTIVA ===== */
+/* INFO */
 .info-activa{
   max-width:720px;
   margin:0 auto 18px;
@@ -125,12 +117,11 @@ body{
   box-shadow:var(--glow);
   text-align:center;
   color:var(--neon);
-  font-size:15px;
 }
 
-/* ===== RESULTADO ===== */
+/* RESULTADO */
 .resultado{
-  max-width:900px;
+  max-width:100%;
   margin:0 auto;
   background:var(--card);
   border:1px solid rgba(0,255,213,.35);
@@ -138,16 +129,11 @@ body{
   box-shadow:var(--glow);
   padding:16px;
   display:none;
-}
-.resultado-scroll{
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-.resultado-scroll table{
-  min-width:720px;
 }
 table{
   width:100%;
+  min-width:900px;
   border-collapse:collapse;
   font-size:14px;
 }
@@ -160,19 +146,16 @@ th{
   color:#000;
 }
 
-/* ===== FOOTER ===== */
 .footer{
   text-align:center;
   font-size:12px;
   padding:12px;
   border-top:1px solid rgba(0,255,213,.25);
-  opacity:.85;
 }
 </style>
 </head>
 
 <body>
-
 <div class="wrapper">
 
   <div class="header">
@@ -181,9 +164,8 @@ th{
   </div>
 
   <div class="content">
-
     <div class="buscador">
-      <input id="buscar" placeholder="Buscar por placa, línea o propietario..." autocomplete="off">
+      <input id="buscar" placeholder="Buscar por placa, línea, propietario..." autocomplete="off">
     </div>
 
     <div id="similares" class="similares"></div>
@@ -193,8 +175,7 @@ th{
       Seleccione un registro de transporte
     </div>
 
-    <div id="resultado" class="resultado resultado-scroll"></div>
-
+    <div id="resultado" class="resultado"></div>
   </div>
 
   <div class="footer">
@@ -206,111 +187,72 @@ th{
 </div>
 
 <script>
-/* ===== FECHA Y HORA ===== */
-function actualizarHora(){
+/* FECHA */
+function hora(){
   const f=new Date();
-  document.getElementById("fechaHora").textContent =
+  fechaHora.textContent=
     f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
     " — "+f.toLocaleTimeString("es-GT");
 }
-setInterval(actualizarHora,1000);
-actualizarHora();
+setInterval(hora,1000);hora();
 
-/* ===== CONFIG ===== */
-const URL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+/* CONFIG */
+const URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+let filas=[],headers=[];
 
-let filas=[];
+function norm(t){return t.toUpperCase().replace(/[^A-Z0-9]/g,"");}
 
-function norm(t){
-  return t.toUpperCase().replace(/[^A-Z0-9]/g,"");
-}
-
-/* ===== CARGA DATOS ===== */
-fetch(URL)
-.then(r=>r.text())
-.then(t=>{
-  filas=t.split("\n").map(l=>l.split(","));
+/* CARGA */
+fetch(URL).then(r=>r.text()).then(t=>{
+  const data=t.split("\n").map(l=>l.split(","));
+  headers=data[0];
+  filas=data.slice(1);
   cargarLista();
 });
 
-/* ===== LISTA FIJA (MEJORADA) ===== */
+/* LISTA */
 function cargarLista(){
-  const box=document.getElementById("lista");
-  box.innerHTML="";
-  filas.forEach((f,i)=>{
-    if(i===0) return;
+  lista.innerHTML="";
+  filas.forEach(f=>{
     const d=document.createElement("div");
-    d.className="item";
-    d.innerHTML=`
-      <strong>${f[1]}</strong><br>
-      <span style="font-size:13px;opacity:.85">
-        ${f[2]}<br>
-        ${f[4]}
-      </span>
-    `;
+    d.textContent=f[1];
     d.onclick=()=>mostrar(f);
-    box.appendChild(d);
+    lista.appendChild(d);
   });
 }
 
-/* ===== BUSCADOR + SIMILARES ===== */
-const input=document.getElementById("buscar");
-const similares=document.getElementById("similares");
-
-input.addEventListener("input",()=>{
-  const q=norm(input.value);
+/* BUSCADOR */
+buscar.oninput=()=>{
+  const q=norm(buscar.value);
   similares.innerHTML="";
-  if(q.length<2){
-    similares.style.display="none";
-    return;
-  }
+  if(q.length<2){similares.style.display="none";return;}
 
-  const hits=[];
-  filas.forEach((f,i)=>{
-    if(i===0) return;
-    if(norm(f.join(" ")).includes(q)){
-      hits.push(f);
-    }
-  });
-
-  if(hits.length===0){
-    similares.style.display="none";
-    return;
-  }
+  const hits=filas.filter(f=>norm(f.join(" ")).includes(q));
+  if(!hits.length){similares.style.display="none";return;}
 
   hits.slice(0,20).forEach(f=>{
     const d=document.createElement("div");
     d.className="item";
-    d.innerHTML=`
-      <strong>${f[1]}</strong><br>
-      <span style="font-size:13px;opacity:.85">
-        ${f[2]} — ${f[4]}
-      </span>
-    `;
+    d.innerHTML=`<strong>${f[1]}</strong><br><small>${f[4]}</small>`;
     d.onclick=()=>mostrar(f);
     similares.appendChild(d);
   });
-
   similares.style.display="block";
-});
+};
 
-/* ===== MOSTRAR ===== */
+/* MOSTRAR */
 function mostrar(f){
   similares.style.display="none";
-
-  document.getElementById("infoActiva").innerHTML =
-    `<strong>${f[1]}</strong><br>${f[2]} — ${f[4]}`;
+  infoActiva.innerHTML=`<strong>${f[1]}</strong> — ${f[4]}`;
 
   let h="<table><tr>";
-  f.forEach(()=>h+="<th>Dato</th>");
+  headers.forEach(t=>h+=`<th>${t}</th>`);
   h+="</tr><tr>";
-  f.forEach(c=>h+="<td>"+c+"</td>");
+  f.forEach(c=>h+=`<td>${c}</td>`);
   h+="</tr></table>";
 
-  const r=document.getElementById("resultado");
-  r.innerHTML=h;
-  r.style.display="block";
+  resultado.innerHTML=h;
+  resultado.style.display="block";
 }
 </script>
 

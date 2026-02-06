@@ -26,7 +26,7 @@ body{
 }
 
 .wrapper{
-  max-width:1200px;
+  max-width:1100px;
   margin:20px auto;
   background:rgba(0,0,0,.45);
   border:1px solid rgba(0,255,213,.35);
@@ -45,15 +45,16 @@ body{
   text-shadow:var(--glow);
 }
 .fecha-hora{
-  font-size:14px;
+  font-size:13px;
   opacity:.85;
+  margin-top:4px;
 }
 
-.content{ padding:24px }
+.content{padding:24px}
 
 .buscador{
   max-width:520px;
-  margin:0 auto 14px;
+  margin:0 auto 12px;
 }
 .buscador input{
   width:100%;
@@ -63,32 +64,35 @@ body{
   background:#000;
   color:var(--neon);
   font-size:16px;
-  outline:none;
 }
 
 .lista{
   max-width:520px;
-  margin:0 auto 16px;
+  margin:0 auto 18px;
   background:#000;
   border:1px solid rgba(0,255,213,.35);
   border-radius:16px;
-  max-height:240px;
+  max-height:260px;
   overflow-y:auto;
 }
-.lista div{
+
+.item{
   padding:10px 14px;
   border-bottom:1px solid rgba(0,255,213,.15);
   cursor:pointer;
 }
-.lista div:hover{
+.item strong{color:var(--neon)}
+.item small{opacity:.85}
+.item:hover,
+.item.active{
   background:var(--neon);
   color:#000;
 }
 
 .info-activa{
   max-width:720px;
-  margin:0 auto 14px;
-  padding:12px;
+  margin:0 auto 16px;
+  padding:14px;
   border-radius:16px;
   background:rgba(0,0,0,.6);
   border:1px solid rgba(0,255,213,.35);
@@ -104,16 +108,14 @@ body{
   border:1px solid rgba(0,255,213,.35);
   border-radius:18px;
   box-shadow:var(--glow);
-  padding:14px;
-}
-
-.resultado-scroll{
+  padding:16px;
+  display:none;
   overflow-x:auto;
 }
 
 table{
   width:100%;
-  min-width:1000px;
+  min-width:900px;
   border-collapse:collapse;
   font-size:14px;
 }
@@ -124,7 +126,6 @@ th,td{
 th{
   background:var(--neon);
   color:#000;
-  text-align:center;
 }
 
 .footer{
@@ -132,105 +133,89 @@ th{
   font-size:12px;
   padding:12px;
   border-top:1px solid rgba(0,255,213,.25);
+  opacity:.85;
 }
 </style>
 </head>
 
 <body>
-
 <div class="wrapper">
-  <div class="header">
-    <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
-    <div id="fechaHora" class="fecha-hora"></div>
-  </div>
 
-  <div class="content">
+<div class="header">
+  <h1>SYSTEM BY GELM — TRANSPORTES 2026</h1>
+  <div id="fechaHora" class="fecha-hora"></div>
+</div>
 
-    <div class="buscador">
-      <input id="buscar" placeholder="Buscar por placa, línea o propietario...">
-    </div>
+<div class="content">
 
-    <div id="lista" class="lista"></div>
+<div class="buscador">
+  <input id="buscar" placeholder="Buscar por placa, línea o propietario…">
+</div>
 
-    <div id="infoActiva" class="info-activa">
-      Registro cargado automáticamente
-    </div>
+<div id="lista" class="lista"></div>
 
-    <!-- TABLA SIEMPRE VISIBLE -->
-    <div class="resultado resultado-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>NO. PLACA</th>
-            <th>NO. CALCOMANÍA</th>
-            <th>CONCESIONARIO</th>
-            <th>TEL. DUEÑO</th>
-            <th>RUTA</th>
-            <th>TEL. PILOTO</th>
-            <th>NOMBRE PILOTO</th>
-            <th>DPI</th>
-            <th>LICENCIA</th>
-            <th>TIPO</th>
-            <th>DIRECCIÓN</th>
-          </tr>
-        </thead>
-        <tbody id="tablaDatos"></tbody>
-      </table>
-    </div>
+<div id="infoActiva" class="info-activa">
+  Seleccione un registro de transporte
+</div>
 
-  </div>
+<div id="resultado" class="resultado"></div>
 
-  <div class="footer">
-    © 2025–2026 — Sistema GELM<br>
-    Uso interno autorizado — Transportes
-  </div>
+</div>
+
+<div class="footer">
+© 2025–2026 — Sistema GELM<br>
+Uso interno autorizado — Transportes
+</div>
+
 </div>
 
 <script>
-/* FECHA */
-function hora(){
-  const d=new Date();
-  fechaHora.textContent=
-    d.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
-    " — "+d.toLocaleTimeString("es-GT");
-}
-setInterval(hora,1000);hora();
-
-/* CSV */
 const URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
 
 let filas=[];
 
-fetch(URL)
-.then(r=>r.text())
-.then(t=>{
-  filas=t.split("\n").map(l=>l.split(","));
-  cargarLista();
-  mostrar(filas.find((f,i)=>i>0 && f[1]));
+function hora(){
+ const f=new Date();
+ fechaHora.textContent=f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
+ " — "+f.toLocaleTimeString("es-GT");
+}
+setInterval(hora,1000);hora();
+
+fetch(URL).then(r=>r.text()).then(t=>{
+ filas=t.split("\n").map(l=>l.split(","));
+ renderLista();
 });
 
-function cargarLista(){
-  lista.innerHTML="";
-  filas.forEach((f,i)=>{
-    if(i===0||!f[1]) return;
-    const d=document.createElement("div");
-    d.textContent=f[1];
-    d.onclick=()=>mostrar(f);
-    lista.appendChild(d);
-  });
+function renderLista(){
+ lista.innerHTML="";
+ filas.forEach((f,i)=>{
+  if(i===0) return;
+  const d=document.createElement("div");
+  d.className="item";
+  d.innerHTML=`
+    <strong>${f[1]}</strong><br>
+    ${f[2]||""}<br>
+    <small>${f[4]||""}</small>
+  `;
+  d.onclick=()=>mostrar(f,d);
+  lista.appendChild(d);
+ });
 }
 
-function mostrar(f){
-  infoActiva.innerHTML=`<strong>${f[1]}</strong> — ${f[4]}`;
-  const tb=document.getElementById("tablaDatos");
-  tb.innerHTML="";
-  const tr=document.createElement("tr");
-  f.slice(0,11).forEach(c=>{
-    const td=document.createElement("td");
-    td.textContent=c;
-    tr.appendChild(td);
-  });
-  tb.appendChild(tr);
+function mostrar(f,el){
+ document.querySelectorAll(".item").forEach(i=>i.classList.remove("active"));
+ el.classList.add("active");
+
+ infoActiva.innerHTML=`<strong>${f[1]}</strong> — ${f[4]}`;
+
+ let h="<table><tr>";
+ filas[0].forEach(c=>h+=`<th>${c}</th>`);
+ h+="</tr><tr>";
+ f.forEach(c=>h+=`<td>${c}</td>`);
+ h+="</tr></table>";
+
+ resultado.innerHTML=h;
+ resultado.style.display="block";
 }
 </script>
 

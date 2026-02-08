@@ -1,239 +1,250 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PMT CHIMALTENANGO — TRANSPORTES 2026</title>
+    <!-- Inserted by miarroba -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7294310421616689" crossorigin="anonymous"></script>
+    <script type='text/javascript' src='https://ads.vidoomy.com/miarroba_23335.js' async></script>
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];
+      w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T2VG59');
+    </script>
+    <!-- Inserted by miarroba -->
 
-<style>
-body{
-  margin:0;
-  padding:20px;
-  font-family:Arial,sans-serif;
-  color:#eee;
-  background:radial-gradient(circle at 20% 0%,rgba(0,255,255,.2),transparent 50%),
-             radial-gradient(circle at 80% 0%,rgba(255,0,255,.18),transparent 55%),
-             #05010a;
-}
-.contenedor{
-  max-width:1200px;
-  margin:auto;
-  background:rgba(0,0,0,.82);
-  border-radius:18px;
-  padding:20px;
-  border:1px solid rgba(0,255,255,.35);
-}
-.header{
-  text-align:center;
-  margin-bottom:15px;
-}
-.header h1{
-  color:#00ffc8;
-  text-shadow:0 0 10px #00ffff;
-}
-#estado{
-  text-align:center;
-  margin:10px 0;
-  color:#aaa;
-}
-.buscador{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin-bottom:10px;
-}
-.buscador input{
-  padding:10px;
-  border-radius:999px;
-  border:1px solid #00ffc8;
-  background:#050513;
-  color:#00ffc8;
-}
-.buscador button{
-  padding:10px 22px;
-  border-radius:999px;
-  border:none;
-  background:linear-gradient(135deg,#00ffff,#5f00ff);
-  font-weight:bold;
-  cursor:pointer;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-  font-size:13px;
-}
-th,td{
-  border:1px solid #333;
-  padding:6px 8px;
-}
-th{
-  background:#00ffc8;
-  color:#000;
-}
-tr:nth-child(even) td{background:#101010;}
-.similares-box{
-  margin-top:10px;
-  color:#a8ffe8;
-}
-.similares-box select{
-  background:#020b40;
-  color:#fff;
-  border-radius:999px;
-  border:1px solid #00ffc8;
-  padding:5px 10px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLICIA MUNICIPAL DE TRANSITO----TRANSPORTES---BY GELM</title>
+
+    <!-- Librería XLSX (seguimos cargando por si hay otras funciones) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- ESTILOS ORIGINALES DEL TATA -->
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #eee;
+            background: radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
+                        radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
+                        #05010a;
+            background-attachment: fixed;
+        }
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.82);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(0,255,255,.35);
+        }
+        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .logo-box img { max-width: 110px; height: auto; }
+        .titulos-linea1 { font-size: 20px; font-weight: bold; color: #00ffc8; }
+        .buscador input { padding: 10px; border-radius: 999px; border: 1px solid #00ffc8; }
+        .buscador button { padding: 10px 22px; border-radius: 999px; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; background: #141414; }
+        th,td { border:1px solid #333; padding:6px 8px; font-size:13px; }
+        th { background:#00ffc8; color:#000; }
+        .similares-box { margin-top:10px; font-size:12px; color:#a8ffe8; }
+        .similares-box select { border-radius:999px; padding:5px 10px; }
+        .footer-info { text-align:center; font-size:12px; color:#4ee8ff; }
+    </style>
 </head>
-
 <body>
+
 <div class="contenedor">
 
-<div class="header">
-<h1>SISTEMA DE TRANSPORTES 2026 — PMT CHIMALTENANGO</h1>
-</div>
+    <!-- ENCABEZADO -->
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/pmt.jpg" alt="Logo PMT">
+        </div>
 
-<div id="estado">Cargando datos…</div>
+        <div class="titulos">
+            <div class="titulos-linea1">POLICÍA MUNICIPAL DE TRÁNSITO - CHIMALTENANGO</div>
+        </div>
 
-<div class="buscador">
-<input id="busquedaInput" placeholder="Placa, DPI, licencia o calcomanía">
-<button onclick="buscar()">Buscar</button>
-</div>
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="Logo GELM">
+        </div>
+    </div>
 
-<div id="resultado">
-  <div id="resultado-principal"></div>
-  <div id="similares-contenedor"></div>
-</div>
+    <div id="estado">Cargando datos desde Google Sheets...</div>
+
+    <div class="buscador">
+        <input id="busquedaInput" type="text"
+               placeholder="Placa, DPI, No. licencia, documento o No. de calcomanía...">
+        <button onclick="buscar()">Buscar</button>
+    </div>
+
+    <p class="nota">
+        Puedes escribir con o sin espacios / guiones. Ej:<br>
+        <b>1856 12258 0413</b> ó <b>1856122580413</b> &nbsp; | &nbsp;
+        <b>1056-12250413</b> ó <b>105612250413</b> &nbsp; | &nbsp;
+        <b>40</b> (No. calcomanía)
+    </p>
+
+    <div id="resultado">
+        <div id="resultado-principal"></div>
+        <div id="similares-contenador"></div>
+    </div>
+
+    <div class="footer-info">
+        <div>Datos consultados desde Google Sheets</div>
+        <div id="fechaHora"></div>
+    </div>
 
 </div>
 
 <script>
-let registros=[];
-let similares=[];
+// ======== DATOS ========
+let registros = [];
+let similares = [];
 
-// 🔥 CARGA DESDE GOOGLE SHEETS
-async function cargarDatos(){
- try{
-  const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
-  const txt=await fetch(url).then(r=>r.text());
-  const filas=txt.split("\n").map(f=>f.split(","));
+// ======== CARGAR GOOGLE SHEETS CSV ========
+async function cargarExcel() {
+    try {
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+        const resp = await fetch(CSV_URL);
+        if (!resp.ok) throw new Error("No se pudo descargar el CSV");
 
-  for(let i=1;i<filas.length;i++){
-    const f=filas[i];
-    if(!f[0]) continue;
-    registros.push({
-      placa:f[0]?.trim().toUpperCase(),
-      calcomania:f[1]?.trim(),
-      concesionario:f[2]?.trim(),
-      telDueno:f[3]?.trim(),
-      ruta:f[4]?.trim(),
-      telPilotos:f[5]?.trim(),
-      nombrePiloto:f[6]?.trim(),
-      dpi:f[7]?.trim(),
-      documento:f[8]?.trim(),
-      licencia:f[9]?.trim(),
-      tipoLic:f[10]?.trim(),
-      direccion:f[11]?.trim()
+        const texto = await resp.text();
+        const filas = texto.split("\n").map(l => l.split(",").map(c => c.replace(/^"|"$/g, "").trim()));
+
+        // Buscar inicio de datos con placa M-
+        let inicio = filas.findIndex(f =>
+            (f[0] || "").toUpperCase().startsWith("M-")
+        );
+        if (inicio === -1) inicio = 1;
+
+        for (let i = inicio; i < filas.length; i++) {
+            const f = filas[i];
+            if (!f[0]) continue;
+            registros.push({
+                placa: (f[0] || "").toUpperCase(),
+                calcomania: f[1] || "",
+                placaSale: f[2] || "",
+                concesionario: f[3] || "",
+                telDueno: f[4] || "",
+                ruta: f[5] || "",
+                telPilotos: f[6] || "",
+                nombrePiloto: f[7] || "",
+                dpi: f[8] || "",
+                documento: f[9] || "",
+                licencia: (f[10] || "").toUpperCase(),
+                tipoLic: f[11] || ""
+            });
+        }
+
+        document.getElementById("estado").textContent =
+            "Datos cargados correctamente — Registros: " + registros.length;
+
+    } catch (err) {
+        document.getElementById("estado").textContent = "Error cargando datos: " + err.message;
+        console.error(err);
+    }
+}
+
+// ======== UTILIDADES ========
+function normalizar(txt) {
+    return txt.toString().replace(/\s+/g, "").replace(/-/g, "").toUpperCase();
+}
+
+function esc(str) {
+    return str.toString()
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+}
+
+function construirTabla(r) {
+    return `
+        <table>
+            <tr>
+                <th>NO. PLACA</th><th>NO. CALCOMANIA</th><th>PLACA SALE</th>
+                <th>CONCESIONARIO (A)</th><th>TEL. DUEÑO</th><th>RUTA</th>
+                <th>TEL. PILOTOS</th><th>NOMBRE DEL PILOTO</th><th>DPI</th>
+                <th>DOCUMENTO</th><th>LICENCIA</th><th>TIPO LICENCIA</th>
+            </tr>
+            <tr>
+                <td>${esc(r.placa)}</td><td>${esc(r.calcomania)}</td><td>${esc(r.placaSale)}</td>
+                <td>${esc(r.concesionario)}</td><td>${esc(r.telDueno)}</td><td>${esc(r.ruta)}</td>
+                <td>${esc(r.telPilotos)}</td><td>${esc(r.nombrePiloto)}</td><td>${esc(r.dpi)}</td>
+                <td>${esc(r.documento)}</td><td>${esc(r.licencia)}</td><td>${esc(r.tipoLic)}</td>
+            </tr>
+        </table>`;
+}
+
+// ======== BUSCAR ========
+function buscar() {
+    const texto = document.getElementById("busquedaInput").value.trim();
+    const limpio = normalizar(texto);
+
+    const divP = document.getElementById("resultado-principal");
+    const divS = document.getElementById("similares-contenador");
+    divP.innerHTML = ""; 
+    divS.innerHTML = "";
+    similares = [];
+
+    if (!texto) return;
+
+    const matches = [];
+
+    registros.forEach(r => {
+        let pr = 0;
+        if (r.calcomania === texto || normalizar(r.calcomania) === limpio) pr = 100;
+        if (r.placa === texto.toUpperCase()) pr = Math.max(pr, 90);
+        if (normalizar(r.dpi) === limpio) pr = Math.max(pr, 80);
+        if (normalizar(r.licencia) === limpio) pr = Math.max(pr, 70);
+        if (normalizar(r.documento) === limpio) pr = Math.max(pr, 60);
+        if (pr) matches.push({r, pr});
     });
-  }
 
-  document.getElementById("estado").textContent=
-    "Datos cargados correctamente — Registros: "+registros.length;
+    if (!matches.length) {
+        divP.innerHTML = "<p>No encontrado</p>";
+        return;
+    }
 
- }catch(e){
-  document.getElementById("estado").textContent="Error cargando datos";
-  console.error(e);
- }
+    matches.sort((a,b)=>b.pr-a.pr);
+    divP.innerHTML = construirTabla(matches[0].r);
+
+    similares = matches.slice(1).map(x=>x.r);
+    if (similares.length) {
+        let ops="<option value=''>-- seleccionar --</option>";
+        similares.forEach((r,i)=> {
+            ops+=`<option value='${i}'>Calcomanía ${r.calcomania} • ${r.ruta}</option>`;
+        });
+        divS.innerHTML=`
+            <div class="similares-box">
+                <select onchange="mostrarSimilar(this.value)">${ops}</select>
+            </div>`;
+    }
 }
 
-function normalizar(t){
- return t.replace(/\s|-/g,"").toUpperCase();
+function mostrarSimilar(i) {
+    if (similares[i]) {
+        document.getElementById("resultado-principal").innerHTML =
+           construirTabla(similares[i]);
+    }
 }
 
-function esc(t){
- return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+// ======== FECHA/HORA ========
+function actualizarFechaHora() {
+    const d = new Date();
+    document.getElementById("fechaHora").textContent =
+        d.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})
+        +" — "+d.toLocaleTimeString("es-GT");
 }
+setInterval(actualizarFechaHora,1000);
+actualizarFechaHora();
 
-function construirTabla(r){
- return `
- <table>
- <tr>
- <th>PLACA</th><th>CALCOMANIA</th><th>CONCESIONARIO</th>
- <th>RUTA</th><th>TEL PILOTO</th><th>NOMBRE PILOTO</th>
- <th>DPI</th><th>DOCUMENTO</th><th>LICENCIA</th>
- <th>TIPO</th><th>DIRECCIÓN</th>
- </tr>
- <tr>
- <td>${esc(r.placa)}</td>
- <td>${esc(r.calcomania)}</td>
- <td>${esc(r.concesionario)}</td>
- <td>${esc(r.ruta)}</td>
- <td>${esc(r.telPilotos)}</td>
- <td>${esc(r.nombrePiloto)}</td>
- <td>${esc(r.dpi)}</td>
- <td>${esc(r.documento)}</td>
- <td>${esc(r.licencia)}</td>
- <td>${esc(r.tipoLic)}</td>
- <td>${esc(r.direccion)}</td>
- </tr>
- </table>`;
-}
-
-// 🔎 BUSCADOR + SIMILARES
-function buscar(){
- const t=document.getElementById("busquedaInput").value.trim();
- const n=normalizar(t);
- const p=document.getElementById("resultado-principal");
- const s=document.getElementById("similares-contenedor");
- p.innerHTML=""; s.innerHTML=""; similares=[];
-
- if(!t) return;
-
- const hits=registros.filter(r=>
-   normalizar(r.placa)==n ||
-   normalizar(r.dpi)==n ||
-   normalizar(r.licencia)==n ||
-   r.calcomania==t
- );
-
- if(hits.length==0){
-   p.innerHTML="<p>No encontrado</p>";
-   return;
- }
-
- const principal=hits[0];
- p.innerHTML=construirTabla(principal);
-
- similares=registros.filter(r=>
-   r!==principal &&
-   (r.calcomania==principal.calcomania || r.ruta==principal.ruta)
- );
-
- if(similares.length){
-   let opt="<option value=''>-- seleccionar --</option>";
-   similares.forEach((r,i)=>{
-     opt+=`<option value="${i}">
-       Calcomanía ${r.calcomania} | ${r.ruta} | ${r.placa}
-     </option>`;
-   });
-   s.innerHTML=`
-    <div class="similares-box">
-     SIMILARES:
-     <select onchange="mostrarSimilar(this.value)">
-      ${opt}
-     </select>
-    </div>`;
- }
-}
-
-function mostrarSimilar(i){
- if(similares[i]){
-  document.getElementById("resultado-principal").innerHTML=
-   construirTabla(similares[i]);
- }
-}
-
-cargarDatos();
+// ======== INICIO ========
+cargarExcel();
 </script>
+
 </body>
 </html>

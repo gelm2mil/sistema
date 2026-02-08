@@ -1,249 +1,265 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Inserted by miarroba -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7294310421616689" crossorigin="anonymous"></script>
-    <script type='text/javascript' src='https://ads.vidoomy.com/miarroba_23335.js' async></script>
-    <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];
-      w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-      f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-T2VG59');
-    </script>
-    <!-- Inserted by miarroba -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLICÍA MUNICIPAL DE TRÁNSITO — TRANSPORTES — BY GELM</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POLICIA MUNICIPAL DE TRANSITO----TRANSPORTES---BY GELM</title>
+<style>
+body{
+    margin:0;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    color:#eee;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+        radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+        #05010a;
+    background-attachment:fixed;
+}
 
-    <!-- Librería XLSX (seguimos cargando por si hay otras funciones) -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+.contenedor{
+    max-width:1200px;
+    margin:auto;
+    background:rgba(0,0,0,.82);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 18px rgba(0,255,255,.5);
+    border:1px solid rgba(0,255,255,.35);
+}
 
-    <!-- ESTILOS ORIGINALES DEL TATA -->
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            color: #eee;
-            background: radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
-                        radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
-                        #05010a;
-            background-attachment: fixed;
-        }
-        .contenedor {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.82);
-            border-radius: 18px;
-            padding: 20px;
-            border: 1px solid rgba(0,255,255,.35);
-        }
-        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-        .logo-box img { max-width: 110px; height: auto; }
-        .titulos-linea1 { font-size: 20px; font-weight: bold; color: #00ffc8; }
-        .buscador input { padding: 10px; border-radius: 999px; border: 1px solid #00ffc8; }
-        .buscador button { padding: 10px 22px; border-radius: 999px; cursor: pointer; }
-        table { border-collapse: collapse; width: 100%; margin-top: 10px; background: #141414; }
-        th,td { border:1px solid #333; padding:6px 8px; font-size:13px; }
-        th { background:#00ffc8; color:#000; }
-        .similares-box { margin-top:10px; font-size:12px; color:#a8ffe8; }
-        .similares-box select { border-radius:999px; padding:5px 10px; }
-        .footer-info { text-align:center; font-size:12px; color:#4ee8ff; }
-    </style>
+.header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.logo-box{
+    padding:6px;
+    border-radius:14px;
+    border:1px solid #00ffc8;
+    box-shadow:0 0 10px #00ffc8;
+}
+
+.logo-box img{max-width:110px}
+
+.titulos{text-align:center;flex:1}
+.titulos-linea1{color:#00ffc8;font-size:20px;font-weight:bold}
+.titulos-linea2{color:#ffdf5e;font-size:15px}
+.titulos-linea3{color:#a5ffe5;font-size:14px}
+.titulos-linea4{color:#ccc;font-size:13px}
+
+#estado{text-align:center;margin:12px 0}
+
+.buscador{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+.buscador input{
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513;
+    color:#00ffc8;
+}
+
+.buscador button{
+    padding:10px 24px;
+    border-radius:999px;
+    border:none;
+    background:linear-gradient(90deg,#00ffff,#5f00ff);
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#resultado{
+    width:100%;
+    margin-top:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    background:#141414;
+}
+
+th,td{
+    border:1px solid #333;
+    padding:6px 8px;
+    font-size:13px;
+}
+
+th{background:#00ffc8;color:#000}
+tr:nth-child(even) td{background:#101010}
+
+.similares-box{
+    margin-top:12px;
+    font-size:12px;
+}
+
+.similares-box select{
+    padding:5px 12px;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#020b40;
+    color:#fff;
+}
+
+.footer-info{
+    margin-top:18px;
+    text-align:center;
+    font-size:12px;
+    color:#4ee8ff;
+}
+</style>
 </head>
+
 <body>
 
 <div class="contenedor">
 
-    <!-- ENCABEZADO -->
-    <div class="header-top">
-        <div class="logo-box">
-            <img src="https://gelmhistoria.webcindario.com/pmt.jpg" alt="Logo PMT">
-        </div>
-
-        <div class="titulos">
-            <div class="titulos-linea1">POLICÍA MUNICIPAL DE TRÁNSITO - CHIMALTENANGO</div>
-        </div>
-
-        <div class="logo-box">
-            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="Logo GELM">
-        </div>
+<div class="header-top">
+    <div class="logo-box">
+        <img src="https://gelmhistoria.webcindario.com/pmt.jpg">
     </div>
 
-    <div id="estado">Cargando datos desde Google Sheets...</div>
-
-    <div class="buscador">
-        <input id="busquedaInput" type="text"
-               placeholder="Placa, DPI, No. licencia, documento o No. de calcomanía...">
-        <button onclick="buscar()">Buscar</button>
+    <div class="titulos">
+        <div class="titulos-linea1">POLICÍA MUNICIPAL DE TRÁNSITO - CHIMALTENANGO</div>
+        <div class="titulos-linea2">DELEGACIÓN DE TRANSPORTES</div>
+        <div class="titulos-linea3">Sistema de Consulta 2014 - 2025 ? == BY GELM == ?</div>
+        <div class="titulos-linea4">Buscador de vehículos autorizados</div>
     </div>
 
-    <p class="nota">
-        Puedes escribir con o sin espacios / guiones. Ej:<br>
-        <b>1856 12258 0413</b> ó <b>1856122580413</b> &nbsp; | &nbsp;
-        <b>1056-12250413</b> ó <b>105612250413</b> &nbsp; | &nbsp;
-        <b>40</b> (No. calcomanía)
-    </p>
-
-    <div id="resultado">
-        <div id="resultado-principal"></div>
-        <div id="similares-contenador"></div>
+    <div class="logo-box">
+        <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
     </div>
+</div>
 
-    <div class="footer-info">
-        <div>Datos consultados desde Google Sheets</div>
-        <div id="fechaHora"></div>
-    </div>
+<div id="estado">Cargando datos desde Google Sheets...</div>
+
+<div class="buscador">
+    <input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
+    <button onclick="buscar()">Buscar</button>
+</div>
+
+<div id="resultado">
+    <div id="resultado-principal"></div>
+    <div id="similares-contenedor"></div>
+</div>
+
+<div class="footer-info">
+    2014–2025 | BY GELM | PMT Chimaltenango<br>
+    <span id="fechaHora"></span>
+</div>
 
 </div>
 
 <script>
-// ======== DATOS ========
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+
 let registros = [];
 let similares = [];
 
-// ======== CARGAR GOOGLE SHEETS CSV ========
-async function cargarExcel() {
-    try {
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
-        const resp = await fetch(CSV_URL);
-        if (!resp.ok) throw new Error("No se pudo descargar el CSV");
+function normalizar(t){
+    return t.toString().replace(/[\s-]/g,"").toUpperCase();
+}
 
-        const texto = await resp.text();
-        const filas = texto.split("\n").map(l => l.split(",").map(c => c.replace(/^"|"$/g, "").trim()));
+function esc(s){
+    return s.toString().replace(/[&<>"]/g,c=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
+    }[c]));
+}
 
-        // Buscar inicio de datos con placa M-
-        let inicio = filas.findIndex(f =>
-            (f[0] || "").toUpperCase().startsWith("M-")
-        );
-        if (inicio === -1) inicio = 1;
+async function cargarDatos(){
+    const r = await fetch(CSV_URL);
+    const t = await r.text();
+    const filas = t.split("\n").map(f=>f.split(","));
 
-        for (let i = inicio; i < filas.length; i++) {
-            const f = filas[i];
-            if (!f[0]) continue;
-            registros.push({
-                placa: (f[0] || "").toUpperCase(),
-                calcomania: f[1] || "",
-                placaSale: f[2] || "",
-                concesionario: f[3] || "",
-                telDueno: f[4] || "",
-                ruta: f[5] || "",
-                telPilotos: f[6] || "",
-                nombrePiloto: f[7] || "",
-                dpi: f[8] || "",
-                documento: f[9] || "",
-                licencia: (f[10] || "").toUpperCase(),
-                tipoLic: f[11] || ""
-            });
-        }
-
-        document.getElementById("estado").textContent =
-            "Datos cargados correctamente — Registros: " + registros.length;
-
-    } catch (err) {
-        document.getElementById("estado").textContent = "Error cargando datos: " + err.message;
-        console.error(err);
+    let inicio = filas.findIndex(f => (f[0]||"").toUpperCase().startsWith("M-"));
+    for(let i=inicio;i<filas.length;i++){
+        const f = filas[i];
+        if(!f[0]) continue;
+        registros.push({
+            placa:f[0], calcomania:f[1], placaSale:f[2],
+            concesionario:f[3], telDueno:f[4], ruta:f[5],
+            telPilotos:f[6], nombrePiloto:f[7],
+            dpi:f[8], documento:f[9], licencia:f[10], tipoLic:f[11]
+        });
     }
+    estado.textContent = "Datos cargados correctamente — Registros: "+registros.length;
 }
 
-// ======== UTILIDADES ========
-function normalizar(txt) {
-    return txt.toString().replace(/\s+/g, "").replace(/-/g, "").toUpperCase();
+function construirTabla(r){
+return `
+<table>
+<tr>
+<th>PLACA</th><th>CALCOMANIA</th><th>PLACA SALE</th><th>CONCESIONARIO</th>
+<th>TEL. DUEÑO</th><th>RUTA</th><th>TEL. PILOTOS</th>
+<th>NOMBRE PILOTO</th><th>DPI</th><th>DOCUMENTO</th>
+<th>LICENCIA</th><th>TIPO</th>
+</tr>
+<tr>
+<td>${esc(r.placa)}</td><td>${esc(r.calcomania)}</td><td>${esc(r.placaSale)}</td>
+<td>${esc(r.concesionario)}</td><td>${esc(r.telDueno)}</td><td>${esc(r.ruta)}</td>
+<td>${esc(r.telPilotos)}</td><td>${esc(r.nombrePiloto)}</td>
+<td>${esc(r.dpi)}</td><td>${esc(r.documento)}</td>
+<td>${esc(r.licencia)}</td><td>${esc(r.tipoLic)}</td>
+</tr>
+</table>`;
 }
 
-function esc(str) {
-    return str.toString()
-              .replace(/&/g, "&amp;")
-              .replace(/</g, "&lt;")
-              .replace(/>/g, "&gt;");
-}
+function buscar(){
+    const txt = busquedaInput.value.trim();
+    if(!txt) return;
 
-function construirTabla(r) {
-    return `
-        <table>
-            <tr>
-                <th>NO. PLACA</th><th>NO. CALCOMANIA</th><th>PLACA SALE</th>
-                <th>CONCESIONARIO (A)</th><th>TEL. DUEÑO</th><th>RUTA</th>
-                <th>TEL. PILOTOS</th><th>NOMBRE DEL PILOTO</th><th>DPI</th>
-                <th>DOCUMENTO</th><th>LICENCIA</th><th>TIPO LICENCIA</th>
-            </tr>
-            <tr>
-                <td>${esc(r.placa)}</td><td>${esc(r.calcomania)}</td><td>${esc(r.placaSale)}</td>
-                <td>${esc(r.concesionario)}</td><td>${esc(r.telDueno)}</td><td>${esc(r.ruta)}</td>
-                <td>${esc(r.telPilotos)}</td><td>${esc(r.nombrePiloto)}</td><td>${esc(r.dpi)}</td>
-                <td>${esc(r.documento)}</td><td>${esc(r.licencia)}</td><td>${esc(r.tipoLic)}</td>
-            </tr>
-        </table>`;
-}
+    const limpio = normalizar(txt);
+    let hits = [];
 
-// ======== BUSCAR ========
-function buscar() {
-    const texto = document.getElementById("busquedaInput").value.trim();
-    const limpio = normalizar(texto);
-
-    const divP = document.getElementById("resultado-principal");
-    const divS = document.getElementById("similares-contenador");
-    divP.innerHTML = ""; 
-    divS.innerHTML = "";
-    similares = [];
-
-    if (!texto) return;
-
-    const matches = [];
-
-    registros.forEach(r => {
-        let pr = 0;
-        if (r.calcomania === texto || normalizar(r.calcomania) === limpio) pr = 100;
-        if (r.placa === texto.toUpperCase()) pr = Math.max(pr, 90);
-        if (normalizar(r.dpi) === limpio) pr = Math.max(pr, 80);
-        if (normalizar(r.licencia) === limpio) pr = Math.max(pr, 70);
-        if (normalizar(r.documento) === limpio) pr = Math.max(pr, 60);
-        if (pr) matches.push({r, pr});
+    registros.forEach(r=>{
+        let p=0;
+        if(normalizar(r.calcomania)==limpio) p=90;
+        if(r.ruta.toUpperCase().includes("CASCO")) p+=10;
+        if(normalizar(r.placa)==limpio) p=Math.max(p,80);
+        if(normalizar(r.dpi)==limpio) p=Math.max(p,70);
+        if(normalizar(r.licencia)==limpio) p=Math.max(p,60);
+        if(normalizar(r.documento)==limpio) p=Math.max(p,50);
+        if(p>0) hits.push({r,p});
     });
 
-    if (!matches.length) {
-        divP.innerHTML = "<p>No encontrado</p>";
+    if(!hits.length){
+        resultadoPrincipal.innerHTML="No encontrado";
         return;
     }
 
-    matches.sort((a,b)=>b.pr-a.pr);
-    divP.innerHTML = construirTabla(matches[0].r);
+    hits.sort((a,b)=>b.p-a.p);
+    resultadoPrincipal.innerHTML = construirTabla(hits[0].r);
+    similares = hits.slice(1).map(x=>x.r);
 
-    similares = matches.slice(1).map(x=>x.r);
-    if (similares.length) {
-        let ops="<option value=''>-- seleccionar --</option>";
-        similares.forEach((r,i)=> {
-            ops+=`<option value='${i}'>Calcomanía ${r.calcomania} • ${r.ruta}</option>`;
-        });
-        divS.innerHTML=`
-            <div class="similares-box">
-                <select onchange="mostrarSimilar(this.value)">${ops}</select>
-            </div>`;
+    if(similares.length){
+        similaresContenedor.innerHTML = `
+        <div class="similares-box">
+        SIMILARES:
+        <select onchange="resultadoPrincipal.innerHTML=construirTabla(similares[this.value])">
+        <option></option>
+        ${similares.map((s,i)=>`<option value="${i}">Calcomanía ${s.calcomania} — ${s.ruta}</option>`)}
+        </select></div>`;
     }
 }
 
-function mostrarSimilar(i) {
-    if (similares[i]) {
-        document.getElementById("resultado-principal").innerHTML =
-           construirTabla(similares[i]);
-    }
+function reloj(){
+    fechaHora.textContent = new Date().toLocaleString("es-ES");
 }
+setInterval(reloj,1000);
 
-// ======== FECHA/HORA ========
-function actualizarFechaHora() {
-    const d = new Date();
-    document.getElementById("fechaHora").textContent =
-        d.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})
-        +" — "+d.toLocaleTimeString("es-GT");
-}
-setInterval(actualizarFechaHora,1000);
-actualizarFechaHora();
-
-// ======== INICIO ========
-cargarExcel();
+cargarDatos();
+reloj();
 </script>
 
 </body>

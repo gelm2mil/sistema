@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -11,16 +11,17 @@
 <style>
 :root{
   --neon:#00ff66;
-  --bg1:#020b12;
-  --bg2:#1a0022;
-  --card:rgba(0,0,0,.65);
+  --card:rgba(0,0,0,.55);
   --glow:0 0 18px rgba(0,255,102,.55);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
   min-height:100vh;
-  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  background:
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.85)),
+    url("icons/natural.jpg") no-repeat center center fixed;
+  background-size:cover;
   color:#eafff2;
 }
 
@@ -34,6 +35,7 @@ body{
   width:fit-content;
   text-align:center;
   color:#000;
+  backdrop-filter:blur(6px);
 }
 .header h1{font-size:18px;font-weight:800}
 .header span{
@@ -57,6 +59,7 @@ body{
   background:var(--card);
   border:1px solid rgba(0,255,102,.45);
   box-shadow:var(--glow);
+  backdrop-filter:blur(10px);
 }
 .player iframe{
   width:100%;
@@ -83,9 +86,10 @@ body{
   font-weight:800;
   font-size:13px;
   letter-spacing:.5px;
-  background:linear-gradient(145deg,#020b12,#050014);
+  background:rgba(0,0,0,.55);
   border:1px solid rgba(0,255,102,.45);
   box-shadow:0 0 14px rgba(0,255,102,.45);
+  backdrop-filter:blur(10px);
 }
 
 /* ===== FOOTER ===== */
@@ -95,6 +99,7 @@ footer{
   padding:12px;
   color:#00ff99;
   border-top:1px solid rgba(0,255,102,.25);
+  backdrop-filter:blur(6px);
 }
 
 /* ===== BOTÓN GPT ===== */
@@ -180,7 +185,6 @@ footer{
 Uso interno autorizado
 </footer>
 
-<!-- BOTONES FLOTANTES -->
 <a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 

@@ -11,173 +11,168 @@
 <style>
 :root{
   --neon:#00ff66;
-  --card:rgba(0,0,0,.55);
-  --glow:0 0 18px rgba(0,255,102,.55);
+  --glass:rgba(0,0,0,.35);
+  --glass-strong:rgba(0,0,0,.45);
+  --glow:0 0 18px rgba(0,255,102,.6);
 }
+
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
   min-height:100vh;
   background:
-    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.85)),
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),
     url("icons/natural.jpg") no-repeat center center fixed;
   background-size:cover;
   color:#eafff2;
+  overflow-x:hidden;
+}
+
+/* ===== PARTICULAS ===== */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
 }
 
 /* ===== HEADER ===== */
 .header{
-  margin:14px auto 10px;
-  padding:14px 26px;
+  position:relative;
+  z-index:2;
+  margin:18px auto 12px;
+  padding:16px 28px;
   border-radius:999px;
-  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(0,255,102,.4);
   box-shadow:var(--glow);
   width:fit-content;
   text-align:center;
-  color:#000;
-  backdrop-filter:blur(6px);
 }
-.header h1{font-size:18px;font-weight:800}
-.header span{
-  display:block;
-  font-size:12px;
-  font-weight:700;
-}
-.header .hora{
-  margin-top:4px;
-  font-size:11px;
-  color:#003311;
-  font-weight:700;
-}
+.header h1{font-size:18px;font-weight:800;color:var(--neon)}
+.header span{display:block;font-size:12px;font-weight:600}
+.header .hora{margin-top:4px;font-size:11px;color:#bfffe0}
 
 /* ===== PLAYER ===== */
 .player{
+  position:relative;
+  z-index:2;
   max-width:420px;
-  margin:10px auto 18px;
-  padding:10px;
-  border-radius:16px;
-  background:var(--card);
-  border:1px solid rgba(0,255,102,.45);
+  margin:10px auto 20px;
+  padding:12px;
+  border-radius:18px;
+  background:var(--glass-strong);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(0,255,102,.4);
   box-shadow:var(--glow);
-  backdrop-filter:blur(10px);
 }
 .player iframe{
   width:100%;
   height:120px;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
 }
 
-/* ===== GRID BOTONES ===== */
+/* ===== MENU ===== */
 .menu{
-  max-width:620px;
+  position:relative;
+  z-index:2;
+  max-width:640px;
   margin:0 auto 40px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:14px;
-  padding:0 14px;
+  gap:16px;
+  padding:0 16px;
 }
 .menu a{
   text-decoration:none;
   text-align:center;
-  padding:14px 10px;
-  border-radius:16px;
-  color:var(--neon);
+  padding:16px 12px;
+  border-radius:18px;
   font-weight:800;
   font-size:13px;
   letter-spacing:.5px;
-  background:rgba(0,0,0,.55);
-  border:1px solid rgba(0,255,102,.45);
-  box-shadow:0 0 14px rgba(0,255,102,.45);
-  backdrop-filter:blur(10px);
+  color:var(--neon);
+  background:rgba(0,0,0,.30);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(0,255,102,.5);
+  box-shadow:0 0 16px rgba(0,255,102,.45);
+  transition:.3s ease;
+}
+.menu a:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 22px rgba(0,255,102,.9);
 }
 
 /* ===== FOOTER ===== */
 footer{
+  position:relative;
+  z-index:2;
   text-align:center;
   font-size:11px;
-  padding:12px;
-  color:#00ff99;
+  padding:14px;
+  color:#9fffd1;
   border-top:1px solid rgba(0,255,102,.25);
   backdrop-filter:blur(6px);
 }
 
-/* ===== BOTÓN GPT ===== */
-.btn-gpt{
+/* ===== BOTONES FLOTANTES ===== */
+.btn-gpt,.btn-2026{
   position:fixed;
   bottom:18px;
-  right:18px;
-  padding:12px 18px;
+  padding:14px 20px;
   border-radius:999px;
-  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
-  color:#000;
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  color:var(--neon);
   font-weight:900;
   text-decoration:none;
+  border:1px solid rgba(0,255,102,.5);
   box-shadow:var(--glow);
-  z-index:9999;
+  z-index:3;
 }
-
-/* ===== BOTÓN 2026 ===== */
-.btn-2026{
-  position:fixed;
-  bottom:18px;
-  left:18px;
-  padding:12px 18px;
-  border-radius:999px;
-  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
-  color:#000;
-  font-weight:900;
-  text-decoration:none;
-  box-shadow:var(--glow);
-  z-index:9999;
-}
+.btn-gpt{right:18px}
+.btn-2026{left:18px}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
+<canvas id="particles"></canvas>
+
 <div class="header">
   <h1>GELM - SYSTEM</h1>
   <span id="frase"></span>
   <div id="hora" class="hora"></div>
 </div>
 
-<!-- PLAYER -->
 <div class="player">
   <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
 </div>
 
-<!-- BOTONERA -->
 <div class="menu">
-
-  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
-  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
-
-  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
-  <a href="do_paso.html" target="_blank">D.PASO</a>
-
-  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
-  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
-
-  <a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
-  <a href="traspaso.html" target="_blank">TRASPASO</a>
-
-  <a href="suplentes.html" target="_blank">SUPLENTES</a>
-  <a href="consignaciones.html" target="_blank">CONSIGNA</a>
-
-  <a href="https://gelm2mil.github.io/gelm/" target="_blank">TRANSPORTES</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">REGLAMENTO 273</a>
-
-  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">HECHOS</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS SAT</a>
-
-  <a href="https://gelm2mil.github.io/buscador/" target="_blank">MULTAS</a>
-  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">BACK UP</a>
-
-  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
-
+  <a href="#">AGENDA</a>
+  <a href="#">RENOVACIÓN</a>
+  <a href="#">REGISTRO 2026</a>
+  <a href="#">D.PASO</a>
+  <a href="#">C. PERMANENTE</a>
+  <a href="#">C. TEMPORAL</a>
+  <a href="#">LÍNEA NUEVA</a>
+  <a href="#">TRASPASO</a>
+  <a href="#">SUPLENTES</a>
+  <a href="#">CONSIGNA</a>
+  <a href="#">TRANSPORTES</a>
+  <a href="#">REGLAMENTO 273</a>
+  <a href="#">HECHOS</a>
+  <a href="#">MULTAS SAT</a>
+  <a href="#">MULTAS</a>
+  <a href="#">BACK UP</a>
+  <a href="#">CÓDIGO MUNICIPAL</a>
+  <a href="#">BIBLIA</a>
 </div>
 
 <footer>
@@ -185,10 +180,11 @@ footer{
 Uso interno autorizado
 </footer>
 
-<a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
-<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
+<a href="#" class="btn-2026">2026</a>
+<a href="#" class="btn-gpt">🤖 GPT</a>
 
 <script>
+/* ===== FRASES Y RELOJ ===== */
 const frases=[
 "Gracias a Dios, un nuevo día.",
 "El día avanza y tú lo estás logrando.",
@@ -209,6 +205,39 @@ function reloj(){
  " — "+d.toLocaleTimeString("es-GT");
 }
 reloj();setInterval(reloj,1000);
+
+/* ===== PARTICULAS SUAVES ===== */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+for(let i=0;i<60;i++){
+ particles.push({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  r:Math.random()*2+1,
+  dx:(Math.random()-0.5)*0.3,
+  dy:(Math.random()-0.5)*0.3
+ });
+}
+
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.fillStyle="rgba(0,255,102,.6)";
+ particles.forEach(p=>{
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  ctx.fill();
+  p.x+=p.dx;
+  p.y+=p.dy;
+  if(p.x<0||p.x>canvas.width)p.dx*=-1;
+  if(p.y<0||p.y>canvas.height)p.dy*=-1;
+ });
+ requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>

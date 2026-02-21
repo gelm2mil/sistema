@@ -8,19 +8,19 @@
 <style>
 :root{
   --neon:#00ffd5;
-  --bg1:#020b18;
-  --bg2:#041d33;
-  --card:rgba(4,18,34,.92);
+  --glass:rgba(255,255,255,.05);
+  --border:rgba(0,255,213,.6);
+  --glow:0 0 20px rgba(0,255,213,.45);
   --txt:#e9ffff;
-  --glow:0 0 18px rgba(0,255,213,.35);
 }
+
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
   font-family:system-ui,Segoe UI,Arial;
-  background:
-    radial-gradient(circle at 20% 20%, #063b7a 0%, transparent 55%),
-    radial-gradient(circle at 80% 80%, #0a0033 0%, transparent 60%),
-    linear-gradient(180deg,var(--bg1),var(--bg2));
+  background:url("icons/natural.jpg") no-repeat center center;
+  background-size:cover;
+  background-attachment:scroll;
   color:var(--txt);
   min-height:100vh;
 }
@@ -29,8 +29,10 @@ body{
 .wrapper{
   max-width:1100px;
   margin:20px auto;
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(0,255,213,.35);
+  background:var(--glass);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  border:1px solid var(--border);
   border-radius:22px;
   box-shadow:var(--glow);
   overflow:hidden;
@@ -40,15 +42,15 @@ body{
 .header{
   text-align:center;
   padding:18px;
-  border-bottom:1px solid rgba(0,255,213,.25);
+  border-bottom:1px solid rgba(0,255,213,.3);
 }
 .header h1{
   color:var(--neon);
-  text-shadow:var(--glow);
+  text-shadow:0 0 12px rgba(0,255,213,.7);
 }
 .fecha-hora{
   font-size:13px;
-  opacity:.85;
+  opacity:.9;
   margin-top:4px;
 }
 
@@ -63,32 +65,37 @@ body{
 .buscador input{
   width:100%;
   padding:14px 16px;
-  border-radius:14px;
-  border:1px solid rgba(0,255,213,.45);
-  background:#000;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   color:var(--neon);
   font-size:16px;
   outline:none;
+  box-shadow:var(--glow);
 }
 
 /* SIMILARES */
 .similares{
   max-width:520px;
   margin:0 auto 16px;
-  background:#000;
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:18px;
   display:none;
   max-height:260px;
   overflow-y:auto;
 }
 .similares .item{
   padding:12px 14px;
-  border-bottom:1px solid rgba(0,255,213,.15);
+  border-bottom:1px solid rgba(0,255,213,.2);
   cursor:pointer;
 }
 .similares .item:hover{
-  background:var(--neon);
+  background:rgba(0,255,213,.25);
   color:#000;
 }
 
@@ -96,19 +103,21 @@ body{
 .lista{
   max-width:520px;
   margin:0 auto 18px;
-  background:#000;
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:18px;
   max-height:220px;
   overflow-y:auto;
 }
 .lista div{
   padding:10px 14px;
-  border-bottom:1px solid rgba(0,255,213,.15);
+  border-bottom:1px solid rgba(0,255,213,.2);
   cursor:pointer;
 }
 .lista div:hover{
-  background:var(--neon);
+  background:rgba(0,255,213,.25);
   color:#000;
 }
 
@@ -116,10 +125,12 @@ body{
 .info-activa{
   max-width:720px;
   margin:0 auto 18px;
-  padding:14px;
-  border-radius:16px;
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(0,255,213,.35);
+  padding:16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);
   box-shadow:var(--glow);
   text-align:center;
   color:var(--neon);
@@ -129,9 +140,11 @@ body{
 .resultado{
   max-width:900px;
   margin:0 auto;
-  background:var(--card);
-  border:1px solid rgba(0,255,213,.35);
-  border-radius:18px;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  border:1px solid var(--border);
+  border-radius:20px;
   box-shadow:var(--glow);
   padding:16px;
   display:none;
@@ -143,11 +156,11 @@ table{
   border-collapse:collapse;
 }
 th,td{
-  border:1px solid rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);
   padding:8px;
 }
 th{
-  background:var(--neon);
+  background:rgba(0,255,213,.75);
   color:#000;
 }
 
@@ -155,9 +168,11 @@ th{
 .footer{
   text-align:center;
   font-size:12px;
-  padding:12px;
-  border-top:1px solid rgba(0,255,213,.25);
-  opacity:.85;
+  padding:14px;
+  border-top:1px solid rgba(0,255,213,.3);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  opacity:.9;
 }
 </style>
 </head>

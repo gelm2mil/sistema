@@ -11,185 +11,125 @@
 <style>
 :root{
   --neon:#00ff66;
-  --accent:#ff7b00;
+  --neonSoft:rgba(0,255,102,.6);
+  --glow:0 0 12px rgba(0,255,102,.7);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
   min-height:100vh;
-  background:radial-gradient(circle at center,#061a13,#000);
+  background:url("icons/natural.jpg") no-repeat center center fixed;
+  background-size:cover;
   color:#eafff2;
   overflow-x:hidden;
 }
 
-/* ===== ÁRBOL DIGITAL ===== */
-.tree{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:260px;
-  pointer-events:none;
-  z-index:0;
-}
-
-.tree canvas{
-  width:100%;
-  height:100%;
-}
-
-/* ===== AURORA ===== */
-.aurora{
+/* Overlay oscuro elegante */
+body::before{
+  content:"";
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at 50% 20%,
-    rgba(0,255,102,.25),
-    rgba(255,120,0,.15),
-    transparent 60%);
-  filter:blur(120px);
+  background:linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.75));
   z-index:0;
-  pointer-events:none;
-  transition:opacity .2s;
 }
 
 /* ===== HEADER ===== */
 .header{
   position:relative;
-  z-index:3;
-  margin:30px auto 20px;
-  padding:18px 40px;
+  z-index:2;
+  margin:18px auto 14px;
+  padding:16px 32px;
   border-radius:999px;
-  backdrop-filter:blur(25px);
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--neon);
   text-align:center;
-  width:fit-content;
-  animation:headerPulse 4s infinite alternate;
+  border:1px solid var(--neonSoft);
+  backdrop-filter:blur(10px);
+  background:transparent;
+  box-shadow:var(--glow);
+  animation:pulse 3s infinite;
 }
-
-@keyframes headerPulse{
-  0%{box-shadow:0 0 15px var(--neon);}
-  100%{box-shadow:0 0 40px var(--accent);}
+@keyframes pulse{
+  0%{box-shadow:0 0 10px rgba(0,255,102,.4)}
+  50%{box-shadow:0 0 22px rgba(0,255,102,.9)}
+  100%{box-shadow:0 0 10px rgba(0,255,102,.4)}
 }
-
 .header h1{
-  color:var(--neon);
   font-size:18px;
+  font-weight:900;
+  color:var(--neon);
+  text-shadow:0 0 8px var(--neon);
 }
-.header span{display:block;font-size:12px}
+.header span{font-size:12px}
 .header .hora{font-size:11px;margin-top:4px}
 
 /* ===== PLAYER ===== */
 .player{
   position:relative;
-  z-index:3;
+  z-index:2;
   max-width:420px;
-  margin:20px auto;
-  padding:20px;
-  border-radius:20px;
-  backdrop-filter:blur(30px);
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--neon);
-  text-align:center;
-}
-
-.song-btn{
-  width:100%;
+  margin:12px auto 20px;
   padding:12px;
-  border-radius:12px;
-  background:#000;
-  color:var(--neon);
-  border:1px solid var(--neon);
-  cursor:pointer;
-  font-weight:bold;
+  border-radius:20px;
+  border:1px solid var(--neonSoft);
+  backdrop-filter:blur(12px);
+  background:transparent;
+  box-shadow:var(--glow);
 }
-
-.controls button{
-  margin:10px 6px;
-  padding:10px 18px;
+.player iframe{
+  width:100%;
+  height:120px;
   border:none;
-  border-radius:10px;
-  background:var(--neon);
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
+  border-radius:14px;
 }
 
-/* ===== MODAL PLAYLIST ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  backdrop-filter:blur(10px);
-  display:none;
-  z-index:10;
-  padding:20px;
-  overflow-y:auto;
-}
-
-.modal.active{display:block;}
-
-.modal h2{
-  text-align:center;
-  margin-bottom:20px;
-  color:var(--neon);
-}
-
-.song{
-  padding:10px;
-  margin-bottom:6px;
-  border-radius:10px;
-  cursor:pointer;
-  border:1px solid rgba(0,255,102,.3);
-}
-
-.song.active{
-  background:rgba(0,255,102,.1);
-  box-shadow:0 0 15px var(--accent);
-}
-
-/* ===== MENU ===== */
+/* ===== BOTONES ===== */
 .menu{
   position:relative;
-  z-index:3;
-  max-width:640px;
-  margin:30px auto 60px;
+  z-index:2;
+  max-width:620px;
+  margin:0 auto 60px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:18px;
+  gap:16px;
   padding:0 16px;
 }
 
 .menu a{
   text-decoration:none;
   text-align:center;
-  padding:18px;
+  padding:16px 10px;
   border-radius:20px;
   font-weight:800;
   font-size:13px;
+  letter-spacing:.5px;
   color:var(--neon);
-  border:1px solid var(--neon);
-  backdrop-filter:blur(25px);
-  background:rgba(255,255,255,.03);
-  transition:.2s;
+  background:transparent;
+  border:1px solid var(--neonSoft);
+  backdrop-filter:blur(8px);
+  box-shadow:0 0 10px rgba(0,255,102,.4);
+  transition:.2s ease;
 }
 
-.menu a.beat{
-  box-shadow:0 0 35px var(--accent);
-  transform:scale(1.05);
+.menu a:hover{
+  box-shadow:0 0 25px rgba(0,255,102,1);
+}
+
+.menu a:active{
+  transform:scale(.94);
+  box-shadow:0 0 35px rgba(0,255,102,1);
 }
 
 /* ===== FOOTER ===== */
 footer{
-  text-align:center;
-  padding:18px 10px;
-  background:linear-gradient(to bottom,#000,#001a14);
-  border-top:2px solid var(--neon);
-  font-size:12px;
   position:relative;
-  z-index:3;
+  z-index:2;
+  text-align:center;
+  padding:16px 10px;
+  font-size:12px;
+  background:linear-gradient(to bottom, rgba(0,0,0,.8), rgba(0,0,0,.95));
   color:#00ffff;
+  border-top:2px solid #00ffff;
+  text-shadow:0 0 10px rgba(0,255,255,.9);
 }
 
 /* ===== BOTONES FLOTANTES ===== */
@@ -198,28 +138,27 @@ footer{
   bottom:18px;
   padding:14px 22px;
   border-radius:999px;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(20px);
+  background:transparent;
+  backdrop-filter:blur(12px);
   color:var(--neon);
   font-weight:900;
   text-decoration:none;
-  border:1px solid var(--neon);
-  box-shadow:0 0 25px var(--neon);
-  z-index:4;
+  border:1px solid var(--neonSoft);
+  box-shadow:var(--glow);
+  z-index:3;
+  transition:.2s ease;
 }
-
 .btn-gpt{right:18px}
 .btn-2026{left:18px}
+
+.btn-gpt:active,.btn-2026:active{
+  transform:scale(.9);
+  box-shadow:0 0 35px rgba(0,255,102,1);
+}
 </style>
 </head>
 
 <body>
-
-<div class="aurora" id="aurora"></div>
-
-<div class="tree">
-<canvas id="treeCanvas"></canvas>
-</div>
 
 <div class="header">
   <h1>GELM - SYSTEM</h1>
@@ -228,138 +167,68 @@ footer{
 </div>
 
 <div class="player">
-  <button class="song-btn" onclick="openModal()" id="currentSong">Cargando...</button>
-  <div class="controls">
-    <button onclick="prevSong()">⏮</button>
-    <button onclick="togglePlay()">⏯</button>
-    <button onclick="nextSong()">⏭</button>
-  </div>
-</div>
-
-<div class="modal" id="playlistModal">
-  <h2>Playlist</h2>
-  <div id="playlistContainer"></div>
+  <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
 </div>
 
 <div class="menu">
-  <!-- ORDEN PRIORIDAD DIARIA -->
+
   <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
-  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
   <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
+
+  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
+  <a href="do_paso.html" target="_blank">D.PASO</a>
+
   <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
   <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
+
   <a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
   <a href="traspaso.html" target="_blank">TRASPASO</a>
+
   <a href="suplentes.html" target="_blank">SUPLENTES</a>
+  <a href="consignaciones.html" target="_blank">CONSIGNA</a>
+
+  <a href="https://gelm2mil.github.io/gelm/" target="_blank">TRANSPORTES</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">REGLAMENTO 273</a>
+
+  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">HECHOS</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS SAT</a>
+
+  <a href="https://gelm2mil.github.io/buscador/" target="_blank">MULTAS</a>
+  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">BACK UP</a>
+
+  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
+
 </div>
 
 <footer>
-2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango
-<span>att: —[GELM]—</span>
-<span id="footerHora"></span>
+2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango<br>
+att: —[GELM]—
 </footer>
 
 <a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
-<audio id="audio" crossorigin="anonymous"></audio>
-
 <script>
-/* FRASES + RELOJ */
-const frases=["Orden y visión.","Disciplina hoy, tranquilidad mañana.","Sistema activo."];
-document.getElementById("frase").textContent=frases[Math.floor(Math.random()*frases.length)];
+const frases=[
+"Gracias a Dios, un nuevo día.",
+"Disciplina hoy, tranquilidad mañana.",
+"Orden, visión y firmeza.",
+"Todo trabajo bien hecho deja huella."
+];
+function rotar(){
+ document.getElementById("frase").textContent=
+ frases[Math.floor(Math.random()*frases.length)];
+}
+rotar();setInterval(rotar,1000*60*30);
+
 function reloj(){
  const d=new Date();
- document.getElementById("hora").textContent=d.toLocaleString("es-GT");
- document.getElementById("footerHora").textContent=d.toLocaleString("es-GT");
+ document.getElementById("hora").textContent=
+ d.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long"})+
+ " — "+d.toLocaleTimeString("es-GT");
 }
-setInterval(reloj,1000);reloj();
-
-/* PLAYLIST */
-const audio=document.getElementById("audio");
-const modal=document.getElementById("playlistModal");
-const playlistContainer=document.getElementById("playlistContainer");
-const currentSong=document.getElementById("currentSong");
-let songs=[],index=0;
-
-fetch("musica.json")
-.then(r=>r.json())
-.then(data=>{
- data.forEach(item=>{
-  if(item.title){
-   songs.push(item);
-   const div=document.createElement("div");
-   div.className="song";
-   div.textContent=item.title;
-   div.onclick=()=>selectSong(songs.indexOf(item));
-   playlistContainer.appendChild(div);
-  }
- });
- index=songs.findIndex(s=>s.title.includes("1 Let Her Go"));
- if(index<0) index=0;
- loadSong(index);
- audio.play();
-});
-
-function loadSong(i){
- index=i;
- audio.src=songs[i].url;
- currentSong.textContent=songs[i].title+" ▼";
- highlight();
-}
-
-function highlight(){
- document.querySelectorAll(".song").forEach((el,i)=>{
-  el.classList.toggle("active",i===index);
- });
-}
-
-function selectSong(i){loadSong(i);audio.play();closeModal();}
-function nextSong(){index=(index+1)%songs.length;loadSong(index);audio.play();}
-function prevSong(){index=(index-1+songs.length)%songs.length;loadSong(index);audio.play();}
-function togglePlay(){audio.paused?audio.play():audio.pause();}
-audio.addEventListener("ended",nextSong);
-
-/* MODAL */
-function openModal(){modal.classList.add("active");}
-function closeModal(){modal.classList.remove("active");}
-modal.onclick=e=>{if(e.target===modal)closeModal();};
-
-/* ÁRBOL REACTIVO */
-const treeCanvas=document.getElementById("treeCanvas");
-const tctx=treeCanvas.getContext("2d");
-treeCanvas.width=window.innerWidth;
-treeCanvas.height=260;
-
-function drawTree(level){
- tctx.clearRect(0,0,treeCanvas.width,treeCanvas.height);
- tctx.strokeStyle="#00ff66";
- tctx.lineWidth=2+level*5;
- tctx.beginPath();
- tctx.moveTo(treeCanvas.width/2,260);
- tctx.lineTo(treeCanvas.width/2,150-level*50);
- tctx.stroke();
-}
-drawTree(0);
-
-const ctxAudio=new AudioContext();
-const analyser=ctxAudio.createAnalyser();
-const source=ctxAudio.createMediaElementSource(audio);
-source.connect(analyser);
-analyser.connect(ctxAudio.destination);
-analyser.fftSize=256;
-const dataArray=new Uint8Array(analyser.frequencyBinCount);
-
-function animate(){
- requestAnimationFrame(animate);
- analyser.getByteFrequencyData(dataArray);
- let bass=dataArray[1]/255;
- drawTree(bass);
- document.getElementById("aurora").style.opacity=0.4+bass;
-}
-animate();
-
-audio.addEventListener("play",()=>ctxAudio.resume());
+reloj();setInterval(reloj,1000);
 </script>
 
 </body>

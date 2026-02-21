@@ -11,17 +11,30 @@
 <style>
 :root{
   --neon:#00ff66;
-  --border:rgba(0,255,102,.9);
+  --accent:#ff7b00;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
   min-height:100vh;
-  background:url("icons/natural.jpg") no-repeat center center;
-  background-size:cover;
+  background:radial-gradient(circle at center,#081b14,#000);
   color:#eafff2;
   overflow-x:hidden;
+}
+
+/* AURORA */
+.aurora{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 50% 30%,
+  rgba(0,255,102,.25),
+  rgba(255,120,0,.15),
+  transparent 60%);
+  filter:blur(120px);
+  z-index:0;
+  pointer-events:none;
+  transition:opacity .2s;
 }
 
 /* PARTICULAS */
@@ -29,24 +42,7 @@ canvas{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:0;
-}
-
-/* AURORA REACTIVA */
-.aurora{
-  position:fixed;
-  top:-20%;
-  left:-20%;
-  width:140%;
-  height:60%;
-  background:radial-gradient(ellipse at center,
-    rgba(0,255,102,.3),
-    rgba(0,255,102,.15),
-    transparent 70%);
-  filter:blur(100px);
   z-index:1;
-  pointer-events:none;
-  transition:opacity .2s linear;
 }
 
 /* HEADER */
@@ -54,45 +50,62 @@ canvas{
   position:relative;
   z-index:3;
   margin:20px auto;
-  padding:18px 36px;
+  padding:18px 40px;
   border-radius:999px;
-  background:rgba(255,255,255,.03);
   backdrop-filter:blur(25px);
-  border:1px solid var(--border);
-  box-shadow:0 0 30px rgba(0,255,102,.6);
-  width:fit-content;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--neon);
   text-align:center;
+  width:fit-content;
 }
-.header h1{color:var(--neon);font-weight:900;font-size:18px}
+.header h1{
+  color:var(--neon);
+  font-size:18px;
+}
 .header span{display:block;font-size:12px}
-.header .hora{margin-top:4px;font-size:11px;color:#b8ffe2}
+.header .hora{font-size:11px;margin-top:4px}
 
 /* PLAYER */
 .player{
   position:relative;
   z-index:3;
   max-width:420px;
-  margin:0 auto 30px;
-  padding:14px;
+  margin:20px auto;
+  padding:20px;
   border-radius:20px;
-  background:rgba(255,255,255,.02);
-  backdrop-filter:blur(28px);
-  border:1px solid var(--border);
-  box-shadow:0 0 25px rgba(0,255,102,.7);
+  backdrop-filter:blur(30px);
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--neon);
+  text-align:center;
 }
-.player iframe{
+
+.player select{
   width:100%;
-  height:120px;
+  padding:10px;
+  border-radius:10px;
+  background:#000;
+  color:#00ff66;
+  border:1px solid var(--neon);
+  margin-bottom:12px;
+}
+
+.player button{
+  padding:8px 18px;
   border:none;
-  border-radius:14px;
+  border-radius:10px;
+  margin:4px;
+  background:var(--neon);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 /* MENU */
 .menu{
   position:relative;
   z-index:3;
-  max-width:650px;
-  margin:0 auto 70px;
+  max-width:640px;
+  margin:30px auto 60px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:18px;
@@ -100,73 +113,40 @@ canvas{
 }
 
 .menu a{
-  position:relative;
-  overflow:hidden;
   text-decoration:none;
   text-align:center;
-  padding:18px 12px;
-  border-radius:22px;
+  padding:18px;
+  border-radius:20px;
   font-weight:800;
   font-size:13px;
-  letter-spacing:.5px;
   color:var(--neon);
-  background:transparent;
-  backdrop-filter:blur(35px);
-  border:1px solid var(--border);
-  transition:.2s ease;
+  border:1px solid var(--neon);
+  backdrop-filter:blur(25px);
+  background:rgba(255,255,255,.03);
+  transition:.2s;
 }
 
-.menu a::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  border-radius:22px;
-  border:2px solid rgba(0,255,102,.8);
-  opacity:.4;
-  transition:opacity .1s linear;
-}
-
-.menu a:active{
-  transform:scale(.95);
+.menu a.beat{
+  box-shadow:0 0 35px var(--accent);
+  transform:scale(1.05);
 }
 
 /* FOOTER */
 footer{
+  text-align:center;
+  padding:20px;
+  background:#000;
+  border-top:2px solid var(--neon);
+  font-size:12px;
   position:relative;
   z-index:3;
-  text-align:center;
-  padding:18px 10px;
-  font-size:13px;
-  background:linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,.95));
-  color:#00ffff;
-  border-top:3px solid #00ffff;
-  text-shadow:0 0 10px rgba(0,255,255,.8);
 }
-footer span{display:block;margin-top:6px;color:#00ffd5}
-
-/* BOTONES FLOTANTES */
-.btn-gpt,.btn-2026{
-  position:fixed;
-  bottom:18px;
-  padding:14px 22px;
-  border-radius:999px;
-  background:transparent;
-  backdrop-filter:blur(28px);
-  color:var(--neon);
-  font-weight:900;
-  text-decoration:none;
-  border:1px solid var(--border);
-  box-shadow:0 0 25px rgba(0,255,102,.8);
-  z-index:4;
-}
-.btn-gpt{right:18px}
-.btn-2026{left:18px}
 </style>
 </head>
 
 <body>
 
-<div class="aurora"></div>
+<div class="aurora" id="aurora"></div>
 <canvas id="particles"></canvas>
 
 <div class="header">
@@ -176,39 +156,122 @@ footer span{display:block;margin-top:6px;color:#00ffd5}
 </div>
 
 <div class="player">
-  <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
+  <select id="playlist"></select><br>
+  <button onclick="prevSong()">⏮</button>
+  <button onclick="togglePlay()">⏯</button>
+  <button onclick="nextSong()">⏭</button>
 </div>
 
 <div class="menu">
-  <!-- TU MENU ORIGINAL intacto -->
-  ...
+  <!-- TU MENU intacto -->
+  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
+  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
+  <a href="B.datos_2026.html" target="_blank">REGISTRO 2026</a>
+  <a href="do_paso.html" target="_blank">D.PASO</a>
+  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
+  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
+  <a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
+  <a href="traspaso.html" target="_blank">TRASPASO</a>
+  <a href="suplentes.html" target="_blank">SUPLENTES</a>
+  <a href="consignaciones.html" target="_blank">CONSIGNA</a>
 </div>
 
 <footer>
 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango
-<span>att: —[GELM]—</span>
 <span id="footerHora"></span>
 </footer>
 
-<a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
-<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
-
-<audio id="audio" autoplay loop></audio>
+<audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* AUDIO REACTIVO */
-const audio=document.getElementById("audio");
-audio.src="AQUI_TU_AUDIO.mp3"; // PON TU MUSICA AQUI
 
-const ctxAudio=new (window.AudioContext||window.webkitAudioContext)();
-const src=ctxAudio.createMediaElementSource(audio);
+/* FRASES */
+const frases=[
+"Disciplina hoy, tranquilidad mañana.",
+"Orden y visión.",
+"Todo trabajo deja huella."
+];
+function rotar(){
+ document.getElementById("frase").textContent=
+ frases[Math.floor(Math.random()*frases.length)];
+}
+rotar();
+
+/* RELOJ */
+function reloj(){
+ const d=new Date();
+ document.getElementById("hora").textContent=d.toLocaleString("es-GT");
+ document.getElementById("footerHora").textContent=d.toLocaleString("es-GT");
+}
+reloj();setInterval(reloj,1000);
+
+/* MUSICA */
+const audio=document.getElementById("audio");
+const playlistSelect=document.getElementById("playlist");
+let songs=[];
+let currentIndex=0;
+
+fetch("musica.json")
+.then(res=>res.json())
+.then(data=>{
+ data.forEach(item=>{
+  if(item.title){
+    songs.push(item);
+    const option=document.createElement("option");
+    option.textContent=item.title;
+    playlistSelect.appendChild(option);
+  }
+ });
+
+ // Buscar "1 Let Her Go"
+ currentIndex=songs.findIndex(s=>s.title.includes("1 Let Her Go"));
+ if(currentIndex<0) currentIndex=0;
+
+ loadSong(currentIndex);
+ audio.play();
+});
+
+function loadSong(i){
+ currentIndex=i;
+ audio.src=songs[i].url;
+ playlistSelect.selectedIndex=i;
+}
+
+function togglePlay(){
+ if(audio.paused) audio.play();
+ else audio.pause();
+}
+
+function nextSong(){
+ currentIndex=(currentIndex+1)%songs.length;
+ loadSong(currentIndex);
+ audio.play();
+}
+
+function prevSong(){
+ currentIndex=(currentIndex-1+songs.length)%songs.length;
+ loadSong(currentIndex);
+ audio.play();
+}
+
+playlistSelect.addEventListener("change",()=>{
+ loadSong(playlistSelect.selectedIndex);
+ audio.play();
+});
+
+/* ANALIZADOR */
+const ctxAudio=new AudioContext();
 const analyser=ctxAudio.createAnalyser();
-src.connect(analyser);
+const source=ctxAudio.createMediaElementSource(audio);
+source.connect(analyser);
 analyser.connect(ctxAudio.destination);
 analyser.fftSize=256;
 
 const bufferLength=analyser.frequencyBinCount;
 const dataArray=new Uint8Array(bufferLength);
+
+const menuLinks=document.querySelectorAll(".menu a");
+const aurora=document.getElementById("aurora");
 
 /* PARTICULAS */
 const canvas=document.getElementById("particles");
@@ -217,44 +280,46 @@ canvas.width=innerWidth;
 canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<80;i++){
+for(let i=0;i<100;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,
   r:Math.random()*2+1,
-  dx:(Math.random()-0.5)*0.5,
-  dy:(Math.random()-0.5)*0.5
+  dx:(Math.random()-0.5)*1,
+  dy:(Math.random()-0.5)*1
  });
 }
 
 function animate(){
+ requestAnimationFrame(animate);
  analyser.getByteFrequencyData(dataArray);
- let avg=dataArray.reduce((a,b)=>a+b)/bufferLength;
- let intensity=avg/255;
+
+ let bass=dataArray[1];
+ let intensity=bass/255;
+
+ aurora.style.opacity=0.4+intensity;
+
+ menuLinks.forEach(link=>{
+  if(intensity>0.5) link.classList.add("beat");
+  else link.classList.remove("beat");
+ });
 
  ctx.clearRect(0,0,canvas.width,canvas.height);
-
  particles.forEach(p=>{
-  let size=p.r*(1+intensity*2);
-  let g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,size*4);
-  g.addColorStop(0,"rgba(255,180,0,1)");
-  g.addColorStop(.5,"rgba(255,80,0,.9)");
-  g.addColorStop(1,"rgba(255,0,0,0)");
-  ctx.fillStyle=g;
   ctx.beginPath();
-  ctx.arc(p.x,p.y,size*2,0,Math.PI*2);
+  ctx.fillStyle="rgba(255,140,0,"+(0.2+intensity)+")";
+  ctx.arc(p.x,p.y,p.r+intensity*3,0,Math.PI*2);
   ctx.fill();
   p.x+=p.dx;
   p.y+=p.dy;
  });
-
- document.querySelector(".aurora").style.opacity=0.4+intensity;
-
- document.querySelectorAll(".menu a::before");
-
- requestAnimationFrame(animate);
 }
 animate();
+
+audio.addEventListener("play",()=>{
+ ctxAudio.resume();
+});
+
 </script>
 
 </body>

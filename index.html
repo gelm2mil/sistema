@@ -11,7 +11,7 @@
 <style>
 :root{
   --neon:#00ff66;
-  --border:rgba(0,255,102,.8);
+  --border:rgba(0,255,102,.85);
   --glow:0 0 25px rgba(0,255,102,1);
 }
 
@@ -23,7 +23,7 @@ body{
   background-size:cover;
   color:#eafff2;
   overflow-x:hidden;
-  transition:transform .2s ease-out;
+  transition:transform .25s ease-out;
 }
 
 /* ===== PARTICULAS ===== */
@@ -34,17 +34,39 @@ canvas{
   z-index:0;
 }
 
+/* ===== AURORA SUTIL ===== */
+.aurora{
+  position:fixed;
+  top:-20%;
+  left:-20%;
+  width:140%;
+  height:60%;
+  background:radial-gradient(ellipse at center,
+    rgba(0,255,102,.25),
+    rgba(0,255,102,.12),
+    transparent 70%);
+  filter:blur(90px);
+  animation:auroraMove 18s ease-in-out infinite alternate;
+  z-index:1;
+  pointer-events:none;
+}
+
+@keyframes auroraMove{
+  0%{transform:translateX(-5%) translateY(0%)}
+  100%{transform:translateX(5%) translateY(3%)}
+}
+
 /* ===== HEADER ===== */
 .header{
   position:relative;
-  z-index:2;
-  margin:16px auto 14px;
-  padding:16px 30px;
+  z-index:3;
+  margin:18px auto 16px;
+  padding:18px 36px;
   border-radius:999px;
   background:rgba(255,255,255,.02);
-  backdrop-filter:blur(20px);
+  backdrop-filter:blur(22px);
   border:1px solid var(--border);
-  box-shadow:var(--glow);
+  box-shadow:0 0 35px rgba(0,255,102,.6);
   width:fit-content;
   text-align:center;
 }
@@ -59,13 +81,13 @@ canvas{
 /* ===== PLAYER ===== */
 .player{
   position:relative;
-  z-index:2;
+  z-index:3;
   max-width:420px;
-  margin:10px auto 20px;
-  padding:12px;
-  border-radius:18px;
+  margin:12px auto 24px;
+  padding:14px;
+  border-radius:20px;
   background:rgba(255,255,255,.015);
-  backdrop-filter:blur(25px);
+  backdrop-filter:blur(28px);
   border:1px solid var(--border);
   box-shadow:var(--glow);
 }
@@ -79,12 +101,12 @@ canvas{
 /* ===== MENU ===== */
 .menu{
   position:relative;
-  z-index:2;
+  z-index:3;
   max-width:640px;
-  margin:0 auto 50px;
+  margin:0 auto 60px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:16px;
+  gap:18px;
   padding:0 16px;
 }
 
@@ -93,47 +115,44 @@ canvas{
   overflow:hidden;
   text-decoration:none;
   text-align:center;
-  padding:16px 12px;
-  border-radius:20px;
+  padding:18px 12px;
+  border-radius:22px;
   font-weight:800;
   font-size:13px;
   letter-spacing:.5px;
   color:var(--neon);
   background:transparent;
-  backdrop-filter:blur(30px);
+  backdrop-filter:blur(35px);
   border:1px solid var(--border);
-  box-shadow:0 0 18px rgba(0,255,102,.7);
-  transition:.25s ease;
+  box-shadow:0 0 20px rgba(0,255,102,.6);
+  transition:.2s ease;
 }
 
-/* pulsación permanente suave */
+/* Pulsación real visible */
 .menu a::before{
   content:"";
   position:absolute;
-  inset:0;
-  border-radius:20px;
-  background:radial-gradient(circle at center,
-   rgba(0,255,102,.35),
-   transparent 70%);
-  opacity:.15;
-  animation:pulse 3s infinite;
+  inset:-2px;
+  border-radius:22px;
+  border:2px solid rgba(0,255,102,.6);
+  animation:borderPulse 2.8s infinite;
 }
 
-@keyframes pulse{
-  0%{opacity:.1}
-  50%{opacity:.35}
-  100%{opacity:.1}
+@keyframes borderPulse{
+  0%{opacity:.3}
+  50%{opacity:1}
+  100%{opacity:.3}
 }
 
 .menu a:active{
-  transform:scale(.96);
-  box-shadow:0 0 40px rgba(0,255,102,1);
+  transform:scale(.95);
+  box-shadow:0 0 45px rgba(0,255,102,1);
 }
 
 /* ===== FOOTER EXACTO ===== */
 footer{
   position:relative;
-  z-index:2;
+  z-index:3;
   text-align:center;
   padding:18px 10px;
   font-size:13px;
@@ -152,16 +171,16 @@ footer span{
 .btn-gpt,.btn-2026{
   position:fixed;
   bottom:18px;
-  padding:14px 20px;
+  padding:14px 22px;
   border-radius:999px;
   background:transparent;
-  backdrop-filter:blur(25px);
+  backdrop-filter:blur(28px);
   color:var(--neon);
   font-weight:900;
   text-decoration:none;
   border:1px solid var(--border);
   box-shadow:var(--glow);
-  z-index:3;
+  z-index:4;
 }
 .btn-gpt{right:18px}
 .btn-2026{left:18px}
@@ -170,6 +189,7 @@ footer span{
 
 <body>
 
+<div class="aurora"></div>
 <canvas id="particles"></canvas>
 
 <div class="header">
@@ -214,7 +234,6 @@ footer span{
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
 <script>
-/* FRASES */
 const frases=[
 "Gracias a Dios, un nuevo día.",
 "El día avanza y tú lo estás logrando.",
@@ -228,43 +247,41 @@ function rotar(){
 }
 rotar();setInterval(rotar,1000*60*30);
 
-/* RELOJ */
 function reloj(){
  const d=new Date();
  document.getElementById("hora").textContent=
  d.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long"})+
  " — "+d.toLocaleTimeString("es-GT");
-
  document.getElementById("footerHora").textContent=
  d.toLocaleDateString("es-GT")+" | "+d.toLocaleTimeString("es-GT");
 }
 reloj();setInterval(reloj,1000);
 
-/* PARTICULAS CHISPAS NARANJA NEON */
+/* PARTICULAS NARANJA OPTIMIZADAS */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<80;i++){
+for(let i=0;i<90;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,
   r:Math.random()*2+1,
-  dx:(Math.random()-0.5)*0.4,
-  dy:(Math.random()-0.5)*0.4
+  dx:(Math.random()-0.5)*0.5,
+  dy:(Math.random()-0.5)*0.5
  });
 }
 
 function draw(){
  ctx.clearRect(0,0,canvas.width,canvas.height);
  particles.forEach(p=>{
-  let gradient=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
-  gradient.addColorStop(0,"rgba(255,140,0,1)");
-  gradient.addColorStop(.4,"rgba(255,80,0,.8)");
-  gradient.addColorStop(1,"rgba(255,0,0,0)");
-  ctx.fillStyle=gradient;
+  let g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*5);
+  g.addColorStop(0,"rgba(255,180,0,1)");
+  g.addColorStop(.5,"rgba(255,80,0,.9)");
+  g.addColorStop(1,"rgba(255,0,0,0)");
+  ctx.fillStyle=g;
   ctx.beginPath();
   ctx.arc(p.x,p.y,p.r*2,0,Math.PI*2);
   ctx.fill();
@@ -275,11 +292,11 @@ function draw(){
 }
 draw();
 
-/* MICRO PARALLAX MOVIL */
+/* MICRO PARALLAX */
 window.addEventListener("deviceorientation",e=>{
  if(!e.beta) return;
- let x=e.gamma/30;
- let y=e.beta/30;
+ let x=e.gamma/40;
+ let y=e.beta/40;
  document.body.style.transform=
  `translate(${x}px,${y}px)`;
 });

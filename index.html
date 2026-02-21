@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -11,9 +11,9 @@
 <style>
 :root{
   --neon:#00ff66;
-  --glass:rgba(0,0,0,.35);
-  --glass-strong:rgba(0,0,0,.45);
-  --glow:0 0 18px rgba(0,255,102,.6);
+  --glass:rgba(255,255,255,.05);
+  --border:rgba(0,255,102,.6);
+  --glow:0 0 18px rgba(0,255,102,.7);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
@@ -21,43 +21,40 @@
 body{
   min-height:100vh;
   background:
-    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.60)),
     url("icons/natural.jpg") no-repeat center center fixed;
   background-size:cover;
   color:#eafff2;
   overflow-x:hidden;
 }
 
-/* ===== PARTICULAS ===== */
+/* PARTICULAS */
 canvas{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   pointer-events:none;
   z-index:0;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
   position:relative;
   z-index:2;
-  margin:18px auto 12px;
-  padding:16px 28px;
+  margin:16px auto 12px;
+  padding:14px 26px;
   border-radius:999px;
   background:var(--glass);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(0,255,102,.4);
+  backdrop-filter:blur(18px);
+  border:1px solid var(--border);
   box-shadow:var(--glow);
   width:fit-content;
   text-align:center;
 }
 .header h1{font-size:18px;font-weight:800;color:var(--neon)}
-.header span{display:block;font-size:12px;font-weight:600}
-.header .hora{margin-top:4px;font-size:11px;color:#bfffe0}
+.header span{display:block;font-size:12px}
+.header .hora{margin-top:4px;font-size:11px;color:#b8ffe2}
 
-/* ===== PLAYER ===== */
+/* PLAYER */
 .player{
   position:relative;
   z-index:2;
@@ -65,9 +62,9 @@ canvas{
   margin:10px auto 20px;
   padding:12px;
   border-radius:18px;
-  background:var(--glass-strong);
-  backdrop-filter:blur(14px);
-  border:1px solid rgba(0,255,102,.4);
+  background:var(--glass);
+  backdrop-filter:blur(22px);
+  border:1px solid var(--border);
   box-shadow:var(--glow);
 }
 .player iframe{
@@ -77,7 +74,7 @@ canvas{
   border-radius:14px;
 }
 
-/* ===== MENU ===== */
+/* MENU */
 .menu{
   position:relative;
   z-index:2;
@@ -88,7 +85,10 @@ canvas{
   gap:16px;
   padding:0 16px;
 }
+
 .menu a{
+  position:relative;
+  overflow:hidden;
   text-decoration:none;
   text-align:center;
   padding:16px 12px;
@@ -97,18 +97,29 @@ canvas{
   font-size:13px;
   letter-spacing:.5px;
   color:var(--neon);
-  background:rgba(0,0,0,.30);
-  backdrop-filter:blur(18px);
-  border:1px solid rgba(0,255,102,.5);
-  box-shadow:0 0 16px rgba(0,255,102,.45);
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(28px);
+  border:1px solid var(--border);
+  box-shadow:0 0 16px rgba(0,255,102,.5);
   transition:.3s ease;
 }
-.menu a:hover{
-  transform:translateY(-3px);
-  box-shadow:0 0 22px rgba(0,255,102,.9);
+
+/* brillo interno glass */
+.menu a::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,rgba(255,255,255,.08),transparent);
+  opacity:.6;
+  pointer-events:none;
 }
 
-/* ===== FOOTER ===== */
+.menu a:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 28px rgba(0,255,102,.9);
+}
+
+/* FOOTER */
 footer{
   position:relative;
   z-index:2;
@@ -117,21 +128,21 @@ footer{
   padding:14px;
   color:#9fffd1;
   border-top:1px solid rgba(0,255,102,.25);
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(8px);
 }
 
-/* ===== BOTONES FLOTANTES ===== */
+/* BOTONES FLOTANTES */
 .btn-gpt,.btn-2026{
   position:fixed;
   bottom:18px;
   padding:14px 20px;
   border-radius:999px;
-  background:var(--glass);
-  backdrop-filter:blur(12px);
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(18px);
   color:var(--neon);
   font-weight:900;
   text-decoration:none;
-  border:1px solid rgba(0,255,102,.5);
+  border:1px solid var(--border);
   box-shadow:var(--glow);
   z-index:3;
 }
@@ -155,24 +166,25 @@ footer{
 </div>
 
 <div class="menu">
-  <a href="#">AGENDA</a>
-  <a href="#">RENOVACIÓN</a>
-  <a href="#">REGISTRO 2026</a>
-  <a href="#">D.PASO</a>
-  <a href="#">C. PERMANENTE</a>
-  <a href="#">C. TEMPORAL</a>
-  <a href="#">LÍNEA NUEVA</a>
-  <a href="#">TRASPASO</a>
-  <a href="#">SUPLENTES</a>
-  <a href="#">CONSIGNA</a>
-  <a href="#">TRANSPORTES</a>
-  <a href="#">REGLAMENTO 273</a>
-  <a href="#">HECHOS</a>
-  <a href="#">MULTAS SAT</a>
-  <a href="#">MULTAS</a>
-  <a href="#">BACK UP</a>
-  <a href="#">CÓDIGO MUNICIPAL</a>
-  <a href="#">BIBLIA</a>
+  <!-- TUS ENLACES ORIGINALES intactos -->
+  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
+  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
+  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
+  <a href="do_paso.html" target="_blank">D.PASO</a>
+  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
+  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
+  <a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
+  <a href="traspaso.html" target="_blank">TRASPASO</a>
+  <a href="suplentes.html" target="_blank">SUPLENTES</a>
+  <a href="consignaciones.html" target="_blank">CONSIGNA</a>
+  <a href="https://gelm2mil.github.io/gelm/" target="_blank">TRANSPORTES</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">REGLAMENTO 273</a>
+  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">HECHOS</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS SAT</a>
+  <a href="https://gelm2mil.github.io/buscador/" target="_blank">MULTAS</a>
+  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">BACK UP</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
 </div>
 
 <footer>
@@ -180,11 +192,11 @@ footer{
 Uso interno autorizado
 </footer>
 
-<a href="#" class="btn-2026">2026</a>
-<a href="#" class="btn-gpt">🤖 GPT</a>
+<a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
+<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
 <script>
-/* ===== FRASES Y RELOJ ===== */
+/* FRASES */
 const frases=[
 "Gracias a Dios, un nuevo día.",
 "El día avanza y tú lo estás logrando.",
@@ -198,6 +210,7 @@ function rotar(){
 }
 rotar();setInterval(rotar,1000*60*30);
 
+/* RELOJ */
 function reloj(){
  const d=new Date();
  document.getElementById("hora").textContent=
@@ -206,35 +219,50 @@ function reloj(){
 }
 reloj();setInterval(reloj,1000);
 
-/* ===== PARTICULAS SUAVES ===== */
+/* PARTICULAS CIRCUITO SUAVES */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<60;i++){
+for(let i=0;i<70;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,
   r:Math.random()*2+1,
-  dx:(Math.random()-0.5)*0.3,
-  dy:(Math.random()-0.5)*0.3
+  dx:(Math.random()-0.5)*0.2,
+  dy:(Math.random()-0.5)*0.2
  });
 }
 
 function draw(){
  ctx.clearRect(0,0,canvas.width,canvas.height);
- ctx.fillStyle="rgba(0,255,102,.6)";
+
+ ctx.fillStyle="rgba(0,255,102,.4)";
  particles.forEach(p=>{
   ctx.beginPath();
   ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
   ctx.fill();
   p.x+=p.dx;
   p.y+=p.dy;
-  if(p.x<0||p.x>canvas.width)p.dx*=-1;
-  if(p.y<0||p.y>canvas.height)p.dy*=-1;
  });
+
+ for(let i=0;i<particles.length;i++){
+  for(let j=i;j<particles.length;j++){
+   let dx=particles[i].x-particles[j].x;
+   let dy=particles[i].y-particles[j].y;
+   let dist=Math.sqrt(dx*dx+dy*dy);
+   if(dist<120){
+    ctx.strokeStyle="rgba(0,255,102,.08)";
+    ctx.beginPath();
+    ctx.moveTo(particles[i].x,particles[i].y);
+    ctx.lineTo(particles[j].x,particles[j].y);
+    ctx.stroke();
+   }
+  }
+ }
+
  requestAnimationFrame(draw);
 }
 draw();

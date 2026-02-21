@@ -1,264 +1,214 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYSTEM BY GELM — LÍNEA NUEVA 2026</title>
+<title>GELM - SYSTEM</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ff66">
 
 <style>
 :root{
-  --neon:#00ffd5;
-  --glass:rgba(255,255,255,.05);
-  --border:rgba(0,255,213,.6);
-  --glow:0 0 20px rgba(0,255,213,.45);
-  --txt:#e9ffff;
+  --neon:#00ff66;
+  --card:rgba(0,0,0,.55);
+  --glow:0 0 18px rgba(0,255,102,.55);
 }
-
-*{margin:0;padding:0;box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
-  font-family:system-ui,Segoe UI,Arial;
-  background:url("icons/natural.jpg") no-repeat center center;
-  background-size:cover;
-  background-attachment:scroll;
-  color:var(--txt);
   min-height:100vh;
+  background:
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.85)),
+    url("icons/natural.jpg") no-repeat center center fixed;
+  background-size:cover;
+  color:#eafff2;
 }
 
-/* CONTENEDOR */
-.wrapper{
-  max-width:1100px;
-  margin:20px auto;
-  background:var(--glass);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  border:1px solid var(--border);
-  border-radius:22px;
-  box-shadow:var(--glow);
-  overflow:hidden;
-}
-
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
-  text-align:center;
-  padding:18px;
-  border-bottom:1px solid rgba(0,255,213,.3);
-}
-.header h1{
-  color:var(--neon);
-  text-shadow:0 0 12px rgba(0,255,213,.7);
-}
-.fecha-hora{
-  font-size:13px;
-  opacity:.9;
-  margin-top:4px;
-}
-
-/* CONTENIDO */
-.content{padding:24px}
-
-/* BUSCADOR */
-.buscador{
-  max-width:520px;
-  margin:0 auto 12px;
-}
-.buscador input{
-  width:100%;
-  padding:14px 16px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  color:var(--neon);
-  font-size:16px;
-  outline:none;
+  margin:14px auto 10px;
+  padding:14px 26px;
+  border-radius:999px;
+  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
   box-shadow:var(--glow);
-}
-
-/* SIMILARES */
-.similares{
-  max-width:520px;
-  margin:0 auto 16px;
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border:1px solid var(--border);
-  border-radius:18px;
-  display:none;
-  max-height:260px;
-  overflow-y:auto;
-}
-.similares .item{
-  padding:12px 14px;
-  border-bottom:1px solid rgba(0,255,213,.2);
-  cursor:pointer;
-}
-.similares .item:hover{
-  background:rgba(0,255,213,.25);
-  color:#000;
-}
-
-/* LISTA */
-.lista{
-  max-width:520px;
-  margin:0 auto 18px;
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border:1px solid var(--border);
-  border-radius:18px;
-  max-height:220px;
-  overflow-y:auto;
-}
-.lista div{
-  padding:10px 14px;
-  border-bottom:1px solid rgba(0,255,213,.2);
-  cursor:pointer;
-}
-.lista div:hover{
-  background:rgba(0,255,213,.25);
-  color:#000;
-}
-
-/* INFO */
-.info-activa{
-  max-width:720px;
-  margin:0 auto 18px;
-  padding:16px;
-  border-radius:18px;
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border:1px solid var(--border);
-  box-shadow:var(--glow);
+  width:fit-content;
   text-align:center;
-  color:var(--neon);
-}
-
-/* RESULTADO */
-.resultado{
-  max-width:900px;
-  margin:0 auto;
-  background:rgba(255,255,255,.06);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  border:1px solid var(--border);
-  border-radius:20px;
-  box-shadow:var(--glow);
-  padding:16px;
-  display:none;
-  overflow-x:auto;
-}
-table{
-  width:100%;
-  min-width:720px;
-  border-collapse:collapse;
-}
-th,td{
-  border:1px solid rgba(255,255,255,.25);
-  padding:8px;
-}
-th{
-  background:rgba(0,255,213,.75);
   color:#000;
+  backdrop-filter:blur(6px);
 }
-
-/* FOOTER */
-.footer{
-  text-align:center;
+.header h1{font-size:18px;font-weight:800}
+.header span{
+  display:block;
   font-size:12px;
-  padding:14px;
-  border-top:1px solid rgba(0,255,213,.3);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  opacity:.9;
+  font-weight:700;
+}
+.header .hora{
+  margin-top:4px;
+  font-size:11px;
+  color:#003311;
+  font-weight:700;
+}
+
+/* ===== PLAYER ===== */
+.player{
+  max-width:420px;
+  margin:10px auto 18px;
+  padding:10px;
+  border-radius:16px;
+  background:var(--card);
+  border:1px solid rgba(0,255,102,.45);
+  box-shadow:var(--glow);
+  backdrop-filter:blur(10px);
+}
+.player iframe{
+  width:100%;
+  height:120px;
+  border:none;
+  border-radius:12px;
+}
+
+/* ===== GRID BOTONES ===== */
+.menu{
+  max-width:620px;
+  margin:0 auto 40px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  padding:0 14px;
+}
+.menu a{
+  text-decoration:none;
+  text-align:center;
+  padding:14px 10px;
+  border-radius:16px;
+  color:var(--neon);
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:.5px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(0,255,102,.45);
+  box-shadow:0 0 14px rgba(0,255,102,.45);
+  backdrop-filter:blur(10px);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;
+  font-size:11px;
+  padding:12px;
+  color:#00ff99;
+  border-top:1px solid rgba(0,255,102,.25);
+  backdrop-filter:blur(6px);
+}
+
+/* ===== BOTÓN GPT ===== */
+.btn-gpt{
+  position:fixed;
+  bottom:18px;
+  right:18px;
+  padding:12px 18px;
+  border-radius:999px;
+  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
+  color:#000;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:var(--glow);
+  z-index:9999;
+}
+
+/* ===== BOTÓN 2026 ===== */
+.btn-2026{
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  padding:12px 18px;
+  border-radius:999px;
+  background:radial-gradient(circle at 30% 0,#00ffcc,#00ff66);
+  color:#000;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:var(--glow);
+  z-index:9999;
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
-  <div class="header">
-    <h1>SYSTEM BY GELM — LÍNEA NUEVA 2026</h1>
-    <div id="fechaHora" class="fecha-hora"></div>
-  </div>
-
-  <div class="content">
-    <div class="buscador">
-      <input id="buscar" placeholder="Buscar placa..." autocomplete="off">
-    </div>
-
-    <div id="similares" class="similares"></div>
-    <div id="lista" class="lista"></div>
-
-    <div id="infoActiva" class="info-activa">Seleccione una placa</div>
-    <div id="resultado" class="resultado"></div>
-  </div>
-
-  <div class="footer">
-    © 2025–2026 — Sistema GELM<br>
-    Desarrollo, diseño y propiedad intelectual reservada — BY GELM<br>
-    Uso interno autorizado
-  </div>
+<!-- HEADER -->
+<div class="header">
+  <h1>GELM - SYSTEM</h1>
+  <span id="frase"></span>
+  <div id="hora" class="hora"></div>
 </div>
 
+<!-- PLAYER -->
+<div class="player">
+  <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
+</div>
+
+<!-- BOTONERA -->
+<div class="menu">
+
+  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
+  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
+
+  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
+  <a href="do_paso.html" target="_blank">D.PASO</a>
+
+  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
+  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
+
+  <a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
+  <a href="traspaso.html" target="_blank">TRASPASO</a>
+
+  <a href="suplentes.html" target="_blank">SUPLENTES</a>
+  <a href="consignaciones.html" target="_blank">CONSIGNA</a>
+
+  <a href="https://gelm2mil.github.io/gelm/" target="_blank">TRANSPORTES</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">REGLAMENTO 273</a>
+
+  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">HECHOS</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS SAT</a>
+
+  <a href="https://gelm2mil.github.io/buscador/" target="_blank">MULTAS</a>
+  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">BACK UP</a>
+
+  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
+  <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
+
+</div>
+
+<footer>
+© 2025–2026 — Sistema GELM<br>
+Uso interno autorizado
+</footer>
+
+<a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
+<a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
+
 <script>
-function actualizarHora(){
-  const f=new Date();
-  fechaHora.textContent =
-    f.toLocaleDateString("es-GT",{weekday:"long",year:"numeric",month:"long",day:"numeric"})+
-    " — "+f.toLocaleTimeString("es-GT");
+const frases=[
+"Gracias a Dios, un nuevo día.",
+"El día avanza y tú lo estás logrando.",
+"Disciplina hoy, tranquilidad mañana.",
+"Orden, visión y firmeza.",
+"Todo trabajo bien hecho deja huella."
+];
+function rotar(){
+ document.getElementById("frase").textContent=
+ frases[Math.floor(Math.random()*frases.length)];
 }
-setInterval(actualizarHora,1000);actualizarHora();
+rotar();setInterval(rotar,1000*60*30);
 
-const URL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vSFZRw9HobwZM4W74A6LHkKrdkh9sNG87pD53I0RkCbi7TvI06q12IFdZYWeVo4lBR_pogKN9CuOJeg/pub?gid=180066267&single=true&output=csv";
-
-let filas=[];
-const buscar=document.getElementById("buscar");
-const similares=document.getElementById("similares");
-
-const norm=t=>t.toUpperCase().replace(/[^A-Z0-9]/g,"");
-
-fetch(URL).then(r=>r.text()).then(t=>{
-  filas=t.split("\n").map(l=>l.split(","));
-  const lista=document.getElementById("lista");
-  filas.forEach((f,i)=>{
-    if(i===0) return;
-    const d=document.createElement("div");
-    d.textContent=f[1];
-    d.onclick=()=>mostrar(f);
-    lista.appendChild(d);
-  });
-});
-
-buscar.addEventListener("input",()=>{
-  const q=norm(buscar.value);
-  similares.innerHTML="";
-  if(q.length<2){similares.style.display="none";return;}
-  filas.forEach((f,i)=>{
-    if(i===0) return;
-    if(norm(f.join(" ")).includes(q)){
-      const d=document.createElement("div");
-      d.className="item";
-      d.innerHTML=`<strong>${f[1]}</strong><br>${f[3]} — ${f[2]}<br>${f[4]}`;
-      d.onclick=()=>mostrar(f);
-      similares.appendChild(d);
-    }
-  });
-  similares.style.display="block";
-});
-
-function mostrar(f){
-  similares.style.display="none";
-  infoActiva.innerHTML=`<strong>${f[1]}</strong> — ${f[3]}<br>${f[2]} | ${f[4]}`;
-  let h="<table><tr>"+f.map(()=>"<th>Dato</th>").join("")+"</tr><tr>";
-  h+=f.map(c=>`<td>${c}</td>`).join("")+"</tr></table>";
-  resultado.innerHTML=h;
-  resultado.style.display="block";
+function reloj(){
+ const d=new Date();
+ document.getElementById("hora").textContent=
+ d.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long"})+
+ " — "+d.toLocaleTimeString("es-GT");
 }
+reloj();setInterval(reloj,1000);
 </script>
 
 </body>

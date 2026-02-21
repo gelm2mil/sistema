@@ -12,23 +12,22 @@
 :root{
   --neon:#00ff66;
   --glass:rgba(255,255,255,.05);
-  --border:rgba(0,255,102,.6);
-  --glow:0 0 18px rgba(0,255,102,.7);
+  --border:rgba(0,255,102,.75);
+  --glow:0 0 20px rgba(0,255,102,.8);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
   min-height:100vh;
-  background:
-    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.60)),
-    url("icons/natural.jpg") no-repeat center center fixed;
+  background:url("icons/natural.jpg") no-repeat center center;
   background-size:cover;
+  background-attachment:scroll;
   color:#eafff2;
   overflow-x:hidden;
 }
 
-/* PARTICULAS */
+/* ===== PARTICULAS ===== */
 canvas{
   position:fixed;
   inset:0;
@@ -36,7 +35,7 @@ canvas{
   z-index:0;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
   position:relative;
   z-index:2;
@@ -44,7 +43,7 @@ canvas{
   padding:14px 26px;
   border-radius:999px;
   background:var(--glass);
-  backdrop-filter:blur(18px);
+  backdrop-filter:blur(14px);
   border:1px solid var(--border);
   box-shadow:var(--glow);
   width:fit-content;
@@ -54,7 +53,7 @@ canvas{
 .header span{display:block;font-size:12px}
 .header .hora{margin-top:4px;font-size:11px;color:#b8ffe2}
 
-/* PLAYER */
+/* ===== PLAYER ===== */
 .player{
   position:relative;
   z-index:2;
@@ -63,7 +62,7 @@ canvas{
   padding:12px;
   border-radius:18px;
   background:var(--glass);
-  backdrop-filter:blur(22px);
+  backdrop-filter:blur(20px);
   border:1px solid var(--border);
   box-shadow:var(--glow);
 }
@@ -74,7 +73,7 @@ canvas{
   border-radius:14px;
 }
 
-/* MENU */
+/* ===== MENU ===== */
 .menu{
   position:relative;
   z-index:2;
@@ -97,29 +96,37 @@ canvas{
   font-size:13px;
   letter-spacing:.5px;
   color:var(--neon);
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(28px);
+  background:rgba(255,255,255,.03);
+  backdrop-filter:blur(24px);
   border:1px solid var(--border);
-  box-shadow:0 0 16px rgba(0,255,102,.5);
+  box-shadow:0 0 18px rgba(0,255,102,.6);
   transition:.3s ease;
+  animation:breath 3s infinite ease-in-out;
 }
 
-/* brillo interno glass */
+/* brillo interno */
 .menu a::before{
   content:"";
   position:absolute;
   inset:0;
   background:linear-gradient(120deg,rgba(255,255,255,.08),transparent);
-  opacity:.6;
+  opacity:.5;
   pointer-events:none;
 }
 
 .menu a:hover{
   transform:translateY(-4px);
-  box-shadow:0 0 28px rgba(0,255,102,.9);
+  box-shadow:0 0 35px rgba(0,255,102,1);
 }
 
-/* FOOTER */
+/* efecto respiración */
+@keyframes breath{
+  0%{box-shadow:0 0 12px rgba(0,255,102,.4);}
+  50%{box-shadow:0 0 28px rgba(0,255,102,1);}
+  100%{box-shadow:0 0 12px rgba(0,255,102,.4);}
+}
+
+/* ===== FOOTER ===== */
 footer{
   position:relative;
   z-index:2;
@@ -131,14 +138,14 @@ footer{
   backdrop-filter:blur(8px);
 }
 
-/* BOTONES FLOTANTES */
+/* ===== BOTONES FLOTANTES ===== */
 .btn-gpt,.btn-2026{
   position:fixed;
   bottom:18px;
   padding:14px 20px;
   border-radius:999px;
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(18px);
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(16px);
   color:var(--neon);
   font-weight:900;
   text-decoration:none;
@@ -166,7 +173,6 @@ footer{
 </div>
 
 <div class="menu">
-  <!-- TUS ENLACES ORIGINALES intactos -->
   <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
   <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
   <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
@@ -219,49 +225,60 @@ function reloj(){
 }
 reloj();setInterval(reloj,1000);
 
-/* PARTICULAS CIRCUITO SUAVES */
+/* PARTICULAS REACTIVAS */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+
+function resize(){
+ canvas.width=innerWidth;
+ canvas.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
+let mouse={x:null,y:null};
+addEventListener("mousemove",e=>{mouse.x=e.x;mouse.y=e.y;});
+addEventListener("touchmove",e=>{
+ mouse.x=e.touches[0].clientX;
+ mouse.y=e.touches[0].clientY;
+});
 
 let particles=[];
-for(let i=0;i<70;i++){
+for(let i=0;i<80;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,
   r:Math.random()*2+1,
-  dx:(Math.random()-0.5)*0.2,
-  dy:(Math.random()-0.5)*0.2
+  dx:(Math.random()-0.5)*0.3,
+  dy:(Math.random()-0.5)*0.3
  });
 }
 
 function draw(){
  ctx.clearRect(0,0,canvas.width,canvas.height);
 
- ctx.fillStyle="rgba(0,255,102,.4)";
  particles.forEach(p=>{
   ctx.beginPath();
+  ctx.fillStyle="rgba(0,255,102,.5)";
   ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
   ctx.fill();
+
+  if(mouse.x){
+    let dx=mouse.x-p.x;
+    let dy=mouse.y-p.y;
+    let dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<120){
+      p.x-=dx/40;
+      p.y-=dy/40;
+    }
+  }
+
   p.x+=p.dx;
   p.y+=p.dy;
- });
 
- for(let i=0;i<particles.length;i++){
-  for(let j=i;j<particles.length;j++){
-   let dx=particles[i].x-particles[j].x;
-   let dy=particles[i].y-particles[j].y;
-   let dist=Math.sqrt(dx*dx+dy*dy);
-   if(dist<120){
-    ctx.strokeStyle="rgba(0,255,102,.08)";
-    ctx.beginPath();
-    ctx.moveTo(particles[i].x,particles[i].y);
-    ctx.lineTo(particles[j].x,particles[j].y);
-    ctx.stroke();
-   }
-  }
- }
+  if(p.x<0||p.x>canvas.width)p.dx*=-1;
+  if(p.y<0||p.y>canvas.height)p.dy*=-1;
+ });
 
  requestAnimationFrame(draw);
 }

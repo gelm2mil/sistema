@@ -10,195 +10,207 @@
 
 <style>
 :root{
-  --neon:#00ff66;
-  --neonSoft:rgba(0,255,102,.6);
-  --glow:0 0 12px rgba(0,255,102,.7);
+ --azul:#00e5ff;
+ --rojo:#ff003c;
+ --violeta:#b300ff;
+ --glowAzul:0 0 12px #00e5ff;
+ --glowRojo:0 0 12px #ff003c;
+ --glowVioleta:0 0 14px #b300ff;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
 
 body{
-  min-height:100vh;
-  background:url("icons/natural.jpg") no-repeat center center fixed;
-  background-size:cover;
-  color:#eafff2;
-  overflow-x:hidden;
+ min-height:100vh;
+ background:url("icons/natural.jpg") no-repeat center center fixed;
+ background-size:cover;
+ color:#fff;
+ overflow-x:hidden;
 }
 
-/* Overlay oscuro elegante */
 body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.75));
-  z-index:0;
+ content:"";
+ position:fixed;
+ inset:0;
+ background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.8));
+ z-index:0;
 }
 
-/* ===== HEADER ===== */
+canvas{
+ position:fixed;
+ inset:0;
+ z-index:1;
+ pointer-events:none;
+}
+
 .header{
-  position:relative;
-  z-index:2;
-  margin:18px auto 14px;
-  padding:16px 32px;
-  border-radius:999px;
-  text-align:center;
-  border:1px solid var(--neonSoft);
-  backdrop-filter:blur(10px);
-  background:transparent;
-  box-shadow:var(--glow);
-  animation:pulse 3s infinite;
+ position:relative;
+ z-index:3;
+ margin:18px auto;
+ padding:16px 34px;
+ border-radius:999px;
+ border:1px solid var(--violeta);
+ color:var(--violeta);
+ text-align:center;
+ box-shadow:var(--glowVioleta);
+ animation:pulseHeader 4s infinite ease-in-out;
 }
-@keyframes pulse{
-  0%{box-shadow:0 0 10px rgba(0,255,102,.4)}
-  50%{box-shadow:0 0 22px rgba(0,255,102,.9)}
-  100%{box-shadow:0 0 10px rgba(0,255,102,.4)}
+
+@keyframes pulseHeader{
+ 0%,100%{box-shadow:0 0 10px #b300ff}
+ 50%{box-shadow:0 0 22px #b300ff}
 }
-.header h1{
-  font-size:18px;
-  font-weight:900;
-  color:var(--neon);
-  text-shadow:0 0 8px var(--neon);
-}
-.header span{font-size:12px}
+
+.header h1{font-size:18px;font-weight:900}
+.header span{display:block;font-size:12px;margin-top:4px}
 .header .hora{font-size:11px;margin-top:4px}
 
-/* ===== PLAYER ===== */
 .player{
-  position:relative;
-  z-index:2;
-  max-width:420px;
-  margin:12px auto 20px;
-  padding:12px;
-  border-radius:20px;
-  border:1px solid var(--neonSoft);
-  backdrop-filter:blur(12px);
-  background:transparent;
-  box-shadow:var(--glow);
-}
-.player iframe{
-  width:100%;
-  height:120px;
-  border:none;
-  border-radius:14px;
+ position:relative;
+ z-index:3;
+ max-width:420px;
+ margin:10px auto 25px;
+ padding:18px;
+ border-radius:18px;
+ border:1px solid var(--rojo);
+ box-shadow:var(--glowRojo);
+ text-align:center;
+ backdrop-filter:blur(4px);
 }
 
-/* ===== BOTONES ===== */
-.menu{
-  position:relative;
-  z-index:2;
-  max-width:620px;
-  margin:0 auto 60px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  padding:0 16px;
+.selectMusic{
+ width:100%;
+ padding:10px;
+ border-radius:12px;
+ background:transparent;
+ border:1px solid var(--rojo);
+ color:var(--azul);
+ box-shadow:var(--glowAzul);
+ margin-bottom:15px;
 }
 
-.menu a{
-  text-decoration:none;
-  text-align:center;
-  padding:16px 10px;
-  border-radius:20px;
-  font-weight:800;
-  font-size:13px;
-  letter-spacing:.5px;
-  color:var(--neon);
-  background:transparent;
-  border:1px solid var(--neonSoft);
-  backdrop-filter:blur(8px);
-  box-shadow:0 0 10px rgba(0,255,102,.4);
-  transition:.2s ease;
+.controls button{
+ padding:10px 16px;
+ margin:5px;
+ border-radius:10px;
+ border:none;
+ background:transparent;
+ color:var(--azul);
+ border:1px solid var(--azul);
+ box-shadow:var(--glowAzul);
+ cursor:pointer;
 }
 
-.menu a:hover{
-  box-shadow:0 0 25px rgba(0,255,102,1);
+.controls button:active{
+ transform:scale(.9);
 }
 
-.menu a:active{
-  transform:scale(.94);
-  box-shadow:0 0 35px rgba(0,255,102,1);
+.masterBtn{
+ position:relative;
+ z-index:3;
+ max-width:420px;
+ margin:0 auto;
+ padding:14px;
+ text-align:center;
+ border-radius:18px;
+ border:1px solid var(--rojo);
+ color:var(--violeta);
+ box-shadow:var(--glowVioleta);
+ cursor:pointer;
 }
 
-/* ===== FOOTER ===== */
+.dropdown{
+ display:none;
+ max-width:420px;
+ margin:10px auto;
+ padding:15px;
+ border-radius:18px;
+ border:1px solid var(--rojo);
+ box-shadow:var(--glowRojo);
+ backdrop-filter:blur(3px);
+}
+
+.dropdown a{
+ display:block;
+ padding:10px;
+ margin:6px 0;
+ text-decoration:none;
+ color:var(--azul);
+ border-bottom:1px solid var(--rojo);
+}
+
+.dropdown a:last-child{
+ border-bottom:none;
+}
+
 footer{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  padding:16px 10px;
-  font-size:12px;
-  background:linear-gradient(to bottom, rgba(0,0,0,.8), rgba(0,0,0,.95));
-  color:#00ffff;
-  border-top:2px solid #00ffff;
-  text-shadow:0 0 10px rgba(0,255,255,.9);
+ position:relative;
+ z-index:3;
+ text-align:center;
+ padding:15px;
+ font-size:11px;
+ color:#00ffff;
+ border-top:1px solid #00ffff;
+ margin-top:40px;
 }
 
-/* ===== BOTONES FLOTANTES ===== */
-.btn-gpt,.btn-2026{
-  position:fixed;
-  bottom:18px;
-  padding:14px 22px;
-  border-radius:999px;
-  background:transparent;
-  backdrop-filter:blur(12px);
-  color:var(--neon);
-  font-weight:900;
-  text-decoration:none;
-  border:1px solid var(--neonSoft);
-  box-shadow:var(--glow);
-  z-index:3;
-  transition:.2s ease;
+.btn-2026,.btn-gpt{
+ position:fixed;
+ bottom:18px;
+ padding:12px 18px;
+ border-radius:999px;
+ border:1px solid var(--azul);
+ color:var(--azul);
+ text-decoration:none;
+ box-shadow:var(--glowAzul);
+ z-index:4;
 }
-.btn-gpt{right:18px}
+
 .btn-2026{left:18px}
-
-.btn-gpt:active,.btn-2026:active{
-  transform:scale(.9);
-  box-shadow:0 0 35px rgba(0,255,102,1);
-}
+.btn-gpt{right:18px}
 </style>
 </head>
 
 <body>
 
+<canvas id="particles"></canvas>
+
 <div class="header">
-  <h1>GELM - SYSTEM</h1>
-  <span id="frase"></span>
-  <div id="hora" class="hora"></div>
+ <h1>GELM - SYSTEM</h1>
+ <span id="frase"></span>
+ <div id="hora" class="hora"></div>
 </div>
 
 <div class="player">
-  <iframe src="https://gelm2mil.github.io/play/" loading="lazy"></iframe>
+ <select id="playlist" class="selectMusic"></select>
+ <div class="controls">
+  <button onclick="prevSong()">⏮</button>
+  <button onclick="togglePlay()">▶</button>
+  <button onclick="nextSong()">⏭</button>
+ </div>
 </div>
 
-<div class="menu">
+<div class="masterBtn" onclick="toggleMenu()">AGENDA ▼</div>
 
-  <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
-  <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
-
-  <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
-  <a href="do_paso.html" target="_blank">D.PASO</a>
-
-  <a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
-  <a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
-
-  <a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
-  <a href="traspaso.html" target="_blank">TRASPASO</a>
-
-  <a href="suplentes.html" target="_blank">SUPLENTES</a>
-  <a href="consignaciones.html" target="_blank">CONSIGNA</a>
-
-  <a href="https://gelm2mil.github.io/gelm/" target="_blank">TRANSPORTES</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">REGLAMENTO 273</a>
-
-  <a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">HECHOS</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS SAT</a>
-
-  <a href="https://gelm2mil.github.io/buscador/" target="_blank">MULTAS</a>
-  <a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">BACK UP</a>
-
-  <a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
-  <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
-
+<div class="dropdown" id="menuDrop">
+<a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
+<a href="renovacion.html" target="_blank">RENOVACIÓN</a>
+<a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
+<a href="do_paso.html" target="_blank">D.PASO</a>
+<a href="c_permanentes.html" target="_blank">C. PERMANENTE</a>
+<a href="c_temporal.html" target="_blank">C. TEMPORAL</a>
+<a href="linea_nueva.html" target="_blank">LÍNEA NUEVA</a>
+<a href="traspaso.html" target="_blank">TRASPASO</a>
+<a href="suplentes.html" target="_blank">SUPLENTES</a>
+<a href="consignaciones.html" target="_blank">CONSIGNA</a>
+<a href="https://gelm2mil.github.io/gelm/" target="_blank">TRANSPORTES</a>
+<a href="https://gelm2mil.github.io/sistema/leyes/reglamento_273.html" target="_blank">REGLAMENTO 273</a>
+<a href="https://gelm2mil.github.io/2026/respaldo.html" target="_blank">HECHOS</a>
+<a href="https://gelm2mil.github.io/sistema/leyes/multas_sat.html" target="_blank">MULTAS SAT</a>
+<a href="https://gelm2mil.github.io/buscador/" target="_blank">MULTAS</a>
+<a href="https://docs.google.com/spreadsheets/d/1c-TyOCJ0TDyDoCt6SVh4bW2lJEtGc1_r81Tl88dO7wA/edit#gid=0" target="_blank">BACK UP</a>
+<a href="https://gelm2mil.github.io/sistema/leyes/codigo_municipal.html" target="_blank">CÓDIGO MUNICIPAL</a>
+<a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
 </div>
 
 <footer>
@@ -209,26 +221,89 @@ att: —[GELM]—
 <a href="transportes_2026.html" target="_blank" class="btn-2026">2026</a>
 <a href="https://chat.openai.com/" target="_blank" class="btn-gpt">🤖 GPT</a>
 
+<audio id="audio"></audio>
+
 <script>
-const frases=[
-"Gracias a Dios, un nuevo día.",
-"Disciplina hoy, tranquilidad mañana.",
-"Orden, visión y firmeza.",
-"Todo trabajo bien hecho deja huella."
-];
-function rotar(){
- document.getElementById("frase").textContent=
- frases[Math.floor(Math.random()*frases.length)];
+let songs=[],current=0,audio=document.getElementById("audio"),select=document.getElementById("playlist");
+
+fetch("musica.json")
+.then(r=>r.json())
+.then(data=>{
+ songs=data;
+ songs.forEach((s,i)=>{
+  let opt=document.createElement("option");
+  opt.value=i;
+  opt.textContent=s.title;
+  select.appendChild(opt);
+ });
+ current=Math.floor(Math.random()*songs.length);
+ loadSong(current,true);
+});
+
+function loadSong(i,auto=false){
+ current=i;
+ audio.src=songs[i].url;
+ select.value=i;
+ if(auto) audio.play();
 }
-rotar();setInterval(rotar,1000*60*30);
+
+function togglePlay(){
+ if(audio.paused) audio.play(); else audio.pause();
+}
+
+function nextSong(){
+ loadSong(Math.floor(Math.random()*songs.length),true);
+}
+
+function prevSong(){
+ loadSong(Math.floor(Math.random()*songs.length),true);
+}
+
+audio.addEventListener("ended",()=>nextSong());
+
+select.addEventListener("change",e=>{
+ loadSong(parseInt(e.target.value),true);
+});
+
+function toggleMenu(){
+ let m=document.getElementById("menuDrop");
+ m.style.display=m.style.display==="block"?"none":"block";
+}
+
+const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
+function rotar(){
+ document.getElementById("frase").textContent=frases[Math.floor(Math.random()*frases.length)];
+}
+rotar();
 
 function reloj(){
  const d=new Date();
- document.getElementById("hora").textContent=
- d.toLocaleDateString("es-GT",{weekday:"long",day:"numeric",month:"long"})+
- " — "+d.toLocaleTimeString("es-GT");
+ document.getElementById("hora").textContent=d.toLocaleDateString("es-GT")+" — "+d.toLocaleTimeString("es-GT");
 }
 reloj();setInterval(reloj,1000);
+
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;canvas.height=innerHeight;
+
+let particles=[];
+for(let i=0;i<60;i++){
+ particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:2+Math.random()*2});
+}
+
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ particles.forEach(p=>{
+  ctx.fillStyle=["#00e5ff","#ff003c","#b300ff"][Math.floor(Math.random()*3)];
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  ctx.fill();
+  p.y-=.5;
+  if(p.y<0) p.y=canvas.height;
+ });
+ requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>

@@ -11,9 +11,8 @@
 <style>
 :root{
   --neon:#00ff66;
-  --glass:rgba(255,255,255,.03);
-  --border:rgba(0,255,102,.7);
-  --glow:0 0 22px rgba(0,255,102,.9);
+  --border:rgba(0,255,102,.8);
+  --glow:0 0 25px rgba(0,255,102,1);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
@@ -24,6 +23,7 @@ body{
   background-size:cover;
   color:#eafff2;
   overflow-x:hidden;
+  transition:transform .2s ease-out;
 }
 
 /* ===== PARTICULAS ===== */
@@ -41,8 +41,8 @@ canvas{
   margin:16px auto 14px;
   padding:16px 30px;
   border-radius:999px;
-  background:var(--glass);
-  backdrop-filter:blur(18px);
+  background:rgba(255,255,255,.02);
+  backdrop-filter:blur(20px);
   border:1px solid var(--border);
   box-shadow:var(--glow);
   width:fit-content;
@@ -64,8 +64,8 @@ canvas{
   margin:10px auto 20px;
   padding:12px;
   border-radius:18px;
-  background:var(--glass);
-  backdrop-filter:blur(22px);
+  background:rgba(255,255,255,.015);
+  backdrop-filter:blur(25px);
   border:1px solid var(--border);
   box-shadow:var(--glow);
 }
@@ -94,36 +94,40 @@ canvas{
   text-decoration:none;
   text-align:center;
   padding:16px 12px;
-  border-radius:18px;
+  border-radius:20px;
   font-weight:800;
   font-size:13px;
   letter-spacing:.5px;
   color:var(--neon);
-  background:rgba(255,255,255,.02);
-  backdrop-filter:blur(28px);
+  background:transparent;
+  backdrop-filter:blur(30px);
   border:1px solid var(--border);
-  box-shadow:0 0 18px rgba(0,255,102,.6);
-  transition:.3s ease;
+  box-shadow:0 0 18px rgba(0,255,102,.7);
+  transition:.25s ease;
 }
 
-/* efecto pulsación viva */
-.menu a::after{
+/* pulsación permanente suave */
+.menu a::before{
   content:"";
   position:absolute;
   inset:0;
-  border-radius:18px;
-  background:radial-gradient(circle at center, rgba(0,255,102,.25), transparent 60%);
-  opacity:0;
-  transition:.4s;
+  border-radius:20px;
+  background:radial-gradient(circle at center,
+   rgba(0,255,102,.35),
+   transparent 70%);
+  opacity:.15;
+  animation:pulse 3s infinite;
 }
 
-.menu a:hover{
-  transform:translateY(-4px);
-  box-shadow:0 0 35px rgba(0,255,102,1);
+@keyframes pulse{
+  0%{opacity:.1}
+  50%{opacity:.35}
+  100%{opacity:.1}
 }
 
-.menu a:hover::after{
-  opacity:1;
+.menu a:active{
+  transform:scale(.96);
+  box-shadow:0 0 40px rgba(0,255,102,1);
 }
 
 /* ===== FOOTER EXACTO ===== */
@@ -138,7 +142,6 @@ footer{
   border-top:3px solid #00ffff;
   text-shadow:0 0 10px rgba(0,255,255,.8);
 }
-
 footer span{
   display:block;
   margin-top:6px;
@@ -151,8 +154,8 @@ footer span{
   bottom:18px;
   padding:14px 20px;
   border-radius:999px;
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(18px);
+  background:transparent;
+  backdrop-filter:blur(25px);
   color:var(--neon);
   font-weight:900;
   text-decoration:none;
@@ -160,7 +163,6 @@ footer span{
   box-shadow:var(--glow);
   z-index:3;
 }
-
 .btn-gpt{right:18px}
 .btn-2026{left:18px}
 </style>
@@ -181,7 +183,7 @@ footer span{
 </div>
 
 <div class="menu">
-  <!-- TODO TU MENU ORIGINAL intacto -->
+  <!-- TU MENU intacto -->
   <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
   <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
   <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
@@ -238,29 +240,33 @@ function reloj(){
 }
 reloj();setInterval(reloj,1000);
 
-/* PARTICULAS VIVAS */
+/* PARTICULAS CHISPAS NARANJA NEON */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<70;i++){
+for(let i=0;i<80;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,
   r:Math.random()*2+1,
-  dx:(Math.random()-0.5)*0.3,
-  dy:(Math.random()-0.5)*0.3
+  dx:(Math.random()-0.5)*0.4,
+  dy:(Math.random()-0.5)*0.4
  });
 }
 
 function draw(){
  ctx.clearRect(0,0,canvas.width,canvas.height);
- ctx.fillStyle="rgba(0,255,102,.4)";
  particles.forEach(p=>{
+  let gradient=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+  gradient.addColorStop(0,"rgba(255,140,0,1)");
+  gradient.addColorStop(.4,"rgba(255,80,0,.8)");
+  gradient.addColorStop(1,"rgba(255,0,0,0)");
+  ctx.fillStyle=gradient;
   ctx.beginPath();
-  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  ctx.arc(p.x,p.y,p.r*2,0,Math.PI*2);
   ctx.fill();
   p.x+=p.dx;
   p.y+=p.dy;
@@ -268,6 +274,15 @@ function draw(){
  requestAnimationFrame(draw);
 }
 draw();
+
+/* MICRO PARALLAX MOVIL */
+window.addEventListener("deviceorientation",e=>{
+ if(!e.beta) return;
+ let x=e.gamma/30;
+ let y=e.beta/30;
+ document.body.style.transform=
+ `translate(${x}px,${y}px)`;
+});
 </script>
 
 </body>

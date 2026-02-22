@@ -51,7 +51,7 @@ canvas{
  color:var(--violeta);
  text-align:center;
  box-shadow:0 0 15px var(--violeta);
- transition:.2s;
+ transition:.3s;
 }
 
 .header h1{font-size:18px;font-weight:900}
@@ -70,7 +70,7 @@ canvas{
  box-shadow:0 0 15px var(--rojo);
  text-align:center;
  backdrop-filter:blur(6px);
- transition:.2s;
+ transition:.3s;
 }
 
 .currentSong{
@@ -81,16 +81,22 @@ canvas{
  box-shadow:0 0 10px var(--azul);
  cursor:pointer;
  margin-bottom:12px;
+ transition:.3s;
 }
 
 .playlistBox{
- display:none;
- max-height:220px;
- overflow-y:auto;
+ max-height:0;
+ overflow:hidden;
+ transition:max-height .4s ease;
  border-radius:14px;
- border:1px solid var(--rojo);
+ border:1px solid transparent;
  backdrop-filter:blur(6px);
  margin-bottom:14px;
+}
+
+.playlistBox.open{
+ max-height:240px;
+ border-color:var(--rojo);
 }
 
 .playlistItem{
@@ -138,16 +144,25 @@ canvas{
  color:var(--violeta);
  box-shadow:0 0 10px var(--violeta);
  cursor:pointer;
+ transition:.3s;
 }
 
 .dropdown{
- display:none;
+ max-height:0;
+ overflow:hidden;
+ transition:max-height .5s ease;
  max-width:420px;
  margin:10px auto;
- padding:15px;
+ padding:0 15px;
  border-radius:18px;
- border:1px solid var(--rojo);
+ border:1px solid transparent;
  backdrop-filter:blur(6px);
+}
+
+.dropdown.open{
+ max-height:900px;
+ padding:15px;
+ border-color:var(--rojo);
 }
 
 .dropdown a{
@@ -171,7 +186,7 @@ footer{
  border-top:2px solid var(--turquesa);
  text-shadow:0 0 10px var(--turquesa);
  margin-top:40px;
- transition:.2s;
+ transition:.3s;
 }
 
 /* BOTONES */
@@ -250,8 +265,7 @@ att: —[GELM]—
 <script>
 const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
 function rotar(){frase.textContent=frases[Math.floor(Math.random()*frases.length)]}
-rotar();
-setInterval(rotar,1000*60*30);
+rotar();setInterval(rotar,1800000);
 
 function reloj(){
  const d=new Date();
@@ -259,10 +273,10 @@ function reloj(){
 }
 setInterval(reloj,1000);reloj();
 
-/* AUDIO */
+/* PLAYLIST */
 let songs=[],current=0,initialized=false;
 const audio=document.getElementById("audio");
-audio.volume=1;
+const playlistBox=document.getElementById("playlistBox");
 
 fetch("musica.json")
 .then(r=>r.json())
@@ -285,8 +299,7 @@ function buildPlaylist(){
 }
 
 function togglePlaylist(){
- playlistBox.style.display=
- playlistBox.style.display==="block"?"none":"block";
+ playlistBox.classList.toggle("open");
 }
 
 function loadSong(i,auto=false){
@@ -319,12 +332,25 @@ function prevSong(){
 
 audio.addEventListener("ended",()=>nextSong());
 
-/* ACTIVACIÓN SEGURA */
 document.body.addEventListener("click",()=>{
  if(initialized) return;
  initialized=true;
  audio.play();
 },{once:true});
+
+/* AGENDA */
+function toggleMenu(){
+ const menu=document.getElementById("menuDrop");
+ menu.classList.toggle("open");
+}
+
+document.addEventListener("click",function(e){
+ const menu=document.getElementById("menuDrop");
+ const btn=document.querySelector(".masterBtn");
+ if(!menu.contains(e.target) && !btn.contains(e.target)){
+   menu.classList.remove("open");
+ }
+});
 
 /* PARTICULAS */
 const canvas=document.getElementById("particles");
@@ -333,7 +359,7 @@ canvas.width=innerWidth;
 canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<90;i++){
+for(let i=0;i<100;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,

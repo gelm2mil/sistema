@@ -50,7 +50,7 @@ canvas{
  border:1px solid var(--violeta);
  color:var(--violeta);
  text-align:center;
- box-shadow:0 0 12px var(--violeta);
+ box-shadow:0 0 15px var(--violeta);
  transition:.2s;
 }
 
@@ -69,7 +69,7 @@ canvas{
  border:1px solid var(--rojo);
  box-shadow:0 0 15px var(--rojo);
  text-align:center;
- backdrop-filter:blur(4px);
+ backdrop-filter:blur(6px);
  transition:.2s;
 }
 
@@ -89,7 +89,7 @@ canvas{
  overflow-y:auto;
  border-radius:14px;
  border:1px solid var(--rojo);
- backdrop-filter:blur(4px);
+ backdrop-filter:blur(6px);
  margin-bottom:14px;
 }
 
@@ -147,7 +147,7 @@ canvas{
  padding:15px;
  border-radius:18px;
  border:1px solid var(--rojo);
- backdrop-filter:blur(4px);
+ backdrop-filter:blur(6px);
 }
 
 .dropdown a{
@@ -160,7 +160,7 @@ canvas{
 
 .dropdown a:last-child{border-bottom:none}
 
-/* FOOTER NUEVO COLOR */
+/* FOOTER */
 footer{
  position:relative;
  z-index:3;
@@ -169,7 +169,7 @@ footer{
  font-size:12px;
  color:var(--turquesa);
  border-top:2px solid var(--turquesa);
- text-shadow:0 0 8px var(--turquesa);
+ text-shadow:0 0 10px var(--turquesa);
  margin-top:40px;
  transition:.2s;
 }
@@ -204,7 +204,7 @@ footer{
 
 <div class="player" id="player">
   <div class="currentSong" onclick="togglePlaylist()">
-    <span id="currentTitle">Cargando...</span> ▼
+    <span id="currentTitle">Toca para iniciar música</span> ▼
   </div>
   <div class="playlistBox" id="playlistBox"></div>
   <div class="controls">
@@ -251,6 +251,7 @@ att: —[GELM]—
 const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
 function rotar(){frase.textContent=frases[Math.floor(Math.random()*frases.length)]}
 rotar();
+setInterval(rotar,1000*60*30);
 
 function reloj(){
  const d=new Date();
@@ -258,8 +259,8 @@ function reloj(){
 }
 setInterval(reloj,1000);reloj();
 
-/* PLAYLIST */
-let songs=[],current=0;
+/* AUDIO */
+let songs=[],current=0,initialized=false;
 const audio=document.getElementById("audio");
 audio.volume=1;
 
@@ -269,7 +270,7 @@ fetch("musica.json")
  songs=data;
  current=Math.floor(Math.random()*songs.length);
  buildPlaylist();
- loadSong(current,true);
+ loadSong(current,false);
 });
 
 function buildPlaylist(){
@@ -318,47 +319,14 @@ function prevSong(){
 
 audio.addEventListener("ended",()=>nextSong());
 
-/* AGENDA */
-function toggleMenu(){
- menuDrop.style.display=
- menuDrop.style.display==="block"?"none":"block";
-}
+/* ACTIVACIÓN SEGURA */
+document.body.addEventListener("click",()=>{
+ if(initialized) return;
+ initialized=true;
+ audio.play();
+},{once:true});
 
-/* AUDIO REACTIVO + BOOST */
-let audioCtx, analyser, source, gainNode, dataArray;
-
-audio.addEventListener("play",()=>{
- if(!audioCtx){
-   audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-   analyser=audioCtx.createAnalyser();
-   gainNode=audioCtx.createGain();
-   source=audioCtx.createMediaElementSource(audio);
-
-   gainNode.gain.value=1.4; // BOOST
-
-   source.connect(gainNode);
-   gainNode.connect(analyser);
-   analyser.connect(audioCtx.destination);
-
-   analyser.fftSize=64;
-   dataArray=new Uint8Array(analyser.frequencyBinCount);
- }
- animateGlow();
-});
-
-function animateGlow(){
- analyser.getByteFrequencyData(dataArray);
- let bass=dataArray[1];
- let intensity=bass/255;
-
- header.style.boxShadow=`0 0 ${12+intensity*40}px var(--violeta)`;
- player.style.boxShadow=`0 0 ${12+intensity*50}px var(--rojo)`;
- footer.style.textShadow=`0 0 ${8+intensity*25}px var(--turquesa)`;
-
- requestAnimationFrame(animateGlow);
-}
-
-/* PARTICULAS REACTIVAS */
+/* PARTICULAS */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;

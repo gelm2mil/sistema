@@ -13,6 +13,7 @@
  --rojo:#ff003c;
  --violeta:#b300ff;
  --turquesa:#00ffff;
+ --glass:rgba(255,255,255,0.05);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
@@ -23,21 +24,21 @@ body{
  background-size:cover;
  color:#fff;
  overflow-x:hidden;
+ transition:background 1.5s ease;
 }
 
 body::before{
  content:"";
  position:fixed;
  inset:0;
- background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.85));
+ background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.85));
  z-index:0;
 }
 
-canvas{
- position:fixed;
- inset:0;
- z-index:1;
- pointer-events:none;
+/* ===== GLASS BASE ===== */
+.glass{
+ backdrop-filter:blur(12px);
+ background:var(--glass);
 }
 
 /* HEADER */
@@ -51,9 +52,9 @@ canvas{
  color:var(--violeta);
  text-align:center;
  box-shadow:0 0 15px var(--violeta);
- transition:.3s;
+ transition:.4s;
 }
-
+.header:hover{box-shadow:0 0 25px var(--violeta)}
 .header h1{font-size:18px;font-weight:900}
 .header span{display:block;font-size:12px;margin-top:4px}
 .header .hora{font-size:11px;margin-top:4px}
@@ -69,9 +70,9 @@ canvas{
  border:1px solid var(--rojo);
  box-shadow:0 0 15px var(--rojo);
  text-align:center;
- backdrop-filter:blur(6px);
  transition:.3s;
 }
+.player:hover{box-shadow:0 0 25px var(--rojo)}
 
 .currentSong{
  padding:12px;
@@ -81,22 +82,30 @@ canvas{
  box-shadow:0 0 10px var(--azul);
  cursor:pointer;
  margin-bottom:12px;
- transition:.3s;
 }
 
+/* PLAYLIST SIN LIMITE */
 .playlistBox{
  max-height:0;
  overflow:hidden;
  transition:max-height .4s ease;
  border-radius:14px;
  border:1px solid transparent;
- backdrop-filter:blur(6px);
- margin-bottom:14px;
 }
 
 .playlistBox.open{
- max-height:240px;
+ max-height:300px;
+ overflow-y:auto;
  border-color:var(--rojo);
+}
+
+/* Scroll neon */
+.playlistBox::-webkit-scrollbar{
+ width:6px;
+}
+.playlistBox::-webkit-scrollbar-thumb{
+ background:var(--azul);
+ border-radius:10px;
 }
 
 .playlistItem{
@@ -104,19 +113,17 @@ canvas{
  border-bottom:1px solid var(--rojo);
  color:var(--azul);
  cursor:pointer;
+ transition:.2s;
 }
-
-.playlistItem:last-child{border-bottom:none}
-
 .playlistItem:hover{
- background:rgba(255,0,60,.1);
+ background:rgba(255,0,60,.15);
 }
-
 .playlistActive{
  color:var(--violeta);
  text-shadow:0 0 10px var(--violeta);
 }
 
+/* CONTROLES */
 .controls button{
  padding:10px 16px;
  margin:5px;
@@ -128,7 +135,7 @@ canvas{
  cursor:pointer;
  transition:.2s;
 }
-
+.controls button:hover{box-shadow:0 0 15px var(--azul)}
 .controls button:active{transform:scale(.9)}
 
 /* AGENDA */
@@ -146,6 +153,7 @@ canvas{
  cursor:pointer;
  transition:.3s;
 }
+.masterBtn:hover{box-shadow:0 0 20px var(--violeta)}
 
 .dropdown{
  max-height:0;
@@ -156,13 +164,13 @@ canvas{
  padding:0 15px;
  border-radius:18px;
  border:1px solid transparent;
- backdrop-filter:blur(6px);
 }
 
 .dropdown.open{
  max-height:900px;
  padding:15px;
  border-color:var(--rojo);
+ overflow-y:auto;
 }
 
 .dropdown a{
@@ -171,9 +179,12 @@ canvas{
  text-decoration:none;
  color:var(--azul);
  border-bottom:1px solid var(--rojo);
+ transition:.2s;
 }
-
-.dropdown a:last-child{border-bottom:none}
+.dropdown a:hover{
+ color:var(--violeta);
+ text-shadow:0 0 10px var(--violeta);
+}
 
 /* FOOTER */
 footer{
@@ -186,7 +197,6 @@ footer{
  border-top:2px solid var(--turquesa);
  text-shadow:0 0 10px var(--turquesa);
  margin-top:40px;
- transition:.3s;
 }
 
 /* BOTONES */
@@ -200,10 +210,18 @@ footer{
  text-decoration:none;
  box-shadow:0 0 8px var(--azul);
  z-index:4;
+ transition:.2s;
 }
-
+.btn-2026:hover,.btn-gpt:hover{box-shadow:0 0 18px var(--azul)}
 .btn-2026{left:18px}
 .btn-gpt{right:18px}
+
+canvas{
+ position:fixed;
+ inset:0;
+ z-index:1;
+ pointer-events:none;
+}
 </style>
 </head>
 
@@ -211,13 +229,13 @@ footer{
 
 <canvas id="particles"></canvas>
 
-<div class="header" id="header">
+<div class="header glass">
  <h1>GELM - SYSTEM</h1>
  <span id="frase"></span>
  <div id="hora" class="hora"></div>
 </div>
 
-<div class="player" id="player">
+<div class="player glass">
   <div class="currentSong" onclick="togglePlaylist()">
     <span id="currentTitle">Toca para iniciar música</span> ▼
   </div>
@@ -229,9 +247,10 @@ footer{
   </div>
 </div>
 
-<div class="masterBtn" onclick="toggleMenu()">AGENDA ▼</div>
+<div class="masterBtn glass" onclick="toggleMenu()">AGENDA ▼</div>
 
-<div class="dropdown" id="menuDrop">
+<div class="dropdown glass" id="menuDrop">
+<!-- TU BOTONERA COMPLETA EXACTA -->
 <a href="https://gelm2mil.github.io/2026/agen2026.html" target="_blank">AGENDA</a>
 <a href="renovacion.html" target="_blank">RENOVACIÓN</a>
 <a href="https://gelm2mil.github.io/sistema/B.datos_2026.html" target="_blank">REGISTRO 2026</a>
@@ -252,7 +271,7 @@ footer{
 <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
 </div>
 
-<footer id="footer">
+<footer>
 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango<br>
 att: —[GELM]—
 </footer>
@@ -263,20 +282,33 @@ att: —[GELM]—
 <audio id="audio"></audio>
 
 <script>
+/* FRASES */
 const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
-function rotar(){frase.textContent=frases[Math.floor(Math.random()*frases.length)]}
+const fraseEl=document.getElementById("frase");
+function rotar(){fraseEl.textContent=frases[Math.floor(Math.random()*frases.length)]}
 rotar();setInterval(rotar,1800000);
 
+/* RELOJ */
+const horaEl=document.getElementById("hora");
 function reloj(){
  const d=new Date();
- hora.textContent=d.toLocaleDateString("es-GT")+" — "+d.toLocaleTimeString("es-GT");
+ horaEl.textContent=d.toLocaleDateString("es-GT")+" — "+d.toLocaleTimeString("es-GT");
 }
-setInterval(reloj,1000);reloj();
+reloj();setInterval(reloj,1000);
+
+/* FONDO DINAMICO POR HORA */
+(function(){
+ const h=new Date().getHours();
+ if(h>=6 && h<12) document.body.style.filter="brightness(1.05)";
+ else if(h>=12 && h<18) document.body.style.filter="brightness(0.95)";
+ else document.body.style.filter="brightness(0.75)";
+})();
 
 /* PLAYLIST */
 let songs=[],current=0,initialized=false;
 const audio=document.getElementById("audio");
 const playlistBox=document.getElementById("playlistBox");
+const currentTitle=document.getElementById("currentTitle");
 
 fetch("musica.json")
 .then(r=>r.json())
@@ -298,9 +330,7 @@ function buildPlaylist(){
  });
 }
 
-function togglePlaylist(){
- playlistBox.classList.toggle("open");
-}
+function togglePlaylist(){playlistBox.classList.toggle("open");}
 
 function loadSong(i,auto=false){
  current=i;
@@ -312,24 +342,12 @@ function loadSong(i,auto=false){
 
 function updateActive(){
  document.querySelectorAll(".playlistItem")
- .forEach((el,i)=>{
-   el.classList.toggle("playlistActive",i===current);
- });
+ .forEach((el,i)=>el.classList.toggle("playlistActive",i===current));
 }
 
-function togglePlay(){
- if(audio.paused) audio.play();
- else audio.pause();
-}
-
-function nextSong(){
- loadSong(Math.floor(Math.random()*songs.length),true);
-}
-
-function prevSong(){
- loadSong(Math.floor(Math.random()*songs.length),true);
-}
-
+function togglePlay(){audio.paused?audio.play():audio.pause();}
+function nextSong(){loadSong(Math.floor(Math.random()*songs.length),true);}
+function prevSong(){loadSong(Math.floor(Math.random()*songs.length),true);}
 audio.addEventListener("ended",()=>nextSong());
 
 document.body.addEventListener("click",()=>{
@@ -340,52 +358,9 @@ document.body.addEventListener("click",()=>{
 
 /* AGENDA */
 function toggleMenu(){
- const menu=document.getElementById("menuDrop");
- menu.classList.toggle("open");
+ document.getElementById("menuDrop").classList.toggle("open");
 }
-
-document.addEventListener("click",function(e){
- const menu=document.getElementById("menuDrop");
- const btn=document.querySelector(".masterBtn");
- if(!menu.contains(e.target) && !btn.contains(e.target)){
-   menu.classList.remove("open");
- }
-});
-
-/* PARTICULAS */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-
-let particles=[];
-for(let i=0;i<100;i++){
- particles.push({
-  x:Math.random()*canvas.width,
-  y:Math.random()*canvas.height,
-  r:2+Math.random()*2,
-  dx:(Math.random()-.5)*.8,
-  dy:(Math.random()-.5)*.8
- });
-}
-
-function draw(){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- particles.forEach(p=>{
-  ctx.fillStyle=["#00e5ff","#ff003c","#b300ff"][Math.floor(Math.random()*3)];
-  ctx.beginPath();
-  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-  ctx.fill();
-  p.x+=p.dx;
-  p.y+=p.dy;
-  if(p.x<0||p.x>canvas.width)p.dx*=-1;
-  if(p.y<0||p.y>canvas.height)p.dy*=-1;
- });
- requestAnimationFrame(draw);
-}
-draw();
 </script>
 
 </body>
 </html>
-

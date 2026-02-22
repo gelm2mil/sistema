@@ -12,6 +12,7 @@
  --azul:#00e5ff;
  --rojo:#ff003c;
  --violeta:#b300ff;
+ --turquesa:#00ffff;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
@@ -39,6 +40,7 @@ canvas{
  pointer-events:none;
 }
 
+/* HEADER */
 .header{
  position:relative;
  z-index:3;
@@ -49,13 +51,14 @@ canvas{
  color:var(--violeta);
  text-align:center;
  box-shadow:0 0 12px var(--violeta);
- transition:all .2s ease;
+ transition:.2s;
 }
 
 .header h1{font-size:18px;font-weight:900}
 .header span{display:block;font-size:12px;margin-top:4px}
 .header .hora{font-size:11px;margin-top:4px}
 
+/* PLAYER */
 .player{
  position:relative;
  z-index:3;
@@ -67,7 +70,7 @@ canvas{
  box-shadow:0 0 15px var(--rojo);
  text-align:center;
  backdrop-filter:blur(4px);
- transition:all .2s ease;
+ transition:.2s;
 }
 
 .currentSong{
@@ -122,6 +125,7 @@ canvas{
 
 .controls button:active{transform:scale(.9)}
 
+/* AGENDA */
 .masterBtn{
  position:relative;
  z-index:3;
@@ -156,18 +160,21 @@ canvas{
 
 .dropdown a:last-child{border-bottom:none}
 
+/* FOOTER NUEVO COLOR */
 footer{
  position:relative;
  z-index:3;
  text-align:center;
  padding:15px;
- font-size:11px;
- color:#00ffff;
- border-top:1px solid #00ffff;
+ font-size:12px;
+ color:var(--turquesa);
+ border-top:2px solid var(--turquesa);
+ text-shadow:0 0 8px var(--turquesa);
  margin-top:40px;
  transition:.2s;
 }
 
+/* BOTONES */
 .btn-2026,.btn-gpt{
  position:fixed;
  bottom:18px;
@@ -196,19 +203,15 @@ footer{
 </div>
 
 <div class="player" id="player">
-
   <div class="currentSong" onclick="togglePlaylist()">
     <span id="currentTitle">Cargando...</span> ▼
   </div>
-
   <div class="playlistBox" id="playlistBox"></div>
-
   <div class="controls">
     <button onclick="prevSong()">⏮</button>
     <button onclick="togglePlay()">▶</button>
     <button onclick="nextSong()">⏭</button>
   </div>
-
 </div>
 
 <div class="masterBtn" onclick="toggleMenu()">AGENDA ▼</div>
@@ -245,7 +248,6 @@ att: —[GELM]—
 <audio id="audio"></audio>
 
 <script>
-/* ===== FRASES Y RELOJ ===== */
 const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
 function rotar(){frase.textContent=frases[Math.floor(Math.random()*frases.length)]}
 rotar();
@@ -256,11 +258,10 @@ function reloj(){
 }
 setInterval(reloj,1000);reloj();
 
-/* ===== PLAYLIST ===== */
+/* PLAYLIST */
 let songs=[],current=0;
 const audio=document.getElementById("audio");
-const playlistBox=document.getElementById("playlistBox");
-const currentTitle=document.getElementById("currentTitle");
+audio.volume=1;
 
 fetch("musica.json")
 .then(r=>r.json())
@@ -317,22 +318,28 @@ function prevSong(){
 
 audio.addEventListener("ended",()=>nextSong());
 
-/* ===== AGENDA ===== */
+/* AGENDA */
 function toggleMenu(){
  menuDrop.style.display=
  menuDrop.style.display==="block"?"none":"block";
 }
 
-/* ===== AUDIO REACTIVE GLOW ===== */
-let audioCtx, analyser, source, dataArray;
+/* AUDIO REACTIVO + BOOST */
+let audioCtx, analyser, source, gainNode, dataArray;
 
 audio.addEventListener("play",()=>{
  if(!audioCtx){
    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
    analyser=audioCtx.createAnalyser();
+   gainNode=audioCtx.createGain();
    source=audioCtx.createMediaElementSource(audio);
-   source.connect(analyser);
+
+   gainNode.gain.value=1.4; // BOOST
+
+   source.connect(gainNode);
+   gainNode.connect(analyser);
    analyser.connect(audioCtx.destination);
+
    analyser.fftSize=64;
    dataArray=new Uint8Array(analyser.frequencyBinCount);
  }
@@ -340,33 +347,31 @@ audio.addEventListener("play",()=>{
 });
 
 function animateGlow(){
- if(!analyser) return;
  analyser.getByteFrequencyData(dataArray);
-
- let bass=dataArray[1]; // bajos
+ let bass=dataArray[1];
  let intensity=bass/255;
 
- header.style.boxShadow=`0 0 ${10+intensity*30}px var(--violeta)`;
- player.style.boxShadow=`0 0 ${10+intensity*40}px var(--rojo)`;
- footer.style.textShadow=`0 0 ${5+intensity*20}px #00ffff`;
+ header.style.boxShadow=`0 0 ${12+intensity*40}px var(--violeta)`;
+ player.style.boxShadow=`0 0 ${12+intensity*50}px var(--rojo)`;
+ footer.style.textShadow=`0 0 ${8+intensity*25}px var(--turquesa)`;
 
  requestAnimationFrame(animateGlow);
 }
 
-/* ===== PARTICULAS ===== */
+/* PARTICULAS REACTIVAS */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<80;i++){
+for(let i=0;i<90;i++){
  particles.push({
   x:Math.random()*canvas.width,
   y:Math.random()*canvas.height,
   r:2+Math.random()*2,
-  dx:(Math.random()-.5)*.6,
-  dy:(Math.random()-.5)*.6
+  dx:(Math.random()-.5)*.8,
+  dy:(Math.random()-.5)*.8
  });
 }
 

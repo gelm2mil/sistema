@@ -6,16 +6,12 @@
 <title>GELM - SYSTEM</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00ff66">
 
 <style>
 :root{
  --azul:#00e5ff;
  --rojo:#ff003c;
  --violeta:#b300ff;
- --glowAzul:0 0 12px #00e5ff;
- --glowRojo:0 0 12px #ff003c;
- --glowVioleta:0 0 14px #b300ff;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial}
@@ -32,7 +28,7 @@ body::before{
  content:"";
  position:fixed;
  inset:0;
- background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.8));
+ background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.85));
  z-index:0;
 }
 
@@ -46,19 +42,14 @@ canvas{
 .header{
  position:relative;
  z-index:3;
- margin:18px auto;
- padding:16px 34px;
+ margin:20px auto;
+ padding:18px 36px;
  border-radius:999px;
  border:1px solid var(--violeta);
  color:var(--violeta);
  text-align:center;
- box-shadow:var(--glowVioleta);
- animation:pulseHeader 4s infinite ease-in-out;
-}
-
-@keyframes pulseHeader{
- 0%,100%{box-shadow:0 0 10px #b300ff}
- 50%{box-shadow:0 0 22px #b300ff}
+ box-shadow:0 0 12px var(--violeta);
+ transition:all .2s ease;
 }
 
 .header h1{font-size:18px;font-weight:900}
@@ -73,37 +64,63 @@ canvas{
  padding:18px;
  border-radius:18px;
  border:1px solid var(--rojo);
- box-shadow:var(--glowRojo);
+ box-shadow:0 0 15px var(--rojo);
  text-align:center;
  backdrop-filter:blur(4px);
+ transition:all .2s ease;
 }
 
-.selectMusic{
- width:100%;
- padding:10px;
+.currentSong{
+ padding:12px;
  border-radius:12px;
- background:transparent;
  border:1px solid var(--rojo);
  color:var(--azul);
- box-shadow:var(--glowAzul);
- margin-bottom:15px;
+ box-shadow:0 0 10px var(--azul);
+ cursor:pointer;
+ margin-bottom:12px;
+}
+
+.playlistBox{
+ display:none;
+ max-height:220px;
+ overflow-y:auto;
+ border-radius:14px;
+ border:1px solid var(--rojo);
+ backdrop-filter:blur(4px);
+ margin-bottom:14px;
+}
+
+.playlistItem{
+ padding:10px;
+ border-bottom:1px solid var(--rojo);
+ color:var(--azul);
+ cursor:pointer;
+}
+
+.playlistItem:last-child{border-bottom:none}
+
+.playlistItem:hover{
+ background:rgba(255,0,60,.1);
+}
+
+.playlistActive{
+ color:var(--violeta);
+ text-shadow:0 0 10px var(--violeta);
 }
 
 .controls button{
  padding:10px 16px;
  margin:5px;
  border-radius:10px;
- border:none;
  background:transparent;
  color:var(--azul);
  border:1px solid var(--azul);
- box-shadow:var(--glowAzul);
+ box-shadow:0 0 8px var(--azul);
  cursor:pointer;
+ transition:.2s;
 }
 
-.controls button:active{
- transform:scale(.9);
-}
+.controls button:active{transform:scale(.9)}
 
 .masterBtn{
  position:relative;
@@ -115,7 +132,7 @@ canvas{
  border-radius:18px;
  border:1px solid var(--rojo);
  color:var(--violeta);
- box-shadow:var(--glowVioleta);
+ box-shadow:0 0 10px var(--violeta);
  cursor:pointer;
 }
 
@@ -126,22 +143,18 @@ canvas{
  padding:15px;
  border-radius:18px;
  border:1px solid var(--rojo);
- box-shadow:var(--glowRojo);
- backdrop-filter:blur(3px);
+ backdrop-filter:blur(4px);
 }
 
 .dropdown a{
  display:block;
  padding:10px;
- margin:6px 0;
  text-decoration:none;
  color:var(--azul);
  border-bottom:1px solid var(--rojo);
 }
 
-.dropdown a:last-child{
- border-bottom:none;
-}
+.dropdown a:last-child{border-bottom:none}
 
 footer{
  position:relative;
@@ -152,6 +165,7 @@ footer{
  color:#00ffff;
  border-top:1px solid #00ffff;
  margin-top:40px;
+ transition:.2s;
 }
 
 .btn-2026,.btn-gpt{
@@ -162,7 +176,7 @@ footer{
  border:1px solid var(--azul);
  color:var(--azul);
  text-decoration:none;
- box-shadow:var(--glowAzul);
+ box-shadow:0 0 8px var(--azul);
  z-index:4;
 }
 
@@ -175,19 +189,26 @@ footer{
 
 <canvas id="particles"></canvas>
 
-<div class="header">
+<div class="header" id="header">
  <h1>GELM - SYSTEM</h1>
  <span id="frase"></span>
  <div id="hora" class="hora"></div>
 </div>
 
-<div class="player">
- <select id="playlist" class="selectMusic"></select>
- <div class="controls">
-  <button onclick="prevSong()">⏮</button>
-  <button onclick="togglePlay()">▶</button>
-  <button onclick="nextSong()">⏭</button>
- </div>
+<div class="player" id="player">
+
+  <div class="currentSong" onclick="togglePlaylist()">
+    <span id="currentTitle">Cargando...</span> ▼
+  </div>
+
+  <div class="playlistBox" id="playlistBox"></div>
+
+  <div class="controls">
+    <button onclick="prevSong()">⏮</button>
+    <button onclick="togglePlay()">▶</button>
+    <button onclick="nextSong()">⏭</button>
+  </div>
+
 </div>
 
 <div class="masterBtn" onclick="toggleMenu()">AGENDA ▼</div>
@@ -213,7 +234,7 @@ footer{
 <a href="https://gelm2mil.github.io/sistema/leyes/biblia.html" target="_blank">BIBLIA</a>
 </div>
 
-<footer>
+<footer id="footer">
 2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango<br>
 att: —[GELM]—
 </footer>
@@ -224,31 +245,66 @@ att: —[GELM]—
 <audio id="audio"></audio>
 
 <script>
-let songs=[],current=0,audio=document.getElementById("audio"),select=document.getElementById("playlist");
+/* ===== FRASES Y RELOJ ===== */
+const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
+function rotar(){frase.textContent=frases[Math.floor(Math.random()*frases.length)]}
+rotar();
+
+function reloj(){
+ const d=new Date();
+ hora.textContent=d.toLocaleDateString("es-GT")+" — "+d.toLocaleTimeString("es-GT");
+}
+setInterval(reloj,1000);reloj();
+
+/* ===== PLAYLIST ===== */
+let songs=[],current=0;
+const audio=document.getElementById("audio");
+const playlistBox=document.getElementById("playlistBox");
+const currentTitle=document.getElementById("currentTitle");
 
 fetch("musica.json")
 .then(r=>r.json())
 .then(data=>{
  songs=data;
- songs.forEach((s,i)=>{
-  let opt=document.createElement("option");
-  opt.value=i;
-  opt.textContent=s.title;
-  select.appendChild(opt);
- });
  current=Math.floor(Math.random()*songs.length);
+ buildPlaylist();
  loadSong(current,true);
 });
+
+function buildPlaylist(){
+ playlistBox.innerHTML="";
+ songs.forEach((song,i)=>{
+   const div=document.createElement("div");
+   div.className="playlistItem";
+   div.textContent=song.title;
+   div.onclick=()=>loadSong(i,true);
+   playlistBox.appendChild(div);
+ });
+}
+
+function togglePlaylist(){
+ playlistBox.style.display=
+ playlistBox.style.display==="block"?"none":"block";
+}
 
 function loadSong(i,auto=false){
  current=i;
  audio.src=songs[i].url;
- select.value=i;
+ currentTitle.textContent=songs[i].title;
+ updateActive();
  if(auto) audio.play();
 }
 
+function updateActive(){
+ document.querySelectorAll(".playlistItem")
+ .forEach((el,i)=>{
+   el.classList.toggle("playlistActive",i===current);
+ });
+}
+
 function togglePlay(){
- if(audio.paused) audio.play(); else audio.pause();
+ if(audio.paused) audio.play();
+ else audio.pause();
 }
 
 function nextSong(){
@@ -261,34 +317,57 @@ function prevSong(){
 
 audio.addEventListener("ended",()=>nextSong());
 
-select.addEventListener("change",e=>{
- loadSong(parseInt(e.target.value),true);
+/* ===== AGENDA ===== */
+function toggleMenu(){
+ menuDrop.style.display=
+ menuDrop.style.display==="block"?"none":"block";
+}
+
+/* ===== AUDIO REACTIVE GLOW ===== */
+let audioCtx, analyser, source, dataArray;
+
+audio.addEventListener("play",()=>{
+ if(!audioCtx){
+   audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+   analyser=audioCtx.createAnalyser();
+   source=audioCtx.createMediaElementSource(audio);
+   source.connect(analyser);
+   analyser.connect(audioCtx.destination);
+   analyser.fftSize=64;
+   dataArray=new Uint8Array(analyser.frequencyBinCount);
+ }
+ animateGlow();
 });
 
-function toggleMenu(){
- let m=document.getElementById("menuDrop");
- m.style.display=m.style.display==="block"?"none":"block";
+function animateGlow(){
+ if(!analyser) return;
+ analyser.getByteFrequencyData(dataArray);
+
+ let bass=dataArray[1]; // bajos
+ let intensity=bass/255;
+
+ header.style.boxShadow=`0 0 ${10+intensity*30}px var(--violeta)`;
+ player.style.boxShadow=`0 0 ${10+intensity*40}px var(--rojo)`;
+ footer.style.textShadow=`0 0 ${5+intensity*20}px #00ffff`;
+
+ requestAnimationFrame(animateGlow);
 }
 
-const frases=["Gracias a Dios, un nuevo día.","Disciplina hoy, tranquilidad mañana.","Orden, visión y firmeza."];
-function rotar(){
- document.getElementById("frase").textContent=frases[Math.floor(Math.random()*frases.length)];
-}
-rotar();
-
-function reloj(){
- const d=new Date();
- document.getElementById("hora").textContent=d.toLocaleDateString("es-GT")+" — "+d.toLocaleTimeString("es-GT");
-}
-reloj();setInterval(reloj,1000);
-
+/* ===== PARTICULAS ===== */
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;canvas.height=innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
 let particles=[];
-for(let i=0;i<60;i++){
- particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:2+Math.random()*2});
+for(let i=0;i<80;i++){
+ particles.push({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  r:2+Math.random()*2,
+  dx:(Math.random()-.5)*.6,
+  dy:(Math.random()-.5)*.6
+ });
 }
 
 function draw(){
@@ -298,8 +377,10 @@ function draw(){
   ctx.beginPath();
   ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
   ctx.fill();
-  p.y-=.5;
-  if(p.y<0) p.y=canvas.height;
+  p.x+=p.dx;
+  p.y+=p.dy;
+  if(p.x<0||p.x>canvas.width)p.dx*=-1;
+  if(p.y<0||p.y>canvas.height)p.dy*=-1;
  });
  requestAnimationFrame(draw);
 }

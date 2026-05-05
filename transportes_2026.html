@@ -3,82 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GELM PMT PRO</title>
+<title>SYSTEM BY GELM — USO EXCLUSIVO TRANSPORTES — Y POR GELM</title>
 
 <style>
 body{
     margin:0;
-    font-family:Arial;
-    background:#05010a;
-    color:#fff;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    color:#eee;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
+      radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
+      #05010a;
+    background-attachment:fixed;
 }
-
 .contenedor{
-    max-width:600px;
+    max-width:1200px;
     margin:auto;
-    padding:15px;
+    background:rgba(0,0,0,.82);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 0 18px rgba(0,255,255,.5);
 }
-
-input{
-    width:100%;
-    padding:12px;
-    border-radius:10px;
-    border:none;
-    margin-bottom:10px;
+.header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
 }
-
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#00ffc8;
-    font-weight:bold;
-}
-
-.card{
-    background:#0a0a0a;
-    border-radius:12px;
-    padding:15px;
-    margin-top:15px;
-    box-shadow:0 0 10px rgba(0,255,255,.4);
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.label{
-    font-size:11px;
+.logo-box img{max-width:110px}
+.titulos{text-align:center}
+.titulos-linea1{color:#00ffc8;font-size:20px;font-weight:bold}
+.titulos-linea2{color:#ffdf5e}
+.titulos-linea3{color:#a5ffe5}
+#estado{text-align:center;margin:10px;color:#aaa}
+.buscador{text-align:center;margin:15px}
+.buscador input{
+    padding:10px;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    background:#050513;
     color:#00ffc8;
 }
-
-.valor{
-    font-size:14px;
-    margin-bottom:6px;
+.buscador button{
+    padding:10px 20px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
 }
-
-.titulo{
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+th,td{
+    border:1px solid #333;
+    padding:6px;
+    font-size:13px;
+}
+th{background:#00ffc8;color:#000}
+.similares-box{margin-top:10px}
+.similares-box select{
+    background:#020b40;
+    color:#fff;
+    border-radius:999px;
+    border:1px solid #00ffc8;
+    padding:5px 10px;
+}
+.footer-info{
     text-align:center;
-    color:#00ffc8;
-    font-weight:bold;
-    margin-bottom:10px;
+    margin-top:15px;
+    font-size:12px;
+    color:#4ee8ff;
 }
 </style>
 </head>
 
 <body>
-
 <div class="contenedor">
 
-<div class="titulo">SISTEMA PMT GELM</div>
+<div class="header-top">
+    <div class="logo-box">
+        <img src="https://gelm2mil.github.io/sistema/icons/YO.png">
+    </div>
+    <div class="titulos">
+        <div class="titulos-linea1">SYSTEM BY GELM -PMT CHIMALTENANGO</div>
+        <div class="titulos-linea2">BY DELEGACIÓN DE TRANSPORTES</div>
+        <div class="titulos-linea3">Sistema de Consulta 2025 - 2026 — BY GELM</div>
+    </div>
+    <div class="logo-box">
+        <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
+    </div>
+</div>
 
-<input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
-<button onclick="buscar()">Buscar</button>
+<div id="estado">Cargando datos desde Google Sheets…</div>
 
-<div id="resultado"></div>
+<div class="buscador">
+    <input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
+    <button onclick="buscar()">Buscar</button>
+</div>
+
+<div id="resultado">
+    <div id="resultado-principal"></div>
+    <div id="similares-contenedor"></div>
+</div>
+
+<div class="footer-info">
+    2014 - 2026 | BY GELM | PMT Chimaltenango<br>
+    <span id="fechaHora"></span>
+</div>
 
 </div>
 
@@ -86,97 +119,123 @@ button{
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1BSN7gxmPWYCAKJgA9aH4yNuERpTvs4uiX/pub?gid=1355305835&single=true&output=csv";
 
 let registros=[];
+let similares=[];
 
 function normalizar(t){
     return (t||"").toString().replace(/[\s-]/g,"").toUpperCase();
 }
-
-async function cargarDatos(){
-    const r=await fetch(CSV_URL);
-    const t=await r.text();
-    const filas=t.split("\n").map(f=>f.split(","));
-
-    for(let i=1;i<filas.length;i++){
-        const f=filas[i];
-        if(!f[0]) continue;
-
-        registros.push({
-            placa:f[0],
-            calcomania:f[1],
-            placaSale:f[2],
-            concesionario:f[3],
-            telDueno:f[4],
-            ruta:f[5],
-            telPilotos:f[6],
-            nombrePiloto:f[7],
-            dpi:f[8],
-            documento:f[9],
-            licencia:f[10],
-            tipoLic:f[11]
-        });
-    }
+function esc(s){
+    return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 }
 
-function construirCard(r){
+/* 🔥 SOLO ESTA FUNCIÓN CAMBIÓ */
+async function cargarDatos(){
+    const r = await fetch(CSV_URL + "&nocache=" + Date.now());
+    const t = await r.text();
+
+    const filas = t.split("\n");
+
+    for(let i=1;i<filas.length;i++){
+        let fila = filas[i];
+
+        let columnas = fila.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+        if(!columnas || !columnas[0]) continue;
+
+        columnas = columnas.map(c => c.replace(/"/g,"").trim());
+
+        registros.push({
+            placa: columnas[0],
+            calcomania: columnas[1],
+            placaSale: columnas[2],
+            concesionario: columnas[3],
+            telDueno: columnas[4],
+            ruta: columnas[5],
+            telPilotos: columnas[6],
+            nombrePiloto: columnas[7],
+            dpi: columnas[8],
+            documento: columnas[9],
+            licencia: columnas[10],
+            tipoLic: columnas[11]
+        });
+    }
+
+    document.getElementById("estado").textContent=
+        "Datos cargados correctamente — Registros: "+registros.length;
+}
+
+function construirTabla(r){
 return `
-<div class="card">
-
-<div class="grid">
-<div><div class="label">PLACA</div><div class="valor">${r.placa}</div></div>
-<div><div class="label">CALCOMANIA</div><div class="valor">${r.calcomania}</div></div>
-
-<div><div class="label">PLACA SALE</div><div class="valor">${r.placaSale}</div></div>
-<div><div class="label">CONCESIONARIO</div><div class="valor">${r.concesionario}</div></div>
-
-<div><div class="label">TEL DUEÑO</div><div class="valor">${r.telDueno}</div></div>
-<div><div class="label">RUTA</div><div class="valor">${r.ruta}</div></div>
-
-<div><div class="label">TEL PILOTO</div><div class="valor">${r.telPilotos}</div></div>
-<div><div class="label">PILOTO</div><div class="valor">${r.nombrePiloto}</div></div>
-
-<div><div class="label">DPI</div><div class="valor">${r.dpi}</div></div>
-<div><div class="label">DOCUMENTO</div><div class="valor">${r.documento}</div></div>
-
-<div><div class="label">LICENCIA</div><div class="valor">${r.licencia}</div></div>
-<div><div class="label">TIPO</div><div class="valor">${r.tipoLic}</div></div>
-</div>
-
-</div>
-`;
+<table>
+<tr>
+<th>PLACA</th><th>CALCOMANIA</th><th>PLACA SALE</th>
+<th>CONCESIONARIO</th><th>TEL DUEÑO</th><th>RUTA</th>
+<th>TEL PILOTO</th><th>NOMBRE PILOTO</th>
+<th>DPI</th><th>DOCUMENTO</th><th>LICENCIA</th><th>TIPO</th>
+</tr>
+<tr>
+<td>${esc(r.placa)}</td>
+<td>${esc(r.calcomania)}</td>
+<td>${esc(r.placaSale)}</td>
+<td>${esc(r.concesionario)}</td>
+<td>${esc(r.telDueno)}</td>
+<td>${esc(r.ruta)}</td>
+<td>${esc(r.telPilotos)}</td>
+<td>${esc(r.nombrePiloto)}</td>
+<td>${esc(r.dpi)}</td>
+<td>${esc(r.documento)}</td>
+<td>${esc(r.licencia)}</td>
+<td>${esc(r.tipoLic)}</td>
+</tr>
+</table>`;
 }
 
 function buscar(){
     const txt=document.getElementById("busquedaInput").value.trim();
     const limpio=normalizar(txt);
-
+    const rp=document.getElementById("resultado-principal");
+    const rs=document.getElementById("similares-contenedor");
+    rp.innerHTML=""; rs.innerHTML=""; similares=[];
     if(!txt) return;
 
-    let mejor=null;
-    let mejorPuntaje=0;
-
+    const m=[];
     registros.forEach(r=>{
         let p=0;
-
         if(normalizar(r.calcomania)===limpio) p=100;
         if(normalizar(r.placa)===limpio) p=Math.max(p,90);
         if(normalizar(r.dpi)===limpio) p=Math.max(p,80);
         if(normalizar(r.licencia)===limpio) p=Math.max(p,70);
         if(normalizar(r.documento)===limpio) p=Math.max(p,60);
-
-        if(p>mejorPuntaje){
-            mejor=r;
-            mejorPuntaje=p;
-        }
+        if(p>0) m.push({r,p});
     });
 
-    if(!mejor){
-        document.getElementById("resultado").innerHTML="No encontrado";
-        return;
-    }
+    if(!m.length){ rp.innerHTML="No encontrado"; return; }
+    m.sort((a,b)=>b.p-a.p);
+    rp.innerHTML=construirTabla(m[0].r);
+    similares=m.slice(1).map(x=>x.r);
 
-    document.getElementById("resultado").innerHTML=construirCard(mejor);
+    if(similares.length){
+        let o="<option value=''>-- seleccionar --</option>";
+        similares.forEach((s,i)=>{
+            o+=`<option value="${i}">Calcomanía ${s.calcomania} · ${s.ruta}</option>`;
+        });
+        rs.innerHTML=`<div class="similares-box">SIMILARES:
+        <select onchange="mostrarSimilar(this.value)">${o}</select></div>`;
+    }
 }
 
+function mostrarSimilar(i){
+    if(!similares[i])return;
+    document.getElementById("resultado-principal").innerHTML=
+        construirTabla(similares[i]);
+}
+
+function reloj(){
+    document.getElementById("fechaHora").textContent=
+        new Date().toLocaleString("es-ES");
+}
+setInterval(reloj,1000);
+reloj();
 cargarDatos();
 </script>
 

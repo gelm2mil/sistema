@@ -128,38 +128,28 @@ function esc(s){
     return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 }
 
-/* 🔥 SOLO ESTA FUNCIÓN CAMBIÓ */
 async function cargarDatos(){
-    const r = await fetch(CSV_URL + "&nocache=" + Date.now());
-    const t = await r.text();
-
-    const filas = t.split("\n");
-
+    const r=await fetch(CSV_URL);
+    const t=await r.text();
+    const filas=t.split("\n").map(f=>f.split(","));
     for(let i=1;i<filas.length;i++){
-        let fila = filas[i];
-
-        let columnas = fila.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-
-        if(!columnas || !columnas[0]) continue;
-
-        columnas = columnas.map(c => c.replace(/"/g,"").trim());
-
+        const f=filas[i];
+        if(!f[0]) continue;
         registros.push({
-            placa: columnas[0],
-            calcomania: columnas[1],
-            placaSale: columnas[2],
-            concesionario: columnas[3],
-            telDueno: columnas[4],
-            ruta: columnas[5],
-            telPilotos: columnas[6],
-            nombrePiloto: columnas[7],
-            dpi: columnas[8],
-            documento: columnas[9],
-            licencia: columnas[10],
-            tipoLic: columnas[11]
+            placa:f[0],
+            calcomania:f[1],
+            placaSale:f[2],
+            concesionario:f[3],
+            telDueno:f[4],
+            ruta:f[5],
+            telPilotos:f[6],
+            nombrePiloto:f[7],
+            dpi:f[8],
+            documento:f[9],
+            licencia:f[10],
+            tipoLic:f[11]
         });
     }
-
     document.getElementById("estado").textContent=
         "Datos cargados correctamente — Registros: "+registros.length;
 }
@@ -223,7 +213,6 @@ function buscar(){
         <select onchange="mostrarSimilar(this.value)">${o}</select></div>`;
     }
 }
-
 function mostrarSimilar(i){
     if(!similares[i])return;
     document.getElementById("resultado-principal").innerHTML=
@@ -238,6 +227,5 @@ setInterval(reloj,1000);
 reloj();
 cargarDatos();
 </script>
-
 </body>
 </html>

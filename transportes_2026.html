@@ -3,229 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYSTEM BY GELM — USO EXCLUSIVO TRANSPORTES — Y POR GELM</title>
+<title>GELM APP</title>
 
 <style>
 body{
     margin:0;
-    padding:20px;
-    font-family:Arial,sans-serif;
-    color:#eee;
-    background:
-      radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
-      radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
-      #05010a;
-    background-attachment:fixed;
+    font-family:Arial;
+    background:#05010a;
+    color:#fff;
 }
+
 .contenedor{
-    max-width:1200px;
+    padding:15px;
+    max-width:600px;
     margin:auto;
-    background:rgba(0,0,0,.82);
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 0 18px rgba(0,255,255,.5);
 }
-.header-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
+
+input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:10px;
 }
-.logo-box img{max-width:110px}
-.titulos{text-align:center}
-.titulos-linea1{color:#00ffc8;font-size:20px;font-weight:bold}
-.titulos-linea2{color:#ffdf5e}
-.titulos-linea3{color:#a5ffe5}
-#estado{text-align:center;margin:10px;color:#aaa}
-.buscador{text-align:center;margin:15px}
-.buscador input{
-    padding:10px;
-    border-radius:999px;
-    border:1px solid #00ffc8;
-    background:#050513;
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#00ffc8;
+    font-weight:bold;
+}
+
+.card{
+    background:#0a0a0a;
+    border-radius:12px;
+    padding:15px;
+    margin-top:15px;
+    box-shadow:0 0 10px rgba(0,255,255,.4);
+}
+
+.label{
+    font-size:11px;
     color:#00ffc8;
 }
-.buscador button{
-    padding:10px 20px;
-    border-radius:999px;
-    border:none;
-    cursor:pointer;
-}
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:10px;
-}
-th,td{
-    border:1px solid #333;
-    padding:6px;
-    font-size:13px;
-}
-th{background:#00ffc8;color:#000}
-.similares-box{margin-top:10px}
-.similares-box select{
-    background:#020b40;
-    color:#fff;
-    border-radius:999px;
-    border:1px solid #00ffc8;
-    padding:5px 10px;
-}
-.footer-info{
-    text-align:center;
-    margin-top:15px;
-    font-size:12px;
-    color:#4ee8ff;
+
+.valor{
+    font-size:14px;
+    margin-bottom:8px;
 }
 </style>
 </head>
 
 <body>
+
 <div class="contenedor">
 
-<div class="header-top">
-    <div class="logo-box">
-        <img src="https://gelm2mil.github.io/sistema/icons/YO.png">
-    </div>
-    <div class="titulos">
-        <div class="titulos-linea1">SYSTEM BY GELM -PMT CHIMALTENANGO</div>
-        <div class="titulos-linea2">BY DELEGACIÓN DE TRANSPORTES</div>
-        <div class="titulos-linea3">Sistema de Consulta 2025 - 2026 — BY GELM</div>
-    </div>
-    <div class="logo-box">
-        <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
-    </div>
-</div>
+<input id="busquedaInput" placeholder="Buscar placa, DPI, etc">
+<button onclick="buscar()">Buscar</button>
 
-<div id="estado">Cargando datos desde Google Sheets…</div>
-
-<div class="buscador">
-    <input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
-    <button onclick="buscar()">Buscar</button>
-</div>
-
-<div id="resultado">
-    <div id="resultado-principal"></div>
-    <div id="similares-contenedor"></div>
-</div>
-
-<div class="footer-info">
-    2014 - 2026 | BY GELM | PMT Chimaltenango<br>
-    <span id="fechaHora"></span>
-</div>
+<div id="resultado"></div>
 
 </div>
 
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+const CSV_URL = "TU_LINK";
 
 let registros=[];
-let similares=[];
 
 function normalizar(t){
-    return (t||"").toString().replace(/[\s-]/g,"").toUpperCase();
-}
-function esc(s){
-    return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    return (t||"").replace(/[\s-]/g,"").toUpperCase();
 }
 
 async function cargarDatos(){
     const r=await fetch(CSV_URL);
     const t=await r.text();
     const filas=t.split("\n").map(f=>f.split(","));
+
     for(let i=1;i<filas.length;i++){
         const f=filas[i];
         if(!f[0]) continue;
+
         registros.push({
             placa:f[0],
             calcomania:f[1],
-            placaSale:f[2],
-            concesionario:f[3],
-            telDueno:f[4],
             ruta:f[5],
-            telPilotos:f[6],
-            nombrePiloto:f[7],
+            piloto:f[7],
             dpi:f[8],
-            documento:f[9],
-            licencia:f[10],
-            tipoLic:f[11]
+            licencia:f[10]
         });
     }
-    document.getElementById("estado").textContent=
-        "Datos cargados correctamente — Registros: "+registros.length;
 }
 
-function construirTabla(r){
+function construirCard(r){
 return `
-<table>
-<tr>
-<th>PLACA</th><th>CALCOMANIA</th><th>PLACA SALE</th>
-<th>CONCESIONARIO</th><th>TEL DUEÑO</th><th>RUTA</th>
-<th>TEL PILOTO</th><th>NOMBRE PILOTO</th>
-<th>DPI</th><th>DOCUMENTO</th><th>LICENCIA</th><th>TIPO</th>
-</tr>
-<tr>
-<td>${esc(r.placa)}</td>
-<td>${esc(r.calcomania)}</td>
-<td>${esc(r.placaSale)}</td>
-<td>${esc(r.concesionario)}</td>
-<td>${esc(r.telDueno)}</td>
-<td>${esc(r.ruta)}</td>
-<td>${esc(r.telPilotos)}</td>
-<td>${esc(r.nombrePiloto)}</td>
-<td>${esc(r.dpi)}</td>
-<td>${esc(r.documento)}</td>
-<td>${esc(r.licencia)}</td>
-<td>${esc(r.tipoLic)}</td>
-</tr>
-</table>`;
+<div class="card">
+<div class="label">PLACA</div>
+<div class="valor">${r.placa}</div>
+
+<div class="label">CALCOMANIA</div>
+<div class="valor">${r.calcomania}</div>
+
+<div class="label">RUTA</div>
+<div class="valor">${r.ruta}</div>
+
+<div class="label">PILOTO</div>
+<div class="valor">${r.piloto}</div>
+
+<div class="label">DPI</div>
+<div class="valor">${r.dpi}</div>
+
+<div class="label">LICENCIA</div>
+<div class="valor">${r.licencia}</div>
+</div>
+`;
 }
 
 function buscar(){
-    const txt=document.getElementById("busquedaInput").value.trim();
+    const txt=document.getElementById("busquedaInput").value;
     const limpio=normalizar(txt);
-    const rp=document.getElementById("resultado-principal");
-    const rs=document.getElementById("similares-contenedor");
-    rp.innerHTML=""; rs.innerHTML=""; similares=[];
-    if(!txt) return;
 
-    const m=[];
-    registros.forEach(r=>{
-        let p=0;
-        if(normalizar(r.calcomania)===limpio) p=100;
-        if(normalizar(r.placa)===limpio) p=Math.max(p,90);
-        if(normalizar(r.dpi)===limpio) p=Math.max(p,80);
-        if(normalizar(r.licencia)===limpio) p=Math.max(p,70);
-        if(normalizar(r.documento)===limpio) p=Math.max(p,60);
-        if(p>0) m.push({r,p});
-    });
+    const r=registros.find(x =>
+        normalizar(x.placa)===limpio ||
+        normalizar(x.dpi)===limpio
+    );
 
-    if(!m.length){ rp.innerHTML="No encontrado"; return; }
-    m.sort((a,b)=>b.p-a.p);
-    rp.innerHTML=construirTabla(m[0].r);
-    similares=m.slice(1).map(x=>x.r);
-
-    if(similares.length){
-        let o="<option value=''>-- seleccionar --</option>";
-        similares.forEach((s,i)=>{
-            o+=`<option value="${i}">Calcomanía ${s.calcomania} · ${s.ruta}</option>`;
-        });
-        rs.innerHTML=`<div class="similares-box">SIMILARES:
-        <select onchange="mostrarSimilar(this.value)">${o}</select></div>`;
+    if(!r){
+        document.getElementById("resultado").innerHTML="No encontrado";
+        return;
     }
-}
-function mostrarSimilar(i){
-    if(!similares[i])return;
-    document.getElementById("resultado-principal").innerHTML=
-        construirTabla(similares[i]);
+
+    document.getElementById("resultado").innerHTML=construirCard(r);
 }
 
-function reloj(){
-    document.getElementById("fechaHora").textContent=
-        new Date().toLocaleString("es-ES");
-}
-setInterval(reloj,1000);
-reloj();
 cargarDatos();
 </script>
+
 </body>
 </html>

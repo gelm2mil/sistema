@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GELM APP</title>
+<title>GELM PMT PRO</title>
 
 <style>
 body{
@@ -14,9 +14,9 @@ body{
 }
 
 .contenedor{
-    padding:15px;
     max-width:600px;
     margin:auto;
+    padding:15px;
 }
 
 input{
@@ -44,6 +44,12 @@ button{
     box-shadow:0 0 10px rgba(0,255,255,.4);
 }
 
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
 .label{
     font-size:11px;
     color:#00ffc8;
@@ -51,7 +57,14 @@ button{
 
 .valor{
     font-size:14px;
-    margin-bottom:8px;
+    margin-bottom:6px;
+}
+
+.titulo{
+    text-align:center;
+    color:#00ffc8;
+    font-weight:bold;
+    margin-bottom:10px;
 }
 </style>
 </head>
@@ -60,7 +73,9 @@ button{
 
 <div class="contenedor">
 
-<input id="busquedaInput" placeholder="Buscar placa, DPI, etc">
+<div class="titulo">SISTEMA PMT GELM</div>
+
+<input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
 <button onclick="buscar()">Buscar</button>
 
 <div id="resultado"></div>
@@ -68,12 +83,12 @@ button{
 </div>
 
 <script>
-const CSV_URL = "TU_LINK";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1BSN7gxmPWYCAKJgA9aH4yNuERpTvs4uiX/pub?gid=1355305835&single=true&output=csv";
 
 let registros=[];
 
 function normalizar(t){
-    return (t||"").replace(/[\s-]/g,"").toUpperCase();
+    return (t||"").toString().replace(/[\s-]/g,"").toUpperCase();
 }
 
 async function cargarDatos(){
@@ -88,10 +103,16 @@ async function cargarDatos(){
         registros.push({
             placa:f[0],
             calcomania:f[1],
+            placaSale:f[2],
+            concesionario:f[3],
+            telDueno:f[4],
             ruta:f[5],
-            piloto:f[7],
+            telPilotos:f[6],
+            nombrePiloto:f[7],
             dpi:f[8],
-            licencia:f[10]
+            documento:f[9],
+            licencia:f[10],
+            tipoLic:f[11]
         });
     }
 }
@@ -99,42 +120,61 @@ async function cargarDatos(){
 function construirCard(r){
 return `
 <div class="card">
-<div class="label">PLACA</div>
-<div class="valor">${r.placa}</div>
 
-<div class="label">CALCOMANIA</div>
-<div class="valor">${r.calcomania}</div>
+<div class="grid">
+<div><div class="label">PLACA</div><div class="valor">${r.placa}</div></div>
+<div><div class="label">CALCOMANIA</div><div class="valor">${r.calcomania}</div></div>
 
-<div class="label">RUTA</div>
-<div class="valor">${r.ruta}</div>
+<div><div class="label">PLACA SALE</div><div class="valor">${r.placaSale}</div></div>
+<div><div class="label">CONCESIONARIO</div><div class="valor">${r.concesionario}</div></div>
 
-<div class="label">PILOTO</div>
-<div class="valor">${r.piloto}</div>
+<div><div class="label">TEL DUEÑO</div><div class="valor">${r.telDueno}</div></div>
+<div><div class="label">RUTA</div><div class="valor">${r.ruta}</div></div>
 
-<div class="label">DPI</div>
-<div class="valor">${r.dpi}</div>
+<div><div class="label">TEL PILOTO</div><div class="valor">${r.telPilotos}</div></div>
+<div><div class="label">PILOTO</div><div class="valor">${r.nombrePiloto}</div></div>
 
-<div class="label">LICENCIA</div>
-<div class="valor">${r.licencia}</div>
+<div><div class="label">DPI</div><div class="valor">${r.dpi}</div></div>
+<div><div class="label">DOCUMENTO</div><div class="valor">${r.documento}</div></div>
+
+<div><div class="label">LICENCIA</div><div class="valor">${r.licencia}</div></div>
+<div><div class="label">TIPO</div><div class="valor">${r.tipoLic}</div></div>
+</div>
+
 </div>
 `;
 }
 
 function buscar(){
-    const txt=document.getElementById("busquedaInput").value;
+    const txt=document.getElementById("busquedaInput").value.trim();
     const limpio=normalizar(txt);
 
-    const r=registros.find(x =>
-        normalizar(x.placa)===limpio ||
-        normalizar(x.dpi)===limpio
-    );
+    if(!txt) return;
 
-    if(!r){
+    let mejor=null;
+    let mejorPuntaje=0;
+
+    registros.forEach(r=>{
+        let p=0;
+
+        if(normalizar(r.calcomania)===limpio) p=100;
+        if(normalizar(r.placa)===limpio) p=Math.max(p,90);
+        if(normalizar(r.dpi)===limpio) p=Math.max(p,80);
+        if(normalizar(r.licencia)===limpio) p=Math.max(p,70);
+        if(normalizar(r.documento)===limpio) p=Math.max(p,60);
+
+        if(p>mejorPuntaje){
+            mejor=r;
+            mejorPuntaje=p;
+        }
+    });
+
+    if(!mejor){
         document.getElementById("resultado").innerHTML="No encontrado";
         return;
     }
 
-    document.getElementById("resultado").innerHTML=construirCard(r);
+    document.getElementById("resultado").innerHTML=construirCard(mejor);
 }
 
 cargarDatos();

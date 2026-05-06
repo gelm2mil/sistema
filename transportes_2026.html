@@ -17,6 +17,7 @@ body{
       #05010a;
     background-attachment:fixed;
 }
+
 .contenedor{
     max-width:1200px;
     margin:auto;
@@ -25,143 +26,320 @@ body{
     padding:20px;
     box-shadow:0 0 18px rgba(0,255,255,.5);
 }
+
 .header-top{
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:15px;
 }
-.logo-box img{max-width:110px}
-.titulos{text-align:center}
-.titulos-linea1{color:#00ffc8;font-size:20px;font-weight:bold}
-.titulos-linea2{color:#ffdf5e}
-.titulos-linea3{color:#a5ffe5}
-#estado{text-align:center;margin:10px;color:#aaa}
-.buscador{text-align:center;margin:15px}
+
+.logo-box img{
+    max-width:110px;
+}
+
+.titulos{
+    text-align:center;
+}
+
+.titulos-linea1{
+    color:#00ffc8;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.titulos-linea2{
+    color:#ffdf5e;
+}
+
+.titulos-linea3{
+    color:#a5ffe5;
+}
+
+#estado{
+    text-align:center;
+    margin:10px;
+    color:#aaa;
+}
+
+.buscador{
+    text-align:center;
+    margin:15px;
+}
+
 .buscador input{
     padding:10px;
     border-radius:999px;
     border:1px solid #00ffc8;
     background:#050513;
     color:#00ffc8;
+    width:260px;
+    max-width:90%;
 }
+
 .buscador button{
     padding:10px 20px;
     border-radius:999px;
     border:none;
     cursor:pointer;
 }
+
+/* ===== TABLA RESPONSIVE ===== */
+
+.tabla-scroll{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    margin-top:10px;
+    border-radius:12px;
+}
+
+.tabla-scroll table{
+    min-width:1200px;
+}
+
 table{
     width:100%;
     border-collapse:collapse;
     margin-top:10px;
 }
+
 th,td{
     border:1px solid #333;
     padding:6px;
     font-size:13px;
+    white-space:nowrap;
 }
-th{background:#00ffc8;color:#000}
-.similares-box{margin-top:10px}
+
+th{
+    background:#00ffc8;
+    color:#000;
+}
+
+.similares-box{
+    margin-top:10px;
+}
+
 .similares-box select{
     background:#020b40;
     color:#fff;
     border-radius:999px;
     border:1px solid #00ffc8;
     padding:5px 10px;
+    max-width:100%;
 }
+
 .footer-info{
     text-align:center;
     margin-top:15px;
     font-size:12px;
     color:#4ee8ff;
 }
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:768px){
+
+    body{
+        padding:10px;
+    }
+
+    .contenedor{
+        padding:12px;
+    }
+
+    .header-top{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .logo-box img{
+        max-width:70px;
+    }
+
+    .titulos-linea1{
+        font-size:16px;
+    }
+
+    .titulos-linea2,
+    .titulos-linea3{
+        font-size:13px;
+    }
+
+    .buscador input{
+        width:90%;
+    }
+
+    .buscador button{
+        margin-top:8px;
+    }
+}
 </style>
 </head>
 
 <body>
+
 <div class="contenedor">
 
 <div class="header-top">
+
     <div class="logo-box">
         <img src="https://gelm2mil.github.io/sistema/icons/YO.png">
     </div>
+
     <div class="titulos">
-        <div class="titulos-linea1">SYSTEM BY GELM -PMT CHIMALTENANGO</div>
-        <div class="titulos-linea2">BY DELEGACIÓN DE TRANSPORTES</div>
-        <div class="titulos-linea3">Sistema de Consulta 2025 - 2026 — BY GELM</div>
+        <div class="titulos-linea1">
+            SYSTEM BY GELM -PMT CHIMALTENANGO
+        </div>
+
+        <div class="titulos-linea2">
+            BY DELEGACIÓN DE TRANSPORTES
+        </div>
+
+        <div class="titulos-linea3">
+            Sistema de Consulta 2025 - 2026 — BY GELM
+        </div>
     </div>
+
     <div class="logo-box">
         <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png">
     </div>
+
 </div>
 
-<div id="estado">Cargando datos desde Google Sheets…</div>
+<div id="estado">
+    Cargando datos desde Google Sheets…
+</div>
 
 <div class="buscador">
-    <input id="busquedaInput" placeholder="Placa, DPI, licencia, documento o calcomanía">
-    <button onclick="buscar()">Buscar</button>
+    <input
+        id="busquedaInput"
+        placeholder="Placa, DPI, licencia, documento o calcomanía">
+
+    <button onclick="buscar()">
+        Buscar
+    </button>
 </div>
 
 <div id="resultado">
-    <div id="resultado-principal"></div>
+
+    <div class="tabla-scroll">
+        <div id="resultado-principal"></div>
+    </div>
+
     <div id="similares-contenedor"></div>
+
 </div>
 
 <div class="footer-info">
-    2014 - 2026 | BY GELM | PMT Chimaltenango<br>
+    2014 - 2026 | BY GELM | PMT Chimaltenango
+    <br>
     <span id="fechaHora"></span>
 </div>
 
 </div>
 
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
-let registros=[];
-let similares=[];
+
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwaUTpai-4dbcMc3imM8jfxPu7Wrzwpi-EqICd1yDRHmFfKAMwMxu8jwXMXqs3GQ/pub?gid=1355305835&single=true&output=csv";
+
+let registros = [];
+let similares = [];
 
 function normalizar(t){
-    return (t||"").toString().replace(/[\s-]/g,"").toUpperCase();
+    return (t || "")
+        .toString()
+        .replace(/[\s-]/g,"")
+        .toUpperCase();
 }
+
 function esc(s){
-    return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    return (s || "")
+        .replace(/[&<>"]/g,c=>({
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;"
+        }[c]));
 }
 
 async function cargarDatos(){
-    const r=await fetch(CSV_URL);
-    const t=await r.text();
-    const filas=t.split("\n").map(f=>f.split(","));
-    for(let i=1;i<filas.length;i++){
-        const f=filas[i];
-        if(!f[0]) continue;
-        registros.push({
-            placa:f[0],
-            calcomania:f[1],
-            placaSale:f[2],
-            concesionario:f[3],
-            telDueno:f[4],
-            ruta:f[5],
-            telPilotos:f[6],
-            nombrePiloto:f[7],
-            dpi:f[8],
-            documento:f[9],
-            licencia:f[10],
-            tipoLic:f[11]
-        });
+
+    try{
+
+        const r = await fetch(CSV_URL);
+
+        if(!r.ok){
+            throw new Error("No se pudo cargar Google Sheets");
+        }
+
+        const t = await r.text();
+
+        const filas = t
+            .trim()
+            .split(/\r?\n/)
+            .map(fila=>{
+                return fila.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+                    ?.map(c=>c.replace(/^"|"$/g,"").trim()) || [];
+            });
+
+        registros = [];
+
+        for(let i=1;i<filas.length;i++){
+
+            const f = filas[i];
+
+            if(!f || !f.length || !f[0]) continue;
+
+            registros.push({
+                placa:f[0] || "",
+                calcomania:f[1] || "",
+                placaSale:f[2] || "",
+                concesionario:f[3] || "",
+                telDueno:f[4] || "",
+                ruta:f[5] || "",
+                telPilotos:f[6] || "",
+                nombrePiloto:f[7] || "",
+                dpi:f[8] || "",
+                documento:f[9] || "",
+                licencia:f[10] || "",
+                tipoLic:f[11] || ""
+            });
+        }
+
+        document.getElementById("estado").textContent =
+            "Datos cargados correctamente — Registros: " +
+            registros.length;
+
+    }catch(e){
+
+        document.getElementById("estado").textContent =
+            "ERROR: " + e.message;
     }
-    document.getElementById("estado").textContent=
-        "Datos cargados correctamente — Registros: "+registros.length;
 }
 
 function construirTabla(r){
+
 return `
 <table>
+
 <tr>
-<th>PLACA</th><th>CALCOMANIA</th><th>PLACA SALE</th>
-<th>CONCESIONARIO</th><th>TEL DUEÑO</th><th>RUTA</th>
-<th>TEL PILOTO</th><th>NOMBRE PILOTO</th>
-<th>DPI</th><th>DOCUMENTO</th><th>LICENCIA</th><th>TIPO</th>
+<th>PLACA</th>
+<th>CALCOMANIA</th>
+<th>PLACA SALE</th>
+<th>CONCESIONARIO</th>
+<th>TEL DUEÑO</th>
+<th>RUTA</th>
+<th>TEL PILOTO</th>
+<th>NOMBRE PILOTO</th>
+<th>DPI</th>
+<th>DOCUMENTO</th>
+<th>LICENCIA</th>
+<th>TIPO</th>
 </tr>
+
 <tr>
 <td>${esc(r.placa)}</td>
 <td>${esc(r.calcomania)}</td>
@@ -176,55 +354,117 @@ return `
 <td>${esc(r.licencia)}</td>
 <td>${esc(r.tipoLic)}</td>
 </tr>
-</table>`;
+
+</table>
+`;
 }
 
 function buscar(){
-    const txt=document.getElementById("busquedaInput").value.trim();
-    const limpio=normalizar(txt);
-    const rp=document.getElementById("resultado-principal");
-    const rs=document.getElementById("similares-contenedor");
-    rp.innerHTML=""; rs.innerHTML=""; similares=[];
+
+    const txt =
+        document.getElementById("busquedaInput")
+        .value
+        .trim();
+
+    const limpio = normalizar(txt);
+
+    const rp =
+        document.getElementById("resultado-principal");
+
+    const rs =
+        document.getElementById("similares-contenedor");
+
+    rp.innerHTML = "";
+    rs.innerHTML = "";
+    similares = [];
+
     if(!txt) return;
 
-    const m=[];
+    const m = [];
+
     registros.forEach(r=>{
-        let p=0;
-        if(normalizar(r.calcomania)===limpio) p=100;
-        if(normalizar(r.placa)===limpio) p=Math.max(p,90);
-        if(normalizar(r.dpi)===limpio) p=Math.max(p,80);
-        if(normalizar(r.licencia)===limpio) p=Math.max(p,70);
-        if(normalizar(r.documento)===limpio) p=Math.max(p,60);
-        if(p>0) m.push({r,p});
+
+        let p = 0;
+
+        if(normalizar(r.calcomania) === limpio)
+            p = 100;
+
+        if(normalizar(r.placa) === limpio)
+            p = Math.max(p,90);
+
+        if(normalizar(r.dpi) === limpio)
+            p = Math.max(p,80);
+
+        if(normalizar(r.licencia) === limpio)
+            p = Math.max(p,70);
+
+        if(normalizar(r.documento) === limpio)
+            p = Math.max(p,60);
+
+        if(p > 0)
+            m.push({r,p});
     });
 
-    if(!m.length){ rp.innerHTML="No encontrado"; return; }
+    if(!m.length){
+
+        rp.innerHTML = "No encontrado";
+        return;
+    }
+
     m.sort((a,b)=>b.p-a.p);
-    rp.innerHTML=construirTabla(m[0].r);
-    similares=m.slice(1).map(x=>x.r);
+
+    rp.innerHTML = construirTabla(m[0].r);
+
+    similares = m.slice(1).map(x=>x.r);
 
     if(similares.length){
-        let o="<option value=''>-- seleccionar --</option>";
+
+        let o =
+        "<option value=''>-- seleccionar --</option>";
+
         similares.forEach((s,i)=>{
-            o+=`<option value="${i}">Calcomanía ${s.calcomania} · ${s.ruta}</option>`;
+
+            o += `
+            <option value="${i}">
+                Calcomanía ${s.calcomania} · ${s.ruta}
+            </option>`;
         });
-        rs.innerHTML=`<div class="similares-box">SIMILARES:
-        <select onchange="mostrarSimilar(this.value)">${o}</select></div>`;
+
+        rs.innerHTML = `
+        <div class="similares-box">
+
+            SIMILARES:
+
+            <select onchange="mostrarSimilar(this.value)">
+                ${o}
+            </select>
+
+        </div>`;
     }
 }
+
 function mostrarSimilar(i){
-    if(!similares[i])return;
-    document.getElementById("resultado-principal").innerHTML=
+
+    if(!similares[i]) return;
+
+    document.getElementById("resultado-principal")
+    .innerHTML =
         construirTabla(similares[i]);
 }
 
 function reloj(){
-    document.getElementById("fechaHora").textContent=
+
+    document.getElementById("fechaHora").textContent =
         new Date().toLocaleString("es-ES");
 }
+
 setInterval(reloj,1000);
+
 reloj();
+
 cargarDatos();
+
 </script>
+
 </body>
 </html>

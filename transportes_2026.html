@@ -3,28 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SYSTEM BY GELM — USO EXCLUSIVO TRANSPORTES — Y POR GELM</title>
 
 <style>
+
 body{
     margin:0;
     padding:20px;
     font-family:Arial,sans-serif;
     color:#eee;
+
     background:
       radial-gradient(circle at 20% 0%, rgba(0,255,255,.2), transparent 50%),
       radial-gradient(circle at 80% 0%, rgba(255,0,255,.18), transparent 55%),
       #05010a;
+
     background-attachment:fixed;
 }
 
 .contenedor{
     max-width:1200px;
     margin:auto;
+
     background:rgba(0,0,0,.82);
+
     border-radius:18px;
+
     padding:20px;
-    box-shadow:0 0 18px rgba(0,255,255,.5);
+
+    box-shadow:
+        0 0 18px rgba(0,255,255,.5),
+        0 0 40px rgba(0,0,0,.8);
 }
 
 .header-top{
@@ -32,6 +42,10 @@ body{
     justify-content:space-between;
     align-items:center;
     gap:15px;
+}
+
+.logo-box{
+    text-align:center;
 }
 
 .logo-box img{
@@ -50,54 +64,75 @@ body{
 
 .titulos-linea2{
     color:#ffdf5e;
+    font-size:18px;
 }
 
 .titulos-linea3{
     color:#a5ffe5;
+    font-size:15px;
 }
 
 #estado{
     text-align:center;
-    margin:10px;
+    margin:18px 0;
     color:#aaa;
+    font-size:16px;
 }
 
 .buscador{
     text-align:center;
-    margin:15px;
+    margin:20px 0;
 }
 
 .buscador input{
-    padding:10px;
+    padding:12px;
     border-radius:999px;
     border:1px solid #00ffc8;
+
     background:#050513;
+
     color:#00ffc8;
-    width:260px;
+
+    width:280px;
     max-width:90%;
+    outline:none;
 }
 
 .buscador button{
-    padding:10px 20px;
+    padding:12px 24px;
+
     border-radius:999px;
+
     border:none;
+
     cursor:pointer;
+
+    margin-left:5px;
+
+    background:#ddd;
+
+    font-weight:bold;
 }
 
-/* ===== TABLA RESPONSIVE ===== */
+/* ===== SCROLL TABLA ===== */
 
 .tabla-scroll{
     width:100%;
     overflow-x:auto;
     overflow-y:hidden;
+
     -webkit-overflow-scrolling:touch;
-    margin-top:10px;
+
     border-radius:12px;
+
+    margin-top:10px;
 }
 
 .tabla-scroll table{
-    min-width:1200px;
+    min-width:1000px;
 }
+
+/* ===== TABLA ===== */
 
 table{
     width:100%;
@@ -107,33 +142,62 @@ table{
 
 th,td{
     border:1px solid #333;
-    padding:6px;
+
+    padding:8px;
+
     font-size:13px;
-    white-space:nowrap;
+
+    text-align:center;
+
+    vertical-align:middle;
+
+    word-break:break-word;
+
+    min-width:110px;
+
+    max-width:180px;
+}
+
+td{
+    color:#fff;
 }
 
 th{
-    background:#00ffc8;
-    color:#000;
+    background:#2d6f35;
+    color:#fff;
+    font-weight:bold;
 }
 
+/* ===== SIMILARES ===== */
+
 .similares-box{
-    margin-top:10px;
+    margin-top:15px;
+    text-align:center;
 }
 
 .similares-box select{
     background:#020b40;
+
     color:#fff;
+
     border-radius:999px;
+
     border:1px solid #00ffc8;
-    padding:5px 10px;
-    max-width:100%;
+
+    padding:8px 12px;
+
+    max-width:95%;
 }
+
+/* ===== FOOTER ===== */
 
 .footer-info{
     text-align:center;
-    margin-top:15px;
+
+    margin-top:20px;
+
     font-size:12px;
+
     color:#4ee8ff;
 }
 
@@ -146,7 +210,7 @@ th{
     }
 
     .contenedor{
-        padding:12px;
+        padding:14px;
     }
 
     .header-top{
@@ -162,19 +226,31 @@ th{
         font-size:16px;
     }
 
-    .titulos-linea2,
+    .titulos-linea2{
+        font-size:14px;
+    }
+
     .titulos-linea3{
         font-size:13px;
     }
 
     .buscador input{
         width:90%;
+        margin-bottom:10px;
     }
 
     .buscador button{
-        margin-top:8px;
+        width:120px;
+        margin-left:0;
+    }
+
+    th,td{
+        font-size:12px;
+        padding:7px;
+        min-width:95px;
     }
 }
+
 </style>
 </head>
 
@@ -189,6 +265,7 @@ th{
     </div>
 
     <div class="titulos">
+
         <div class="titulos-linea1">
             SYSTEM BY GELM -PMT CHIMALTENANGO
         </div>
@@ -200,6 +277,7 @@ th{
         <div class="titulos-linea3">
             Sistema de Consulta 2025 - 2026 — BY GELM
         </div>
+
     </div>
 
     <div class="logo-box">
@@ -213,6 +291,7 @@ th{
 </div>
 
 <div class="buscador">
+
     <input
         id="busquedaInput"
         placeholder="Placa, DPI, licencia, documento o calcomanía">
@@ -220,6 +299,7 @@ th{
     <button onclick="buscar()">
         Buscar
     </button>
+
 </div>
 
 <div id="resultado">
@@ -248,22 +328,32 @@ const CSV_URL =
 let registros = [];
 let similares = [];
 
+/* ===== NORMALIZAR ===== */
+
 function normalizar(t){
+
     return (t || "")
         .toString()
         .replace(/[\s-]/g,"")
         .toUpperCase();
 }
 
+/* ===== ESCAPAR HTML ===== */
+
 function esc(s){
+
     return (s || "")
         .replace(/[&<>"]/g,c=>({
+
             "&":"&amp;",
             "<":"&lt;",
             ">":"&gt;",
             '"':"&quot;"
+
         }[c]));
 }
+
+/* ===== CARGAR DATOS ===== */
 
 async function cargarDatos(){
 
@@ -281,6 +371,7 @@ async function cargarDatos(){
             .trim()
             .split(/\r?\n/)
             .map(fila=>{
+
                 return fila.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
                     ?.map(c=>c.replace(/^"|"$/g,"").trim()) || [];
             });
@@ -294,6 +385,7 @@ async function cargarDatos(){
             if(!f || !f.length || !f[0]) continue;
 
             registros.push({
+
                 placa:f[0] || "",
                 calcomania:f[1] || "",
                 placaSale:f[2] || "",
@@ -306,6 +398,7 @@ async function cargarDatos(){
                 documento:f[9] || "",
                 licencia:f[10] || "",
                 tipoLic:f[11] || ""
+
             });
         }
 
@@ -320,9 +413,12 @@ async function cargarDatos(){
     }
 }
 
+/* ===== CONSTRUIR TABLA ===== */
+
 function construirTabla(r){
 
 return `
+
 <table>
 
 <tr>
@@ -356,8 +452,11 @@ return `
 </tr>
 
 </table>
+
 `;
 }
+
+/* ===== BUSCAR ===== */
 
 function buscar(){
 
@@ -376,6 +475,7 @@ function buscar(){
 
     rp.innerHTML = "";
     rs.innerHTML = "";
+
     similares = [];
 
     if(!txt) return;
@@ -431,9 +531,12 @@ function buscar(){
         });
 
         rs.innerHTML = `
+
         <div class="similares-box">
 
             SIMILARES:
+
+            <br><br>
 
             <select onchange="mostrarSimilar(this.value)">
                 ${o}
@@ -442,6 +545,8 @@ function buscar(){
         </div>`;
     }
 }
+
+/* ===== MOSTRAR SIMILAR ===== */
 
 function mostrarSimilar(i){
 
@@ -452,6 +557,8 @@ function mostrarSimilar(i){
         construirTabla(similares[i]);
 }
 
+/* ===== RELOJ ===== */
+
 function reloj(){
 
     document.getElementById("fechaHora").textContent =
@@ -461,6 +568,8 @@ function reloj(){
 setInterval(reloj,1000);
 
 reloj();
+
+/* ===== INICIAR ===== */
 
 cargarDatos();
 
